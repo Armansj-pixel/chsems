@@ -1,0 +1,1756 @@
+<!DOCTYPE html>
+<html lang="id" class="h-full bg-zinc-50">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EHS Suite — PT. Elsewedy Electric Indonesia</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; color: #18181b; -webkit-font-smoothing: antialiased; }
+    .font-mono { font-family: 'JetBrains Mono', monospace; }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #f4f4f5; }
+    ::-webkit-scrollbar-thumb { background: #d4d4d8; border-radius: 3px; }
+    input, select, textarea { font-size: 16px; }
+    @media (min-width: 768px) { input, select, textarea { font-size: 12px; } }
+
+    /* Tabel -> kartu pada layar HP */
+    @media (max-width: 767px) {
+      table.rt, table.rt tbody, table.rt tr, table.rt td { display: block; width: 100%; }
+      table.rt thead { display: none; }
+      table.rt tbody { padding: 4px 0; }
+      table.rt tr { background: #fff; border: 1px solid #e4e4e7; border-radius: 6px; margin: 8px; width: auto; padding: 4px 0; }
+      table.rt td { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; padding: 6px 12px !important; text-align: right; min-width: 0 !important; }
+      table.rt td::before { content: attr(data-label); font-family: 'JetBrains Mono', monospace; font-size: 10px; text-transform: uppercase; color: #71717a; text-align: left; flex-shrink: 0; padding-top: 2px; }
+      table.rt td:first-child { background: #fafafa; border-bottom: 1px solid #f4f4f5; border-radius: 6px 6px 0 0; }
+      table.rt td[colspan] { justify-content: center; }
+      table.rt td[colspan]::before { content: none; }
+    }
+    @media (min-width: 768px) {
+      table.rt td:first-child { position: sticky; left: 0; background: #fff; z-index: 1; box-shadow: 1px 0 0 #e4e4e7; }
+      table.rt th:first-child { position: sticky; left: 0; background: #fafafa; z-index: 2; box-shadow: 1px 0 0 #e4e4e7; }
+    }
+  </style>
+</head>
+<body class="h-full">
+
+  <!-- ===================== LOGIN ===================== -->
+  <div id="loginView" class="h-full flex items-center justify-center p-4 bg-zinc-100">
+    <div class="w-full max-w-sm bg-white border border-zinc-200 rounded shadow-sm">
+      <div class="px-5 py-4 border-b border-zinc-200 flex items-center gap-2.5">
+        <div class="w-2.5 h-7 bg-red-600 rounded-sm"></div>
+        <div>
+          <div class="text-xs font-bold tracking-wider uppercase leading-none">Elsewedy Electric</div>
+          <div class="text-[10px] font-mono text-zinc-500 mt-1">EHS SUITE v3.1 • CILEUNGSI PLANT</div>
+        </div>
+      </div>
+      <form id="loginForm" class="p-5 space-y-3 text-xs" autocomplete="off">
+        <div id="loginErr" class="hidden p-2.5 rounded border bg-red-50 border-red-300 text-red-900 font-mono"></div>
+        <div>
+          <label class="block font-medium text-zinc-700 mb-1">NIK</label>
+          <input id="loginNik" required autocapitalize="characters" class="w-full border border-zinc-300 rounded px-3 py-2 font-mono focus:outline-none focus:border-zinc-800" placeholder="EEI-0000" />
+        </div>
+        <div>
+          <label class="block font-medium text-zinc-700 mb-1">PIN</label>
+          <input id="loginPin" type="password" required class="w-full border border-zinc-300 rounded px-3 py-2 font-mono focus:outline-none focus:border-zinc-800" />
+        </div>
+        <button id="btnLogin" class="w-full bg-zinc-900 hover:bg-zinc-800 text-white font-medium py-2.5 rounded">Masuk</button>
+        <button type="button" data-act="vendor-register" class="w-full border border-zinc-300 hover:bg-zinc-50 text-zinc-700 font-medium py-2.5 rounded">Daftar sebagai Vendor</button>
+        <p class="text-[11px] text-zinc-500">Akses hanya untuk personel berwenang. Seluruh aktivitas dicatat pada audit log.</p>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===================== GANTI PIN ===================== -->
+  <div id="pinView" class="hidden h-full flex items-center justify-center p-4 bg-zinc-100">
+    <div class="w-full max-w-sm bg-white border border-zinc-200 rounded shadow-sm">
+      <div class="px-5 py-4 border-b border-zinc-200">
+        <div class="text-sm font-semibold">Ganti PIN</div>
+        <p class="text-xs text-zinc-500 mt-0.5">Anda wajib mengganti PIN sementara sebelum melanjutkan.</p>
+      </div>
+      <form id="pinForm" class="p-5 space-y-3 text-xs" autocomplete="off">
+        <div id="pinErr" class="hidden p-2.5 rounded border bg-red-50 border-red-300 text-red-900 font-mono"></div>
+        <div><label class="block font-medium text-zinc-700 mb-1">PIN saat ini</label><input id="pinOld" type="password" required class="w-full border border-zinc-300 rounded px-3 py-2 font-mono" /></div>
+        <div><label class="block font-medium text-zinc-700 mb-1">PIN baru (min. 6 karakter)</label><input id="pinNew" type="password" required minlength="6" class="w-full border border-zinc-300 rounded px-3 py-2 font-mono" /></div>
+        <div><label class="block font-medium text-zinc-700 mb-1">Ulangi PIN baru</label><input id="pinNew2" type="password" required minlength="6" class="w-full border border-zinc-300 rounded px-3 py-2 font-mono" /></div>
+        <div class="flex gap-2">
+          <button type="button" data-act="logout" class="px-4 py-2 border border-zinc-300 rounded">Keluar</button>
+          <button id="btnPin" class="flex-1 bg-zinc-900 hover:bg-zinc-800 text-white font-medium py-2 rounded">Simpan PIN</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===================== APP ===================== -->
+  <div id="appView" class="hidden h-full flex overflow-hidden">
+
+    <div id="navScrim" data-act="nav-close" class="hidden fixed inset-0 bg-zinc-950/50 z-30 md:hidden"></div>
+
+    <aside id="sidebar" class="fixed md:static inset-y-0 left-0 z-40 w-64 -translate-x-full md:translate-x-0 transition-transform bg-zinc-950 text-zinc-300 flex flex-col border-r border-zinc-800 shrink-0">
+      <div class="h-14 px-4 flex items-center border-b border-zinc-800/80">
+        <div class="flex items-center gap-2.5">
+          <div class="w-2.5 h-6 bg-red-600 rounded-sm"></div>
+          <div>
+            <div class="text-xs font-bold tracking-wider text-white uppercase leading-none">ELSEWEDY ELECTRIC</div>
+            <div class="text-[10px] font-mono text-zinc-500 mt-0.5">ID-CLG • EHS SUITE v3.1</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="p-3 space-y-5 flex-1 overflow-y-auto">
+        <div data-roles="HSE_OFFICER,SUPERVISOR,VIEWER,LIMITED_OFFICER">
+          <div class="px-2.5 mb-1.5 text-[10px] font-mono uppercase tracking-wider text-zinc-500">Operations Control</div>
+          <nav class="space-y-0.5 text-xs font-medium" id="navOps">
+            <button data-act="nav" data-v="OVERVIEW" data-roles="HSE_OFFICER,SUPERVISOR,VIEWER,LIMITED_OFFICER" class="navbtn w-full flex items-center justify-between px-2.5 py-2 rounded">
+              <span>Plant Matrix & e-PTW</span><span id="badge-ptw" class="font-mono text-[10px] bg-zinc-900 text-zinc-300 px-1.5 py-0.5 rounded border border-zinc-700">0</span>
+            </button>
+            <button data-act="nav" data-v="PTW" data-roles="HSE_OFFICER,SUPERVISOR" class="navbtn w-full flex items-center px-2.5 py-2 rounded"><span>Ajukan e-PTW</span></button>
+            <button data-act="nav" data-v="INSPECTION_PORTAL" data-roles="HSE_OFFICER,SUPERVISOR,VIEWER" class="navbtn w-full flex items-center justify-between px-2.5 py-2 rounded">
+              <span>Planned HSE Inspection</span><span class="text-[9px] font-mono bg-red-950 text-red-400 border border-red-800/60 px-1.5 rounded">PORTAL</span>
+            </button>
+            <button data-act="nav" data-v="CAPA" data-roles="HSE_OFFICER,SUPERVISOR,VIEWER,LIMITED_OFFICER" class="navbtn w-full flex items-center justify-between px-2.5 py-2 rounded">
+              <span>CAPA & Audit Register</span><span id="badge-capa" class="font-mono text-[10px] bg-zinc-900 text-zinc-300 px-1.5 py-0.5 rounded border border-zinc-700">0</span>
+            </button>
+          </nav>
+        </div>
+        <div>
+          <div class="px-2.5 mb-1.5 text-[10px] font-mono uppercase tracking-wider text-zinc-500">Compliance & Master Data</div>
+          <nav class="space-y-0.5 text-xs font-medium">
+            <button data-act="nav" data-v="SIO_MCU" data-roles="HSE_OFFICER,SUPERVISOR,VIEWER,LIMITED_OFFICER" class="navbtn w-full flex items-center px-2.5 py-2 rounded"><span>Kompetensi (SIO & MCU)</span></button>
+            <button data-act="nav" data-v="PAA_B3" data-roles="HSE_OFFICER,SUPERVISOR,VIEWER,LIMITED_OFFICER" class="navbtn w-full flex items-center px-2.5 py-2 rounded"><span>SIA Alat Angkat & TPS B3</span></button>
+            <button data-act="nav" data-v="VENDOR" data-roles="HSE_OFFICER,SUPERVISOR,VIEWER,VENDOR_ADMIN" class="navbtn w-full flex items-center justify-between px-2.5 py-2 rounded"><span>Vendor & PTW Vendor</span><span id="badge-vptw" class="font-mono text-[10px] bg-zinc-900 text-zinc-300 px-1.5 py-0.5 rounded border border-zinc-700">0</span></button>
+          </nav>
+        </div>
+        <div data-roles="HSE_OFFICER">
+          <div class="px-2.5 mb-1.5 text-[10px] font-mono uppercase tracking-wider text-zinc-500">Administrasi</div>
+          <nav class="space-y-0.5 text-xs font-medium">
+            <button data-act="nav" data-v="USERS" data-roles="HSE_OFFICER" class="navbtn w-full flex items-center px-2.5 py-2 rounded"><span>Manajemen User</span></button>
+            <button data-act="nav" data-v="AUDIT" data-roles="HSE_OFFICER" class="navbtn w-full flex items-center px-2.5 py-2 rounded"><span>Audit Trail</span></button>
+          </nav>
+        </div>
+      </div>
+
+      <div class="p-3 border-t border-zinc-800 bg-zinc-900/50 text-[11px] space-y-2">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2 min-w-0"><span id="statusDot" class="w-2 h-2 rounded-full bg-amber-400 shrink-0"></span><span id="syncStatus" class="font-mono text-zinc-300 truncate">Memuat...</span></div>
+          <button data-act="sync" class="text-zinc-400 hover:text-white font-mono text-[10px] border border-zinc-700 px-1.5 py-0.5 rounded">SYNC</button>
+        </div>
+        <div class="flex items-center justify-between gap-2">
+          <div class="min-w-0"><div id="whoName" class="text-zinc-100 font-medium truncate"></div><div id="whoRole" class="font-mono text-[10px] text-zinc-500"></div></div>
+          <button data-act="logout" class="text-zinc-300 hover:text-white font-mono text-[10px] border border-zinc-700 px-2 py-1 rounded">KELUAR</button>
+        </div>
+      </div>
+    </aside>
+
+    <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
+      <header class="h-14 bg-white border-b border-zinc-200 px-3 md:px-6 flex items-center justify-between shrink-0 gap-2">
+        <div class="flex items-center gap-2 min-w-0">
+          <button data-act="nav-open" class="md:hidden p-1.5 border border-zinc-300 rounded" aria-label="Menu">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+          </button>
+          <span class="hidden sm:inline text-[11px] font-mono uppercase px-2 py-0.5 bg-zinc-100 border border-zinc-300 rounded text-zinc-700 font-medium whitespace-nowrap">Cileungsi Plant</span>
+          <h1 id="pageTitle" class="text-sm font-semibold text-zinc-900 truncate"></h1>
+        </div>
+        <div class="flex items-center gap-2 shrink-0">
+          <span class="hidden lg:inline text-[11px] font-mono text-zinc-500">ISO 45001 • ISO 14001 • SMK3</span>
+          <button data-act="nav" data-v="PTW" data-roles="HSE_OFFICER,SUPERVISOR" class="text-xs font-medium bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded">+ e-PTW</button>
+        </div>
+      </header>
+
+      <main class="flex-1 overflow-y-auto p-3 md:p-6">
+
+        <!-- OVERVIEW -->
+        <section id="mod-OVERVIEW" class="space-y-4 max-w-[1400px] mx-auto">
+          <div class="grid grid-cols-2 md:grid-cols-5 bg-white border border-zinc-200 rounded divide-x divide-y md:divide-y-0 divide-zinc-200">
+            <div class="p-3 md:p-4"><div class="text-[10px] md:text-[11px] font-mono uppercase text-zinc-500">e-PTW Aktif</div><div id="kpi-ptw" class="mt-1 text-2xl font-semibold font-mono">0</div></div>
+            <div class="p-3 md:p-4"><div class="text-[10px] md:text-[11px] font-mono uppercase text-zinc-500">Menunggu Approval</div><div id="kpi-pending" class="mt-1 text-2xl font-semibold font-mono">0</div></div>
+            <div class="p-3 md:p-4"><div class="text-[10px] md:text-[11px] font-mono uppercase text-zinc-500">CAPA Open / Overdue</div><div id="kpi-capa" class="mt-1 text-2xl font-semibold font-mono">0</div></div>
+            <div class="p-3 md:p-4"><div class="text-[10px] md:text-[11px] font-mono uppercase text-zinc-500">Personel Eligible</div><div id="kpi-emp" class="mt-1 text-2xl font-semibold font-mono">0</div></div>
+            <div class="p-3 md:p-4 col-span-2 md:col-span-1"><div class="text-[10px] md:text-[11px] font-mono uppercase text-zinc-500">Alert Kedaluwarsa</div><div id="kpi-alert" class="mt-1 text-2xl font-semibold font-mono">0</div></div>
+          </div>
+
+          <div id="alertPanel" class="hidden bg-white border border-red-200 rounded">
+            <div class="px-4 py-2.5 border-b border-red-200 bg-red-50 text-xs font-semibold uppercase tracking-wider text-red-900">Perlu Tindakan</div>
+            <ul id="alertList" class="divide-y divide-zinc-100 text-xs"></ul>
+          </div>
+
+          <div class="bg-white border border-zinc-200 rounded p-3 md:p-4">
+            <div class="flex flex-wrap items-center justify-between gap-2 pb-3 mb-3 border-b border-zinc-100">
+              <div>
+                <h2 class="text-xs font-semibold uppercase tracking-wider text-zinc-800">Zonasi Lantai Pabrik</h2>
+                <p class="text-[11px] text-zinc-500">Pilih zona untuk memfilter izin kerja dan temuan CAPA.</p>
+              </div>
+              <div id="zoneBtns" class="flex flex-wrap gap-1"></div>
+            </div>
+            <div id="zoneCards" class="grid grid-cols-2 md:grid-cols-5 gap-2 text-xs"></div>
+          </div>
+
+          <div class="bg-white border border-zinc-200 rounded">
+            <div class="px-4 py-3 border-b border-zinc-200 flex flex-wrap items-center justify-between gap-2">
+              <div class="flex flex-wrap items-center gap-2"><h3 class="text-xs font-semibold uppercase tracking-wider">Register e-PTW & LOTO</h3><span id="chipPtw"></span></div>
+              <div class="flex items-center gap-3">
+                <label class="flex items-center gap-1.5 text-[11px] text-zinc-600"><input type="checkbox" id="showHist" /> Riwayat</label>
+                <input type="text" id="searchPtw" placeholder="Cari PTW, PIC, LOTO..." class="text-xs border border-zinc-300 rounded px-2.5 py-1 w-44 md:w-52" />
+              </div>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs">
+                <thead><tr class="bg-zinc-50 border-b border-zinc-200 text-[11px] font-mono uppercase text-zinc-500">
+                  <th class="py-2.5 px-3">Permit</th><th class="py-2.5 px-3">Berlaku s/d</th><th class="py-2.5 px-3">Zona</th><th class="py-2.5 px-3">Jenis</th><th class="py-2.5 px-3">Sub-area & Pekerjaan</th><th class="py-2.5 px-3">PIC</th><th class="py-2.5 px-3">LOTO</th><th class="py-2.5 px-3">Status</th><th class="py-2.5 px-3">Aksi</th>
+                </tr></thead>
+                <tbody id="ptwBody" class="divide-y divide-zinc-200"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- PTW FORM -->
+        <section id="mod-PTW" class="hidden max-w-4xl mx-auto">
+          <div class="bg-white border border-zinc-200 rounded">
+            <div class="px-4 md:px-5 py-4 border-b border-zinc-200">
+              <h2 class="text-sm font-semibold">Ajukan Electronic Permit to Work</h2>
+              <p class="text-xs text-zinc-500 mt-0.5">Server memeriksa MCU, SIO, kompetensi sesuai jenis izin, SIA alat angkat, dan bentrok LOTO. Izin baru berstatus <span class="font-mono">PENDING_APPROVAL</span> sampai disetujui HSE Officer lain.</p>
+            </div>
+            <form id="ptwForm" class="p-4 md:p-5 space-y-4 text-xs">
+              <div id="ptwAlert" class="hidden p-3 rounded border text-xs font-mono"></div>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label class="block font-medium text-zinc-700 mb-1">PIC / Operator <span class="font-normal text-zinc-400">(ketik NIK atau nama)</span></label>
+                  <input id="ptwNik" list="empList" required autocomplete="off" placeholder="Mis. EEI-1042 atau Budi" class="w-full border border-zinc-300 rounded px-3 py-2 bg-white" />
+                  <datalist id="empList"></datalist>
+                  <div id="ptwPicInfo" class="mt-1.5 text-[11px] leading-relaxed"></div>
+                </div>
+                <div><label class="block font-medium text-zinc-700 mb-1">Kategori Izin Berisiko Tinggi</label><select id="ptwType" class="w-full border border-zinc-300 rounded px-3 py-2 bg-white"></select></div>
+                <div><label class="block font-medium text-zinc-700 mb-1">Area / Hall</label><select id="ptwArea" class="w-full border border-zinc-300 rounded px-3 py-2 bg-white font-mono"></select></div>
+                <div><label class="block font-medium text-zinc-700 mb-1">Sub-Area</label><select id="ptwSubArea" class="w-full border border-zinc-300 rounded px-3 py-2 bg-white"></select></div>
+                <div id="paaWrap" class="hidden md:col-span-2"><label class="block font-medium text-zinc-700 mb-1">Alat Angkat (PAA) — wajib untuk izin Heavy Lifting</label><select id="ptwPaa" class="w-full border border-zinc-300 rounded px-3 py-2 bg-white"></select></div>
+                <div><label class="block font-medium text-zinc-700 mb-1">Kode LOTO / Isolation Tag</label><input id="ptwLoto" required placeholder="LOTO-TB-01" class="w-full border border-zinc-300 rounded px-3 py-2 font-mono" /></div>
+                <div><label class="block font-medium text-zinc-700 mb-1">Berlaku Sampai (maks. <span id="maxHrs">48</span> jam)</label><input id="ptwValid" type="datetime-local" required class="w-full border border-zinc-300 rounded px-3 py-2 font-mono" /></div>
+                <div class="md:col-span-2"><label class="block font-medium text-zinc-700 mb-1">Peralatan / Serial & Uraian Pekerjaan</label><input id="ptwLoc" required minlength="5" placeholder="Lifting Coil Phase R 150kV / Testing Bay Unit #2" class="w-full border border-zinc-300 rounded px-3 py-2" /></div>
+              </div>
+              <div class="pt-3 border-t border-zinc-200 flex justify-end gap-2">
+                <button type="button" data-act="nav" data-v="OVERVIEW" class="px-4 py-2 rounded border border-zinc-300">Batal</button>
+                <button id="btnPtw" class="bg-zinc-900 hover:bg-zinc-800 text-white font-medium px-5 py-2 rounded">Validasi Interlock & Ajukan</button>
+              </div>
+            </form>
+          </div>
+        </section>
+
+        <!-- INSPECTION PORTAL -->
+        <section id="mod-INSPECTION_PORTAL" class="hidden bg-white border border-zinc-200 rounded overflow-hidden flex-col" style="height: calc(100vh - 6.5rem)">
+          <div class="px-4 py-2.5 bg-zinc-900 text-white flex flex-wrap items-center justify-between gap-2 shrink-0">
+            <span class="text-xs font-semibold">Elsewedy Planned HSE Inspection Platform</span>
+            <div class="flex items-center gap-2">
+              <button data-act="reload-portal" class="text-[11px] font-mono bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 px-2.5 py-1 rounded">↻ Reload</button>
+              <a id="portalLink" target="_blank" rel="noopener" class="text-[11px] font-mono bg-red-600 hover:bg-red-700 px-2.5 py-1 rounded font-medium">Layar Penuh ↗</a>
+            </div>
+          </div>
+          <iframe id="portalFrame" class="w-full flex-1 border-0 bg-zinc-50" allow="camera; geolocation; clipboard-write"></iframe>
+        </section>
+
+        <!-- CAPA -->
+        <section id="mod-CAPA" class="hidden max-w-[1400px] mx-auto">
+          <div class="bg-white border border-zinc-200 rounded">
+            <div class="px-4 py-3 border-b border-zinc-200 flex flex-wrap items-center justify-between gap-2">
+              <div><h3 class="text-xs font-semibold uppercase tracking-wider">Corrective & Preventive Action (CAPA)</h3><p class="text-[11px] text-zinc-500">Penutupan temuan wajib disertai bukti verifikasi (tautan foto/dokumen wajib untuk risiko HIGH/CRITICAL).</p><div id="chipCapa" class="mt-1.5"></div></div>
+              <button data-act="capa-new" data-roles="HSE_OFFICER,SUPERVISOR" class="text-xs bg-zinc-900 hover:bg-zinc-800 text-white px-3 py-1.5 rounded font-medium">+ Log CAPA</button>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs">
+                <thead><tr class="bg-zinc-50 border-b border-zinc-200 text-[11px] font-mono uppercase text-zinc-500">
+                  <th class="py-2.5 px-3">ID</th><th class="py-2.5 px-3">Area</th><th class="py-2.5 px-3">Temuan</th><th class="py-2.5 px-3">Standar</th><th class="py-2.5 px-3">Risiko</th><th class="py-2.5 px-3">Due</th><th class="py-2.5 px-3">Inspector</th><th class="py-2.5 px-3">Status / Aksi</th>
+                </tr></thead>
+                <tbody id="capaBody" class="divide-y divide-zinc-200"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- SIO / MCU -->
+        <section id="mod-SIO_MCU" class="hidden max-w-[1400px] mx-auto">
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            <div data-roles="HSE_OFFICER" class="bg-white border border-zinc-200 rounded p-4 h-fit">
+              <div class="pb-3 mb-3 border-b border-zinc-200"><h3 class="text-xs font-semibold uppercase tracking-wider">Registrasi / Update Personel</h3><p class="text-[11px] text-zinc-500 mt-0.5">Ketuk baris tabel untuk mengisi form.</p></div>
+              <form id="empForm" class="space-y-3 text-xs">
+                <div id="empAlert" class="hidden p-2.5 rounded border font-mono"></div>
+                <div class="grid grid-cols-2 gap-2.5">
+                  <div><label class="block font-medium text-zinc-700 mb-1">NIK</label><input id="empNik" required placeholder="EEI-2088" class="w-full border border-zinc-300 rounded px-2.5 py-1.5 font-mono" /></div>
+                  <div><label class="block font-medium text-zinc-700 mb-1">Nama</label><input id="empNama" required class="w-full border border-zinc-300 rounded px-2.5 py-1.5" /></div>
+                </div>
+                <div class="grid grid-cols-2 gap-2.5">
+                  <div><label class="block font-medium text-zinc-700 mb-1">Seksi</label><input id="empDept" required class="w-full border border-zinc-300 rounded px-2.5 py-1.5" /></div>
+                  <div><label class="block font-medium text-zinc-700 mb-1">Jabatan</label><input id="empRole" required class="w-full border border-zinc-300 rounded px-2.5 py-1.5" /></div>
+                </div>
+                <div class="grid grid-cols-3 gap-2.5">
+                  <div><label class="block font-medium text-zinc-700 mb-1">MCU</label><select id="empMcu" class="w-full border border-zinc-300 rounded px-2.5 py-1.5 font-mono bg-white"><option>FIT</option><option>UNFIT</option></select></div>
+                  <div><label class="block font-medium text-zinc-700 mb-1">MCU Exp</label><input id="empMcuExp" type="date" required class="w-full border border-zinc-300 rounded px-2 py-1.5 font-mono" /></div>
+                  <div><label class="block font-medium text-zinc-700 mb-1">SIO Exp</label><input id="empSioExp" type="date" required class="w-full border border-zinc-300 rounded px-2 py-1.5 font-mono" /></div>
+                </div>
+                <div><label class="block font-medium text-zinc-700 mb-1">Detail Lisensi SIO / K3</label><input id="empCert" required placeholder="SIO Overhead Crane Kls 1" class="w-full border border-zinc-300 rounded px-2.5 py-1.5" /></div>
+                <div><label class="block font-medium text-zinc-700 mb-1">Kompetensi (syarat interlock)</label><div id="empTags" class="flex flex-wrap gap-x-3 gap-y-1.5"></div></div>
+                <button id="btnEmp" class="w-full bg-zinc-900 hover:bg-zinc-800 text-white font-medium py-2 rounded">Simpan Data Personel</button>
+              </form>
+            </div>
+            <div class="lg:col-span-2 bg-white border border-zinc-200 rounded overflow-hidden">
+              <div class="px-4 py-3 border-b border-zinc-200 text-xs font-semibold uppercase tracking-wider">Master Kompetensi & Eligibility</div>
+              <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs">
+                  <thead><tr class="bg-zinc-50 border-b border-zinc-200 text-[11px] font-mono uppercase text-zinc-500">
+                    <th class="py-2.5 px-3">NIK</th><th class="py-2.5 px-3">Nama</th><th class="py-2.5 px-3">Seksi</th><th class="py-2.5 px-3">MCU</th><th class="py-2.5 px-3">SIO</th><th class="py-2.5 px-3">Kompetensi</th><th class="py-2.5 px-3">Lisensi</th>
+                  </tr></thead>
+                  <tbody id="empBody" class="divide-y divide-zinc-200"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- PAA / B3 -->
+        <section id="mod-PAA_B3" class="hidden max-w-[1400px] mx-auto">
+          <div id="assetAlert" class="hidden mb-4 p-3 rounded border text-xs font-mono"></div>
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <div class="space-y-4">
+              <div data-roles="HSE_OFFICER,SUPERVISOR" class="bg-white border border-zinc-200 rounded p-4">
+                <h3 class="text-xs font-semibold uppercase tracking-wider pb-2 mb-3 border-b border-zinc-200">Registrasi SIA Pesawat Angkat & Angkut</h3>
+                <form id="paaForm" class="space-y-3 text-xs">
+                  <div class="grid grid-cols-2 gap-2.5">
+                    <div><label class="block font-medium text-zinc-700 mb-1">Nama Alat</label><input id="paaNama" required placeholder="Overhead Crane 50T #1" class="w-full border border-zinc-300 rounded px-2.5 py-1.5" /></div>
+                    <div><label class="block font-medium text-zinc-700 mb-1">Lokasi</label><select id="paaLokasi" class="w-full border border-zinc-300 rounded px-2.5 py-1.5 font-mono bg-white">
+                      <option value="HALL A (Gudang Depan / Insulation)">HALL A</option><option value="HALL B (Winding Horizontal)">HALL B</option><option value="HALL C (CCA / Final Assy / Test Bay)">HALL C</option><option value="HALL D (Phase Assy / Winding V-H)">HALL D</option><option value="AREA LAINNYA (Gdg Blkg / Maint)">AREA LAINNYA</option></select></div>
+                  </div>
+                  <div class="grid grid-cols-3 gap-2.5">
+                    <div><label class="block font-medium text-zinc-700 mb-1">No. SIA</label><input id="paaNo" required placeholder="SIA-2026-04" class="w-full border border-zinc-300 rounded px-2.5 py-1.5 font-mono" /></div>
+                    <div><label class="block font-medium text-zinc-700 mb-1">Kapasitas</label><input id="paaKap" placeholder="50 Ton" class="w-full border border-zinc-300 rounded px-2.5 py-1.5 font-mono" /></div>
+                    <div><label class="block font-medium text-zinc-700 mb-1">Berlaku s/d</label><input id="paaExp" type="date" required class="w-full border border-zinc-300 rounded px-2 py-1.5 font-mono" /></div>
+                  </div>
+                  <button id="btnPaa" class="bg-zinc-900 hover:bg-zinc-800 text-white font-medium px-4 py-1.5 rounded">+ Tambah SIA</button>
+                </form>
+              </div>
+              <div class="bg-white border border-zinc-200 rounded overflow-hidden">
+                <div class="px-4 py-2.5 bg-zinc-50 border-b border-zinc-200 text-xs font-semibold uppercase tracking-wider">Ledger Sertifikasi PAA</div>
+                <div class="overflow-x-auto"><table class="w-full text-left text-xs">
+                  <thead><tr class="border-b border-zinc-200 text-[11px] font-mono uppercase text-zinc-500"><th class="py-2 px-3">Alat</th><th class="py-2 px-3">Zona</th><th class="py-2 px-3">SIA</th><th class="py-2 px-3">Status</th><th class="py-2 px-3">Aksi</th></tr></thead>
+                  <tbody id="paaBody" class="divide-y divide-zinc-200"></tbody></table></div>
+              </div>
+            </div>
+            <div class="space-y-4">
+              <div data-roles="HSE_OFFICER,SUPERVISOR" class="bg-white border border-zinc-200 rounded p-4">
+                <h3 class="text-xs font-semibold uppercase tracking-wider pb-2 mb-3 border-b border-zinc-200">Log Neraca TPS Limbah B3</h3>
+                <form id="b3Form" class="space-y-3 text-xs">
+                  <div class="grid grid-cols-2 gap-2.5">
+                    <div><label class="block font-medium text-zinc-700 mb-1">Jenis Limbah</label><input id="b3Jenis" required placeholder="Oli Trafo Bekas" class="w-full border border-zinc-300 rounded px-2.5 py-1.5" /></div>
+                    <div><label class="block font-medium text-zinc-700 mb-1">Kode (PP 22/2021)</label><input id="b3Kode" required placeholder="B105d" class="w-full border border-zinc-300 rounded px-2.5 py-1.5 font-mono" /></div>
+                  </div>
+                  <div class="grid grid-cols-2 gap-2.5">
+                    <div><label class="block font-medium text-zinc-700 mb-1">Volume</label><input id="b3Vol" required placeholder="450 Liter" class="w-full border border-zinc-300 rounded px-2.5 py-1.5 font-mono" /></div>
+                    <div><label class="block font-medium text-zinc-700 mb-1">Batas Simpan</label><input id="b3Batas" type="date" required class="w-full border border-zinc-300 rounded px-2 py-1.5 font-mono" /></div>
+                  </div>
+                  <button id="btnB3" class="bg-red-600 hover:bg-red-700 text-white font-medium px-4 py-1.5 rounded">+ Catat Limbah B3</button>
+                </form>
+              </div>
+              <div class="bg-white border border-zinc-200 rounded overflow-hidden">
+                <div class="px-4 py-2.5 bg-zinc-50 border-b border-zinc-200 text-xs font-semibold uppercase tracking-wider">Neraca TPS Limbah B3</div>
+                <div class="overflow-x-auto"><table class="w-full text-left text-xs">
+                  <thead><tr class="border-b border-zinc-200 text-[11px] font-mono uppercase text-zinc-500"><th class="py-2 px-3">Limbah</th><th class="py-2 px-3">Kode</th><th class="py-2 px-3">Volume</th><th class="py-2 px-3">Batas</th><th class="py-2 px-3">Aksi</th></tr></thead>
+                  <tbody id="b3Body" class="divide-y divide-zinc-200"></tbody></table></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- VENDOR -->
+        <section id="mod-VENDOR" class="hidden max-w-[1400px] mx-auto space-y-4">
+          <div class="flex flex-wrap gap-1.5">
+            <button data-act="vtab" data-v="PTW" class="vtab-btn px-3 py-1.5 text-xs font-medium rounded border bg-zinc-900 text-white border-zinc-900">PTW Vendor</button>
+            <button data-act="vtab" data-v="VENDORS" class="vtab-btn px-3 py-1.5 text-xs font-medium rounded border bg-white text-zinc-700 border-zinc-300">Master Vendor</button>
+            <button data-act="vtab" data-v="WORKERS" class="vtab-btn px-3 py-1.5 text-xs font-medium rounded border bg-white text-zinc-700 border-zinc-300">Pekerja Vendor</button>
+          </div>
+
+          <div id="vpanel-PTW" class="bg-white border border-zinc-200 rounded">
+            <div class="px-4 py-3 border-b border-zinc-200 flex flex-wrap items-center justify-between gap-2">
+              <div><h3 class="text-xs font-semibold uppercase tracking-wider">Izin Kerja Vendor</h3><p class="text-[11px] text-zinc-500">Draft → Diajukan → Disetujui → Aktif (revalidasi tiap shift) → Ditutup.</p></div>
+              <div class="flex flex-wrap items-center gap-3">
+                <label class="flex items-center gap-1.5 text-[11px] text-zinc-600"><input type="checkbox" id="vHist" /> Riwayat</label>
+                <input type="text" id="vSearch" placeholder="Cari PTW, vendor, LOTO..." class="text-xs border border-zinc-300 rounded px-2.5 py-1 w-40 md:w-52" />
+                <button id="btnVptwNew" data-act="vptw-new" data-roles="HSE_OFFICER,SUPERVISOR,VENDOR_ADMIN" class="text-xs bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded font-medium">+ PTW Vendor</button>
+              </div>
+            </div>
+            <div class="overflow-x-auto"><table class="w-full text-left text-xs">
+              <thead><tr class="bg-zinc-50 border-b border-zinc-200 text-[11px] font-mono uppercase text-zinc-500"><th class="py-2.5 px-3">PTW</th><th class="py-2.5 px-3">Vendor</th><th class="py-2.5 px-3">Jenis</th><th class="py-2.5 px-3">Lokasi & Pekerjaan</th><th class="py-2.5 px-3">Berlaku</th><th class="py-2.5 px-3">Status</th><th class="py-2.5 px-3">Aksi</th></tr></thead>
+              <tbody id="vptwBody" class="divide-y divide-zinc-200"></tbody></table></div>
+          </div>
+
+          <div id="vpanel-VENDORS" class="hidden bg-white border border-zinc-200 rounded">
+            <div class="px-4 py-3 border-b border-zinc-200 flex flex-wrap items-center justify-between gap-2">
+              <div><h3 class="text-xs font-semibold uppercase tracking-wider">Master Vendor</h3><p class="text-[11px] text-zinc-500">Hanya vendor berstatus APPROVED dengan dokumen berlaku yang dapat menerima izin. Status BLOCKED otomatis menangguhkan PTW-nya.</p></div>
+              <button data-act="vendor-new" data-roles="HSE_OFFICER" class="text-xs bg-zinc-900 hover:bg-zinc-800 text-white px-3 py-1.5 rounded font-medium">+ Vendor</button>
+            </div>
+            <div class="overflow-x-auto"><table class="w-full text-left text-xs">
+              <thead><tr class="bg-zinc-50 border-b border-zinc-200 text-[11px] font-mono uppercase text-zinc-500"><th class="py-2.5 px-3">ID</th><th class="py-2.5 px-3">Perusahaan</th><th class="py-2.5 px-3">PIC</th><th class="py-2.5 px-3">Status</th><th class="py-2.5 px-3">Prakualifikasi</th><th class="py-2.5 px-3">Asuransi</th><th class="py-2.5 px-3">SMK3</th><th class="py-2.5 px-3">Aksi</th></tr></thead>
+              <tbody id="vendorBody" class="divide-y divide-zinc-200"></tbody></table></div>
+          </div>
+
+          <div id="vpanel-WORKERS" class="hidden bg-white border border-zinc-200 rounded">
+            <div class="px-4 py-3 border-b border-zinc-200 flex flex-wrap items-center justify-between gap-2">
+              <div><h3 class="text-xs font-semibold uppercase tracking-wider">Pekerja Vendor</h3><p class="text-[11px] text-zinc-500">Interlock hanya menerima pekerja terverifikasi HSE dengan induksi dan MCU berlaku. Hasil MCU tidak disimpan, hanya status dan tanggal.</p></div>
+              <div class="flex items-center gap-2">
+                <select id="vWorkerVendor" class="text-xs border border-zinc-300 rounded px-2 py-1 bg-white"></select>
+                <button data-act="vworker-new" data-roles="HSE_OFFICER,VENDOR_ADMIN" class="text-xs bg-zinc-900 hover:bg-zinc-800 text-white px-3 py-1.5 rounded font-medium">+ Pekerja</button>
+              </div>
+            </div>
+            <div class="overflow-x-auto"><table class="w-full text-left text-xs">
+              <thead><tr class="bg-zinc-50 border-b border-zinc-200 text-[11px] font-mono uppercase text-zinc-500"><th class="py-2.5 px-3">ID</th><th class="py-2.5 px-3">Pekerja</th><th class="py-2.5 px-3">Vendor</th><th class="py-2.5 px-3">Induksi</th><th class="py-2.5 px-3">MCU</th><th class="py-2.5 px-3">Kompetensi</th><th class="py-2.5 px-3">Status</th><th class="py-2.5 px-3">Aksi</th></tr></thead>
+              <tbody id="vworkerBody" class="divide-y divide-zinc-200"></tbody></table></div>
+          </div>
+        </section>
+
+        <!-- USERS -->
+        <section id="mod-USERS" class="hidden max-w-[1100px] mx-auto">
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            <div class="bg-white border border-zinc-200 rounded p-4 h-fit">
+              <h3 class="text-xs font-semibold uppercase tracking-wider pb-2 mb-3 border-b border-zinc-200">Tambah / Ubah User</h3>
+              <form id="userForm" class="space-y-3 text-xs">
+                <div><label class="block font-medium text-zinc-700 mb-1">NIK</label><input id="usrNik" required class="w-full border border-zinc-300 rounded px-2.5 py-1.5 font-mono" /></div>
+                <div><label class="block font-medium text-zinc-700 mb-1">Nama</label><input id="usrNama" required class="w-full border border-zinc-300 rounded px-2.5 py-1.5" /></div>
+                <div><label class="block font-medium text-zinc-700 mb-1">Departemen</label><input id="usrDept" class="w-full border border-zinc-300 rounded px-2.5 py-1.5" /></div>
+                <div class="grid grid-cols-2 gap-2.5">
+                  <div><label class="block font-medium text-zinc-700 mb-1">Role</label><select id="usrRole" class="w-full border border-zinc-300 rounded px-2.5 py-1.5 bg-white font-mono"><option>VIEWER</option><option>LIMITED_OFFICER</option><option>SUPERVISOR</option><option>HSE_OFFICER</option><option>VENDOR_ADMIN</option></select></div>
+                  <div><label class="block font-medium text-zinc-700 mb-1">Status</label><select id="usrStatus" class="w-full border border-zinc-300 rounded px-2.5 py-1.5 bg-white font-mono"><option>ACTIVE</option><option>INACTIVE</option></select></div>
+                </div>
+                <div id="usrVendorWrap" class="hidden">
+                  <label class="block font-medium text-zinc-700 mb-1">Vendor ID (Wajib untuk VENDOR_ADMIN)</label>
+                  <select id="usrVendorId" class="w-full border border-zinc-300 rounded px-2.5 py-1.5 bg-white font-mono"></select>
+                </div>
+                <button id="btnUser" class="w-full bg-zinc-900 text-white font-medium py-2 rounded">Simpan User</button>
+                <p class="text-[11px] text-zinc-500">User baru mendapat PIN sementara yang hanya tampil sekali.</p>
+              </form>
+            </div>
+            <div class="lg:col-span-2 bg-white border border-zinc-200 rounded overflow-hidden">
+              <div class="px-4 py-3 border-b border-zinc-200 text-xs font-semibold uppercase tracking-wider">Daftar User</div>
+              <div class="overflow-x-auto"><table class="w-full text-left text-xs">
+                <thead><tr class="bg-zinc-50 border-b border-zinc-200 text-[11px] font-mono uppercase text-zinc-500"><th class="py-2.5 px-3">NIK</th><th class="py-2.5 px-3">Nama</th><th class="py-2.5 px-3">Role</th><th class="py-2.5 px-3">Dept / Vendor</th><th class="py-2.5 px-3">Status</th><th class="py-2.5 px-3">Aksi</th></tr></thead>
+                <tbody id="userBody" class="divide-y divide-zinc-200"></tbody></table></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- AUDIT -->
+        <section id="mod-AUDIT" class="hidden max-w-[1400px] mx-auto">
+          <div class="bg-white border border-zinc-200 rounded overflow-hidden">
+            <div class="px-4 py-3 border-b border-zinc-200 text-xs font-semibold uppercase tracking-wider">Audit Trail (100 aktivitas terbaru)</div>
+            <div class="overflow-x-auto"><table class="w-full text-left text-xs">
+              <thead><tr class="bg-zinc-50 border-b border-zinc-200 text-[11px] font-mono uppercase text-zinc-500"><th class="py-2.5 px-3">Waktu</th><th class="py-2.5 px-3">Aktor</th><th class="py-2.5 px-3">Role</th><th class="py-2.5 px-3">Aksi</th><th class="py-2.5 px-3">Target</th><th class="py-2.5 px-3">Detail</th></tr></thead>
+              <tbody id="auditBody" class="divide-y divide-zinc-200"></tbody></table></div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- MODAL CAPA -->
+  <div id="modalCapa" class="hidden fixed inset-0 bg-zinc-950/60 z-50 flex items-center justify-center p-4">
+    <div class="bg-white border border-zinc-300 rounded max-w-lg w-full max-h-[92vh] overflow-y-auto shadow-xl">
+      <div class="px-4 py-3 bg-zinc-900 text-white flex justify-between items-center text-xs font-semibold"><span>Log Corrective & Preventive Action</span><button data-act="capa-close" class="text-zinc-400 hover:text-white">✕</button></div>
+      <form id="capaForm" class="p-4 space-y-3 text-xs">
+        <div class="grid grid-cols-2 gap-3">
+          <div><label class="block font-medium text-zinc-700 mb-1">Area</label><select id="insArea" class="w-full border border-zinc-300 rounded px-2.5 py-1.5 font-mono bg-white"></select></div>
+          <div><label class="block font-medium text-zinc-700 mb-1">Sub-Area</label><select id="insDept" class="w-full border border-zinc-300 rounded px-2.5 py-1.5 bg-white"></select></div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div><label class="block font-medium text-zinc-700 mb-1">Risiko</label><select id="insRisk" class="w-full border border-zinc-300 rounded px-2.5 py-1.5 font-mono bg-white"><option>LOW</option><option selected>MEDIUM</option><option>HIGH</option><option>CRITICAL</option></select></div>
+          <div><label class="block font-medium text-zinc-700 mb-1">Batas Waktu</label><input id="insDue" type="date" required class="w-full border border-zinc-300 rounded px-2 py-1.5 font-mono" /></div>
+        </div>
+        <div><label class="block font-medium text-zinc-700 mb-1">Standar / Referensi</label><input id="insCat" value="ISO 45001 / SMK3 Planned Inspection" required class="w-full border border-zinc-300 rounded px-2.5 py-1.5" /></div>
+        <div><label class="block font-medium text-zinc-700 mb-1">Ketidaksesuaian & Tindakan Perbaikan (min. 10 karakter)</label><textarea id="insFinding" rows="3" required minlength="10" class="w-full border border-zinc-300 rounded px-2.5 py-1.5"></textarea></div>
+        <div class="flex justify-end gap-2 pt-1"><button type="button" data-act="capa-close" class="px-3 py-1.5 border border-zinc-300 rounded">Batal</button><button id="btnCapa" class="px-4 py-1.5 bg-zinc-900 text-white rounded font-medium">Simpan CAPA</button></div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL DETAIL / EDITOR PTW VENDOR -->
+  <div id="modalVdetail" class="hidden fixed inset-0 bg-zinc-950/60 z-50 flex items-start md:items-center justify-center p-2 md:p-4">
+    <div class="bg-white border border-zinc-300 rounded w-full max-w-3xl max-h-[96vh] flex flex-col shadow-xl">
+      <div class="px-4 py-3 bg-zinc-900 text-white flex justify-between items-center text-xs font-semibold shrink-0"><span id="vdTitle"></span><button data-act="vdetail-close" class="text-zinc-300 hover:text-white px-1" aria-label="Tutup">✕</button></div>
+      <div id="vdBody" class="p-4 overflow-y-auto text-xs space-y-4"></div>
+    </div>
+  </div>
+
+  <!-- MODAL GENERIK -->
+  <div id="modalAsk" class="hidden fixed inset-0 bg-zinc-950/60 z-[55] flex items-center justify-center p-4">
+    <div class="bg-white border border-zinc-300 rounded max-w-md w-full max-h-[92vh] overflow-y-auto shadow-xl">
+      <div class="px-4 py-3 bg-zinc-900 text-white text-xs font-semibold" id="askTitle"></div>
+      <form id="askForm" class="p-4 space-y-3 text-xs">
+        <p id="askMsg" class="hidden whitespace-pre-wrap text-zinc-700 text-xs"></p>
+        <div id="askFields" class="space-y-3"></div>
+        <div class="flex justify-end gap-2 pt-1"><button type="button" id="askCancel" class="px-3 py-1.5 border border-zinc-300 rounded">Batal</button><button id="askOk" class="px-4 py-1.5 bg-zinc-900 text-white rounded font-medium">OK</button></div>
+      </form>
+    </div>
+  </div>
+
+  <div id="toast" class="hidden fixed top-3 right-3 left-3 sm:left-auto sm:max-w-sm z-[60] p-3 rounded border text-xs font-mono shadow-lg"></div>
+
+<script>
+  // ==========================================================================
+  // KONFIGURASI
+  // ==========================================================================
+  const GAS_API_URL = "https://script.google.com/macros/s/AKfycbx37Aw82hgcWAkHQu9XdqMY-__nKtr_-2V1q0e8q-scQjcA7b5cLIODgPmoESXKwFrxvg/exec";
+  const PORTAL_URL = "https://inspection-dphscamqq5q4.edgeone.dev/";
+
+  const MODULE_TITLES = {
+    OVERVIEW: 'Plant Matrix & Register e-PTW', PTW: 'Ajukan e-PTW', INSPECTION_PORTAL: 'Planned HSE Inspection',
+    CAPA: 'CAPA & Audit Register', SIO_MCU: 'Kompetensi SIO & MCU', PAA_B3: 'SIA Alat Angkat & TPS Limbah B3',
+    USERS: 'Manajemen User', AUDIT: 'Audit Trail', VENDOR: 'Vendor & PTW Vendor'
+  };
+  const MODULES = Object.keys(MODULE_TITLES);
+  const AREA_LABEL = { HALL_A: 'HALL A', HALL_B: 'HALL B', HALL_C: 'HALL C', HALL_D: 'HALL D', OTHER: 'LAINNYA' };
+  const LEVEL_CLS = {
+    OK: 'bg-emerald-50 text-emerald-800 border-emerald-200', WARNING: 'bg-amber-50 text-amber-800 border-amber-200',
+    CRITICAL: 'bg-orange-50 text-orange-800 border-orange-300', EXPIRED: 'bg-red-50 text-red-800 border-red-200',
+    BLOCKED: 'bg-red-50 text-red-800 border-red-200', UNKNOWN: 'bg-zinc-100 text-zinc-700 border-zinc-300', DISPOSED: 'bg-zinc-100 text-zinc-600 border-zinc-300'
+  };
+  const PTW_STATUS = {
+    PENDING_APPROVAL: ['MENUNGGU APPROVAL', 'bg-amber-50 text-amber-800 border-amber-200'],
+    ACTIVE_INTERLOCKED: ['AKTIF • INTERLOCKED', 'bg-emerald-50 text-emerald-800 border-emerald-200'],
+    EXPIRED_UNCLOSED: ['KEDALUWARSA • LOTO BELUM DILEPAS', 'bg-red-50 text-red-800 border-red-300'],
+    CLOSED_LOTO_RELEASED: ['DITUTUP • LOTO DILEPAS', 'bg-zinc-100 text-zinc-700 border-zinc-300'],
+    REJECTED: ['DITOLAK', 'bg-red-50 text-red-800 border-red-200'],
+    CANCELLED: ['DIBATALKAN', 'bg-zinc-100 text-zinc-600 border-zinc-300']
+  };
+  const VPTW_STATUS = {
+    DRAFT: ['DRAFT', 'bg-zinc-100 text-zinc-700 border-zinc-300'],
+    SUBMITTED: ['MENUNGGU REVIEW HSE', 'bg-amber-50 text-amber-800 border-amber-200'],
+    APPROVED: ['DISETUJUI • SIAP MULAI', 'bg-blue-50 text-blue-800 border-blue-200'],
+    ACTIVE: ['AKTIF BEKERJA', 'bg-emerald-50 text-emerald-800 border-emerald-200'],
+    SUSPENDED: ['DITANGGUHKAN (SUSPENDED)', 'bg-red-50 text-red-800 border-red-300'],
+    EXPIRED_UNCLOSED: ['KEDALUWARSA • BELUM DITUTUP', 'bg-red-50 text-red-800 border-red-300'],
+    CLOSED: ['DITUTUP', 'bg-zinc-100 text-zinc-700 border-zinc-300'],
+    REJECTED: ['DITOLAK', 'bg-red-50 text-red-800 border-red-200'],
+    CANCELLED: ['DIBATALKAN', 'bg-zinc-100 text-zinc-600 border-zinc-300']
+  };
+  const PTW_LIVE = ['PENDING_APPROVAL', 'ACTIVE_INTERLOCKED', 'EXPIRED_UNCLOSED'];
+  const VPTW_LIVE_SET = ['DRAFT', 'SUBMITTED', 'APPROVED', 'ACTIVE', 'SUSPENDED', 'EXPIRED_UNCLOSED'];
+
+  // ==========================================================================
+  // STATE & UTIL
+  // ==========================================================================
+  const S = { token: null, user: null, data: null, hall: 'ALL', mod: 'OVERVIEW', vtab: 'PTW', openVptwId: null };
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s === null || s === undefined ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const store = {
+    get() { try { return sessionStorage.getItem('ehs_token'); } catch (e) { return null; } },
+    set(v) { try { v ? sessionStorage.setItem('ehs_token', v) : sessionStorage.removeItem('ehs_token'); } catch (e) {} }
+  };
+  const badge = (text, cls) => `<span class="inline-block px-1.5 py-0.5 border rounded font-mono text-[10px] font-semibold whitespace-nowrap ${cls}">${esc(text)}</span>`;
+  const areaTag = a => `<span class="font-mono text-[11px] font-semibold bg-zinc-100 border border-zinc-300 px-1.5 py-0.5 rounded">${esc(AREA_LABEL[a] || a)}</span>`;
+  const hasRole = (...r) => S.user && r.includes(S.user.role);
+  const daysText = d => d === null || d === undefined ? '' : (d < 0 ? `${Math.abs(d)} hr lewat` : `${d} hr`);
+  const levelBadge = (lv, days) => badge((lv || 'UNKNOWN') + (days !== null && days !== undefined && lv !== 'DISPOSED' ? ' • ' + daysText(days) : ''), LEVEL_CLS[lv] || LEVEL_CLS.UNKNOWN);
+
+  function toast(msg, ok) {
+    const t = $('toast');
+    t.className = 'fixed top-3 right-3 left-3 sm:left-auto sm:max-w-sm z-[60] p-3 rounded border text-xs font-mono shadow-lg ' +
+      (ok ? 'bg-emerald-50 border-emerald-300 text-emerald-900' : 'bg-red-50 border-red-300 text-red-900');
+    t.textContent = msg;
+    clearTimeout(toast._t);
+    toast._t = setTimeout(() => t.classList.add('hidden'), ok ? 4000 : 8000);
+  }
+
+  function setSync(state, text) {
+    $('statusDot').className = 'w-2 h-2 rounded-full shrink-0 ' + ({ ok: 'bg-emerald-400', busy: 'bg-amber-400 animate-pulse', err: 'bg-red-500' }[state]);
+    $('syncStatus').textContent = text;
+  }
+
+  async function call(payload) {
+    try {
+      const res = await fetch(GAS_API_URL, {
+        method: 'POST', redirect: 'follow',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(Object.assign({ token: S.token }, payload))
+      });
+      const j = await res.json();
+      if (j.authError && S.token) { logout(true); }
+      return j;
+    } catch (err) {
+      return { success: false, message: 'Gagal terhubung ke server. Periksa koneksi lalu coba lagi.' };
+    }
+  }
+
+  async function withBusy(btn, label, fn) {
+    if (btn) { btn.disabled = true; btn._t = btn.textContent; btn.textContent = label; }
+    try { return await fn(); } finally { if (btn) { btn.disabled = false; btn.textContent = btn._t; } }
+  }
+
+  async function mutate(payload, btn, label) {
+    const res = await withBusy(btn, label || 'Memproses...', () => call(payload));
+    if (res.mustChangePin) { showPinView(); return res; }
+    toast(res.message || (res.success ? 'Berhasil.' : 'Gagal.'), res.success);
+    if (res.success && res.data) { S.data = res.data; renderAll(); }
+    return res;
+  }
+
+  function askForm(title, fields, message, opts) {
+    opts = opts || {};
+    return new Promise(resolve => {
+      $('askTitle').textContent = title;
+      const msg = $('askMsg');
+      msg.textContent = message || '';
+      msg.classList.toggle('hidden', !message);
+      $('askFields').innerHTML = (fields || []).map(f => {
+        const common = `name="${esc(f.key)}" ${f.required === false ? '' : 'required'} ${f.min ? 'minlength="' + f.min + '"' : ''} class="w-full border border-zinc-300 rounded px-2.5 py-1.5 bg-white"`;
+        let input;
+        if (f.type === 'textarea') {
+          input = `<textarea rows="3" ${common}>${esc(f.value || '')}</textarea>`;
+        } else if (f.type === 'file') {
+          input = `<input type="file" multiple accept="${esc(f.accept || '')}" ${common} />`;
+        } else if (f.type === 'select') {
+          const optsHtml = (f.options || []).map(o => {
+            const val = typeof o === 'object' ? o.value : o;
+            const lbl = typeof o === 'object' ? o.label : o;
+            return `<option value="${esc(val)}" ${String(val) === String(f.value || '') ? 'selected' : ''}>${esc(lbl)}</option>`;
+          }).join('');
+          input = `<select ${common}>${optsHtml}</select>`;
+        } else if (f.type === 'checkbox') {
+          return `<label class="flex items-center gap-2 text-xs font-medium text-zinc-700"><input type="checkbox" name="${esc(f.key)}" ${f.value ? 'checked' : ''} /> <span>${esc(f.label)}</span></label>`;
+        } else {
+          input = `<input type="${f.type || 'text'}" value="${esc(f.value || '')}" placeholder="${esc(f.placeholder || '')}" ${common} />`;
+        }
+        return `<div><label class="block font-medium text-zinc-700 mb-1">${esc(f.label)}</label>${input}</div>`;
+      }).join('');
+      $('askOk').textContent = opts.okLabel || 'OK';
+      $('askCancel').classList.toggle('hidden', !!opts.noCancel);
+      const modal = $('modalAsk'), form = $('askForm');
+      modal.classList.remove('hidden');
+      const first = form.querySelector('input,textarea,select'); if (first) first.focus();
+      const done = v => { modal.classList.add('hidden'); form.onsubmit = null; $('askCancel').onclick = null; resolve(v); };
+      form.onsubmit = e => {
+        e.preventDefault();
+        const o = {};
+        (fields || []).forEach(f => {
+          const el = form.elements[f.key];
+          if (!el) return;
+          if (f.type === 'file') o[f.key] = Array.from(el.files || []);
+          else if (f.type === 'checkbox') o[f.key] = !!el.checked;
+          else o[f.key] = String(el.value || '').trim();
+        });
+        done(o);
+      };
+      $('askCancel').onclick = () => done(null);
+    });
+  }
+  const confirmBox = (title, message) => askForm(title, [], message, { okLabel: 'Ya, lanjutkan' }).then(r => r !== null);
+
+  // ==========================================================================
+  // AUTH FLOW
+  // ==========================================================================
+  function showLogin(msg) {
+    $('appView').classList.add('hidden'); $('pinView').classList.add('hidden'); $('loginView').classList.remove('hidden');
+    const e = $('loginErr');
+    if (msg) { e.textContent = msg; e.classList.remove('hidden'); } else e.classList.add('hidden');
+    $('loginPin').value = '';
+  }
+  function showPinView() {
+    $('loginView').classList.add('hidden'); $('appView').classList.add('hidden'); $('pinView').classList.remove('hidden');
+    $('pinErr').classList.add('hidden');
+  }
+  function showApp() {
+    $('loginView').classList.add('hidden'); $('pinView').classList.add('hidden'); $('appView').classList.remove('hidden');
+    $('whoName').textContent = S.user.name;
+    $('whoRole').textContent = S.user.role + (S.user.vendorId ? ' • ' + S.user.vendorId : '');
+    $('portalLink').href = PORTAL_URL;
+    applyRoleVisibility();
+    buildStaticSelects();
+    renderAll();
+    if (S.user.role === 'VENDOR_ADMIN') S.mod = 'VENDOR';
+    switchModule(S.mod in MODULE_TITLES ? S.mod : 'OVERVIEW');
+    setSync('ok', 'Terhubung');
+  }
+
+  function logout(expired) {
+    if (S.token) call({ action: 'LOGOUT' });
+    S.token = null; S.user = null; S.data = null; store.set(null);
+    showLogin(expired ? 'Sesi berakhir. Silakan login kembali.' : '');
+  }
+
+  async function bootstrap() {
+    const t = store.get();
+    if (!t) return showLogin();
+    S.token = t;
+    showSkeletonShell();
+    const res = await call({ action: 'GET_DATA' });
+    if (res.success) { S.user = res.user; S.data = res.data; showApp(); }
+    else if (res.mustChangePin) { S.user = res.user; showPinView(); }
+    else if (S.token) { S.token = null; showLogin(res.message || 'Gagal memuat data. Silakan login ulang.'); }
+  }
+
+  $('loginForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    const res = await withBusy($('btnLogin'), 'Memverifikasi...', () => call({ action: 'LOGIN', nik: $('loginNik').value, pin: $('loginPin').value }));
+    if (!res.success) return showLogin(res.message);
+    S.token = res.token; S.user = res.user; store.set(res.token);
+    if (res.mustChangePin) { showPinView(); return; }
+    S.data = res.data; showApp();
+  });
+
+  $('pinForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    const err = $('pinErr');
+    if ($('pinNew').value !== $('pinNew2').value) { err.textContent = 'Konfirmasi PIN baru tidak sama.'; err.classList.remove('hidden'); return; }
+    const res = await withBusy($('btnPin'), 'Menyimpan...', () => call({ action: 'CHANGE_PIN', oldPin: $('pinOld').value, newPin: $('pinNew').value }));
+    if (!res.success) { err.textContent = res.message; err.classList.remove('hidden'); return; }
+    $('pinOld').value = ''; $('pinNew').value = ''; $('pinNew2').value = '';
+    S.data = res.data; showApp(); toast('PIN berhasil diganti.', true);
+  });
+
+  async function syncNow(silent) {
+    if (!S.token) return;
+    if (!silent) setSync('busy', 'Sinkronisasi...');
+    const res = await call({ action: 'GET_DATA' });
+    if (res.success) { S.data = res.data; S.user = res.user; renderAll(); setSync('ok', 'Terhubung • ' + (res.data.serverTime || '')); }
+    else if (!res.authError) setSync('err', 'Sync gagal');
+  }
+
+  // ==========================================================================
+  // NAVIGASI & ROLE
+  // ==========================================================================
+  function applyRoleVisibility() {
+    document.querySelectorAll('[data-roles]').forEach(el => {
+      el.classList.toggle('hidden', !el.dataset.roles.split(',').includes(S.user.role));
+    });
+  }
+  function switchModule(key) {
+    if (S.user && S.user.role === 'VENDOR_ADMIN') key = 'VENDOR';
+    if (!MODULES.includes(key)) key = 'OVERVIEW';
+    const btn = document.querySelector(`[data-act="nav"][data-v="${key}"]`);
+    if (btn && btn.dataset.roles && !btn.dataset.roles.split(',').includes(S.user.role)) key = 'OVERVIEW';
+    S.mod = key;
+    MODULES.forEach(k => { const el = $('mod-' + k); if (el) el.classList.add('hidden'); });
+    const sec = $('mod-' + key);
+    sec.classList.remove('hidden');
+    if (key === 'INSPECTION_PORTAL') { sec.classList.add('flex'); const f = $('portalFrame'); if (!f.src) f.src = PORTAL_URL; }
+    document.querySelectorAll('.navbtn').forEach(b => {
+      b.className = 'navbtn w-full flex items-center justify-between px-2.5 py-2 rounded ' +
+        (b.dataset.v === key ? 'bg-zinc-800/90 text-white' : 'text-zinc-400 hover:text-zinc-100 hover:bg-zinc-900') +
+        (b.dataset.roles && !b.dataset.roles.split(',').includes(S.user.role) ? ' hidden' : '');
+    });
+    $('pageTitle').textContent = MODULE_TITLES[key];
+    closeNav();
+  }
+  const openNav = () => { $('sidebar').classList.remove('-translate-x-full'); $('navScrim').classList.remove('hidden'); };
+  const closeNav = () => { $('sidebar').classList.add('-translate-x-full'); $('navScrim').classList.add('hidden'); };
+
+  function switchVendorTab(tab) {
+    S.vtab = tab;
+    ['PTW', 'VENDORS', 'WORKERS'].forEach(k => {
+      $('vpanel-' + k).classList.toggle('hidden', k !== tab);
+    });
+    document.querySelectorAll('.vtab-btn').forEach(b => {
+      b.className = 'vtab-btn px-3 py-1.5 text-xs font-medium rounded border ' +
+        (b.dataset.v === tab ? 'bg-zinc-900 text-white border-zinc-900' : 'bg-white text-zinc-700 border-zinc-300 hover:bg-zinc-50');
+    });
+  }
+
+  // ==========================================================================
+  // SELECT STATIS
+  // ==========================================================================
+  function fillSubs(areaId, subId) {
+    const cfg = (S.data && S.data.config && S.data.config.hallSubareas) || {};
+    const subs = cfg[$(areaId).value] || [];
+    $(subId).innerHTML = subs.map(s => `<option value="${esc(s)}">${esc(s)}</option>`).join('');
+  }
+  function buildStaticSelects() {
+    const cfg = (S.data && S.data.config) || { hallSubareas: {}, ptwTypes: {}, competencyTags: [] };
+    const areaOpts = Object.keys(cfg.hallSubareas || {}).map(a => `<option value="${esc(a)}">${esc(AREA_LABEL[a] || a)}</option>`).join('');
+    $('ptwArea').innerHTML = areaOpts; $('insArea').innerHTML = areaOpts;
+    fillSubs('ptwArea', 'ptwSubArea'); fillSubs('insArea', 'insDept');
+    $('ptwType').innerHTML = Object.keys(cfg.ptwTypes || {}).map(k => `<option value="${esc(k)}">${esc(cfg.ptwTypes[k].label.toUpperCase())}</option>`).join('');
+    $('empTags').innerHTML = (cfg.competencyTags || []).map(t => `<label class="flex items-center gap-1.5 text-[11px]"><input type="checkbox" class="empTag" value="${esc(t)}" /> <span class="font-mono">${esc(t)}</span></label>`).join('');
+    $('maxHrs').textContent = cfg.maxPtwHours || 48;
+    $('ptwValid').value = defaultValidUntil();
+    $('insDue').value = shiftDate(7); $('paaExp').value = shiftDate(365); $('b3Batas').value = shiftDate(90);
+    updatePaaVisibility();
+  }
+  function shiftDate(days) {
+    const m = ((S.data && S.data.serverTime) || '').match(/(\d{4})-(\d\d)-(\d\d)/);
+    const d = m ? new Date(Date.UTC(+m[1], +m[2] - 1, +m[3] + days)) : new Date(Date.now() + days * 86400000);
+    return d.toISOString().slice(0, 10);
+  }
+  function defaultValidUntil() {
+    const m = ((S.data && S.data.serverTime) || '').match(/(\d{4})-(\d\d)-(\d\d) (\d\d):(\d\d)/);
+    if (!m) return '';
+    return new Date(Date.UTC(+m[1], +m[2] - 1, +m[3], +m[4] + 8, +m[5])).toISOString().slice(0, 16);
+  }
+  function updatePaaVisibility() {
+    const types = (S.data && S.data.config && S.data.config.ptwTypes) || {};
+    const def = types[$('ptwType').value];
+    $('paaWrap').classList.toggle('hidden', !(def && def.needsPaa));
+  }
+
+  // ==========================================================================
+  // RENDER
+  // ==========================================================================
+  function labelCells(tbody) {
+    const table = tbody.closest('table');
+    if (!table) return;
+    const heads = Array.from(table.querySelectorAll('thead th')).map(h => h.textContent.trim());
+    tbody.querySelectorAll('tr').forEach(tr => Array.from(tr.children).forEach((td, i) => {
+      if (td.hasAttribute('colspan')) return;
+      td.dataset.label = heads[i] || '';
+    }));
+  }
+
+  function skeletonRows(cols, n) {
+    const cell = '<td class="py-3 px-3"><div class="h-3 bg-zinc-200 rounded animate-pulse"></div></td>';
+    return Array.from({ length: n || 4 }).map(() => `<tr>${cell.repeat(cols)}</tr>`).join('');
+  }
+  function renderSkeleton() {
+    ['kpi-ptw', 'kpi-pending', 'kpi-capa', 'kpi-emp', 'kpi-alert'].forEach(id => {
+      $(id).innerHTML = '<span class="inline-block h-7 w-14 bg-zinc-200 rounded animate-pulse align-middle"></span>';
+    });
+    $('zoneBtns').innerHTML = '<span class="inline-block h-6 w-48 bg-zinc-200 rounded animate-pulse"></span>';
+    $('zoneCards').innerHTML = Array.from({ length: 5 }).map(() => '<div class="p-3 rounded border border-zinc-200 bg-zinc-50/50"><div class="h-3 w-16 bg-zinc-200 rounded animate-pulse"></div><div class="h-3 w-full bg-zinc-200 rounded animate-pulse mt-2"></div><div class="h-4 w-24 bg-zinc-200 rounded animate-pulse mt-3"></div></div>').join('');
+    $('ptwBody').innerHTML = skeletonRows(9, 4);
+    $('capaBody').innerHTML = skeletonRows(8, 3);
+    $('empBody').innerHTML = skeletonRows(7, 3);
+  }
+  function showSkeletonShell() {
+    $('loginView').classList.add('hidden'); $('pinView').classList.add('hidden'); $('appView').classList.remove('hidden');
+    document.querySelectorAll('[data-roles]').forEach(el => el.classList.add('hidden'));
+    $('whoName').textContent = 'Memuat...'; $('whoRole').textContent = '';
+    setSync('busy', 'Memuat data (bisa 2-3 dtk)...');
+    renderSkeleton();
+  }
+
+  function chipHtml(shown, total) {
+    if (S.hall === 'ALL') return '';
+    return `<span class="inline-flex items-center gap-2 text-[11px] font-mono bg-zinc-900 text-white rounded px-2 py-1">Filter aktif: ${esc(AREA_LABEL[S.hall] || S.hall)} • ${shown} dari ${total}<button data-act="hall" data-v="ALL" class="underline text-zinc-300 hover:text-white">✕ Reset</button></span>`;
+  }
+
+  function evidenceLink(u) {
+    return String(u || '').split(/\s+/).filter(x => /^https:\/\//i.test(x)).map((x, i) =>
+      `<a href="${esc(x)}" target="_blank" rel="noopener noreferrer" class="inline-block mt-1 mr-2 text-[11px] font-mono underline text-blue-700">Dokumen ${i + 1} ↗</a>`).join('');
+  }
+
+  const picLabel = e => `${e.NIK} — ${e.Nama}`;
+  function getPicEmployee() {
+    const v = $('ptwNik').value.trim().toLowerCase();
+    if (!v || !S.data || !S.data.employees) return null;
+    return S.data.employees.find(e => picLabel(e).toLowerCase() === v || e.NIK.toLowerCase() === v) || null;
+  }
+  function getPicNik() { const e = getPicEmployee(); return e ? e.NIK : null; }
+  function renderPicInfo() {
+    const box = $('ptwPicInfo');
+    if (!S.data || !S.data.employees) { box.innerHTML = ''; return; }
+    const raw = $('ptwNik').value.trim();
+    if (!raw) { box.innerHTML = ''; return; }
+    const e = getPicEmployee();
+    if (!e) { box.innerHTML = '<span class="text-amber-700 font-mono">Belum cocok — pilih dari daftar saran.</span>'; return; }
+    const def = S.data.config.ptwTypes[$('ptwType').value];
+    const need = def ? def.competency : null;
+    const has = need ? (e.Kompetensi_List || []).includes(need) : true;
+    box.innerHTML = `${esc(e.Nama)} • ${esc(e.Departemen)} ` +
+      badge(e.Eligible ? 'ELIGIBLE' : 'TIDAK ELIGIBLE', e.Eligible ? LEVEL_CLS.OK : LEVEL_CLS.EXPIRED) + ' ' +
+      levelBadge(e.SIO_Level, e.SIO_Days_Left).replace('>', '> SIO ') + ' ' +
+      (need ? badge((has ? '✓ ' : '✗ ') + need, has ? LEVEL_CLS.OK : LEVEL_CLS.EXPIRED) : '');
+  }
+
+  const MAX_EVIDENCE_BYTES = 4 * 1024 * 1024;
+  function readB64(blob) {
+    return new Promise((res, rej) => {
+      const r = new FileReader();
+      r.onload = () => res(String(r.result).split(',')[1] || '');
+      r.onerror = () => rej(new Error('Gagal membaca file.'));
+      r.readAsDataURL(blob);
+    });
+  }
+  function loadImg(file) {
+    return new Promise((res, rej) => {
+      const url = URL.createObjectURL(file), img = new Image();
+      img.onload = () => { URL.revokeObjectURL(url); res(img); };
+      img.onerror = () => { URL.revokeObjectURL(url); rej(new Error(file.name + ': format gambar tidak didukung.')); };
+      img.src = url;
+    });
+  }
+  const loadBitmap = file => window.createImageBitmap ? createImageBitmap(file).catch(() => loadImg(file)) : loadImg(file);
+  async function fileToPayload(file) {
+    if (file.type === 'application/pdf') {
+      if (file.size > MAX_EVIDENCE_BYTES) throw new Error(file.name + ': PDF melebihi 4 MB.');
+      return { name: file.name, mime: file.type, data: await readB64(file) };
+    }
+    if (!/^image\//.test(file.type)) throw new Error(file.name + ': gunakan foto (JPG/PNG) atau PDF.');
+    const img = await loadBitmap(file);
+    const scale = Math.min(1, 1600 / Math.max(img.width, img.height));
+    const c = document.createElement('canvas');
+    c.width = Math.max(1, Math.round(img.width * scale)); c.height = Math.max(1, Math.round(img.height * scale));
+    c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+    const blob = await new Promise(r => c.toBlob(r, 'image/jpeg', 0.8));
+    if (!blob) throw new Error(file.name + ': gagal memproses gambar.');
+    if (blob.size > MAX_EVIDENCE_BYTES) throw new Error(file.name + ': hasil kompresi masih melebihi 4 MB.');
+    return { name: file.name.replace(/\.[^.]+$/, '') + '.jpg', mime: 'image/jpeg', data: await readB64(blob) };
+  }
+
+  function renderAll() {
+    if (!S.data) return;
+    renderVendor();
+    if (S.user && S.user.role === 'VENDOR_ADMIN') return;
+    renderKpis(); renderAlerts(); renderZones(); renderPtw(); renderPtwForm();
+    renderCapa(); renderEmployees(); renderAssets(); renderUsers(); renderAudit();
+  }
+
+  function buildAlerts() {
+    const d = S.data, a = [];
+    (d.permits || []).filter(p => p.Effective_Status === 'EXPIRED_UNCLOSED').forEach(p => a.push({ lv: 'CRITICAL', t: `${p.No_PTW} melewati masa berlaku, LOTO ${p.Kode_LOTO} belum dilepas`, mod: 'OVERVIEW' }));
+    (d.inspections || []).filter(i => i.Is_Overdue).forEach(i => a.push({ lv: i.Tingkat_Risiko === 'CRITICAL' ? 'CRITICAL' : 'WARNING', t: `${i.ID_Audit} overdue ${i.Days_Overdue} hari (${i.Tingkat_Risiko})`, mod: 'CAPA' }));
+    (d.employees || []).forEach(e => {
+      if (['EXPIRED', 'CRITICAL'].includes(e.SIO_Level)) a.push({ lv: e.SIO_Level, t: `SIO ${e.Nama}: ${e.SIO_Level} (${daysText(e.SIO_Days_Left)})`, mod: 'SIO_MCU' });
+      if (e.MCU_Level && ['EXPIRED', 'CRITICAL', 'BLOCKED'].includes(e.MCU_Level)) a.push({ lv: e.MCU_Level === 'BLOCKED' ? 'EXPIRED' : e.MCU_Level, t: `MCU ${e.Nama}: ${e.MCU_Level}${e.MCU_Days_Left !== null ? ' (' + daysText(e.MCU_Days_Left) + ')' : ''}`, mod: 'SIO_MCU' });
+    });
+    (d.assets || []).forEach(x => {
+      if (['EXPIRED', 'CRITICAL'].includes(x.Level)) a.push({ lv: x.Level, t: `${x.Tipe_Data === 'PAA_SIA' ? 'SIA' : 'Limbah B3'} ${x.Nama_Item}: ${x.Level} (${daysText(x.Days_Left)})`, mod: 'PAA_B3' });
+    });
+    (d.vendorPermits || []).filter(vp => vp.Effective_Status === 'EXPIRED_UNCLOSED' || vp.Gas_Alert || vp.Needs_Revalidation).forEach(vp => {
+      a.push({ lv: 'WARNING', t: `PTW Vendor ${vp.VPTW_ID}: perlu tindakan (revalidasi shift / uji gas / penutupan)`, mod: 'VENDOR' });
+    });
+    return a;
+  }
+
+  function renderKpis() {
+    const d = S.data, alerts = buildAlerts();
+    const permits = d.permits || [], inspections = d.inspections || [], employees = d.employees || [];
+    const active = permits.filter(p => p.Is_Active).length;
+    const pending = permits.filter(p => p.Effective_Status === 'PENDING_APPROVAL').length;
+    const open = inspections.filter(i => i.Status === 'OPEN');
+    const overdue = open.filter(i => i.Is_Overdue).length;
+    $('kpi-ptw').textContent = active; $('badge-ptw').textContent = active;
+    $('kpi-pending').textContent = pending;
+    $('kpi-capa').textContent = `${open.length} / ${overdue}`; $('badge-capa').textContent = open.length;
+    $('kpi-emp').textContent = `${employees.filter(e => e.Eligible).length}/${employees.length}`;
+    $('kpi-alert').textContent = alerts.length;
+  }
+
+  function renderAlerts() {
+    const a = buildAlerts();
+    $('alertPanel').classList.toggle('hidden', !a.length);
+    a.sort((x, y) => (x.lv === 'EXPIRED' || x.lv === 'CRITICAL' ? 0 : 1) - (y.lv === 'EXPIRED' || y.lv === 'CRITICAL' ? 0 : 1));
+    $('alertList').innerHTML = a.slice(0, 10).map(x =>
+      `<li class="px-4 py-2 flex items-center justify-between gap-3"><span>${badge(x.lv, LEVEL_CLS[x.lv] || LEVEL_CLS.UNKNOWN)} <span class="ml-1">${esc(x.t)}</span></span><button data-act="nav" data-v="${esc(x.mod)}" class="text-[11px] font-mono underline text-zinc-600 shrink-0">Buka</button></li>`
+    ).join('') + (a.length > 10 ? `<li class="px-4 py-2 text-[11px] text-zinc-500 font-mono">+${a.length - 10} lainnya</li>` : '');
+  }
+
+  function renderZones() {
+    const cfg = (S.data.config && S.data.config.hallSubareas) || {};
+    const keys = ['ALL'].concat(Object.keys(cfg));
+    $('zoneBtns').innerHTML = keys.map(k =>
+      `<button data-act="hall" data-v="${esc(k)}" class="px-2.5 py-1 text-[11px] font-mono font-medium rounded border ${S.hall === k ? 'bg-zinc-900 text-white border-zinc-900' : 'bg-white text-zinc-700 border-zinc-300 hover:bg-zinc-50'}">${k === 'ALL' ? 'SEMUA' : esc(AREA_LABEL[k] || k)}</button>`).join('');
+    $('zoneCards').innerHTML = Object.keys(cfg).map(k => {
+      const act = (S.data.permits || []).filter(p => p.Area_Hall === k && PTW_LIVE.includes(p.Effective_Status)).length;
+      const cap = (S.data.inspections || []).filter(i => i.Area_Hall === k && i.Status === 'OPEN').length;
+      return `<div data-act="hall" data-v="${esc(k)}" class="p-3 rounded border ${S.hall === k ? 'border-zinc-900' : 'border-zinc-200 hover:border-zinc-400'} cursor-pointer bg-zinc-50/50">
+        <div class="font-mono font-semibold">${esc(AREA_LABEL[k] || k)}</div>
+        <div class="mt-1 text-[11px] text-zinc-600 leading-snug">${esc(cfg[k].join(', '))}</div>
+        <div class="mt-2 flex gap-1.5 font-mono text-[10px]"><span class="px-1.5 py-0.5 bg-zinc-200 rounded">PTW ${act}</span><span class="px-1.5 py-0.5 ${cap ? 'bg-amber-100 text-amber-900' : 'bg-zinc-200'} rounded">CAPA ${cap}</span></div></div>`;
+    }).join('');
+  }
+
+  function ptwActions(p) {
+    const me = S.user, st = p.Effective_Status, out = [];
+    const btn = (act, label, cls) => `<button data-act="${act}" data-id="${esc(p.No_PTW)}" class="px-2 py-1 rounded font-mono text-[10px] ${cls}">${label}</button>`;
+    if (st === 'PENDING_APPROVAL') {
+      if (hasRole('HSE_OFFICER')) {
+        const own = String(p.Requester_NIK || '').toUpperCase() === me.nik.toUpperCase() || String(p.NIK).toUpperCase() === me.nik.toUpperCase();
+        if (own && !S.data.config.selfApprovalAllowed) out.push('<span class="text-[10px] text-zinc-500 font-mono">Butuh approver lain</span>');
+        else { out.push(btn('ptw-approve', 'Approve', 'bg-zinc-900 text-white')); out.push(btn('ptw-reject', 'Tolak', 'border border-zinc-300')); }
+      }
+      if (hasRole('HSE_OFFICER') || String(p.Requester_NIK || '').toUpperCase() === me.nik.toUpperCase()) out.push(btn('ptw-cancel', 'Batal', 'border border-zinc-300'));
+    } else if ((st === 'ACTIVE_INTERLOCKED' || st === 'EXPIRED_UNCLOSED') && hasRole('HSE_OFFICER')) {
+      out.push(btn('ptw-close', 'Close & Lepas LOTO', 'bg-red-600 text-white'));
+    }
+    return `<div class="flex flex-wrap gap-1">${out.join('')}</div>`;
+  }
+
+  function renderPtw() {
+    const q = $('searchPtw').value.toLowerCase(), hist = $('showHist').checked;
+    const types = (S.data.config && S.data.config.ptwTypes) || {};
+    const baseP = (S.data.permits || []).filter(p =>
+      (hist || PTW_LIVE.includes(p.Effective_Status)) &&
+      (!q || [p.No_PTW, p.PIC_Nama, p.Kode_LOTO, p.Lokasi_Spesifik, p.Sub_Area].join(' ').toLowerCase().includes(q)));
+    const rows = baseP.filter(p => S.hall === 'ALL' || p.Area_Hall === S.hall);
+    $('chipPtw').innerHTML = chipHtml(rows.length, baseP.length);
+    $('ptwBody').innerHTML = rows.length ? rows.map(p => {
+      const st = PTW_STATUS[p.Effective_Status] || [p.Effective_Status, LEVEL_CLS.UNKNOWN];
+      const left = p.Is_Active && p.Minutes_Left !== null ? `<div class="text-[10px] ${p.Minutes_Left < 60 ? 'text-red-700' : 'text-zinc-400'} font-mono">${p.Minutes_Left >= 60 ? Math.floor(p.Minutes_Left / 60) + ' jam lagi' : p.Minutes_Left + ' mnt lagi'}</div>` : '';
+      return `<tr class="hover:bg-zinc-50/80 align-top">
+        <td class="py-2.5 px-3 font-mono font-semibold whitespace-nowrap">${esc(p.No_PTW)}<div class="text-[10px] text-zinc-400 font-normal">${esc(p.Created_At)}</div></td>
+        <td class="py-2.5 px-3 font-mono text-zinc-600 whitespace-nowrap">${esc(p.Valid_Until)}${left}</td>
+        <td class="py-2.5 px-3">${areaTag(p.Area_Hall)}</td>
+        <td class="py-2.5 px-3 font-mono text-[11px] font-semibold text-red-700">${esc((types[p.Jenis_Izin] || {}).label || p.Jenis_Izin)}</td>
+        <td class="py-2.5 px-3 min-w-[180px]"><div class="text-zinc-500 text-[11px]">${esc(p.Sub_Area)}</div>${esc(p.Lokasi_Spesifik)}${p.Closeout_Notes ? `<div class="text-[10px] text-zinc-500 mt-0.5">${esc(p.Closeout_Notes)}</div>` : ''}</td>
+        <td class="py-2.5 px-3 whitespace-nowrap">${esc(p.PIC_Nama)} <span class="font-mono text-zinc-400 text-[11px]">(${esc(p.NIK)})</span></td>
+        <td class="py-2.5 px-3 font-mono">${esc(p.Kode_LOTO)}</td>
+        <td class="py-2.5 px-3">${badge(st[0], st[1])}<div class="text-[10px] text-zinc-400 mt-0.5">Approver: ${esc(p.Approved_By)}</div></td>
+        <td class="py-2.5 px-3">${ptwActions(p)}</td></tr>`;
+    }).join('') : `<tr><td colspan="9" class="py-6 text-center text-zinc-400 font-mono">Tidak ada izin pada filter ini.</td></tr>`;
+  }
+
+  function renderPtwForm() {
+    $('empList').innerHTML = (S.data.employees || []).map(e =>
+      `<option value="${esc(picLabel(e))}">${esc(e.Departemen)}${e.Eligible ? '' : ' ⚠ TIDAK ELIGIBLE'}</option>`).join('');
+    renderPicInfo();
+    const curPaa = $('ptwPaa').value;
+    $('ptwPaa').innerHTML = '<option value="">— pilih alat —</option>' + (S.data.assets || []).filter(a => a.Tipe_Data === 'PAA_SIA' && a.Record_Status !== 'DISPOSED').map(a =>
+      `<option value="${esc(a.ID_Record)}">${esc(a.ID_Record)} — ${esc(a.Nama_Item)} (${esc(a.Level)}${a.Days_Left !== null ? ', ' + esc(daysText(a.Days_Left)) : ''})</option>`).join('');
+    if (curPaa) $('ptwPaa').value = curPaa;
+  }
+
+  function renderCapa() {
+    const allIns = S.data.inspections || [];
+    const rows = allIns.filter(i => S.hall === 'ALL' || i.Area_Hall === S.hall);
+    $('chipCapa').innerHTML = chipHtml(rows.length, allIns.length);
+    const riskCls = { CRITICAL: 'bg-red-50 text-red-800 border-red-200', HIGH: 'bg-amber-50 text-amber-800 border-amber-200', MEDIUM: 'bg-zinc-100 text-zinc-800 border-zinc-300', LOW: 'bg-zinc-50 text-zinc-600 border-zinc-200' };
+    $('capaBody').innerHTML = rows.length ? rows.map(i => {
+      const action = i.Status === 'OPEN'
+        ? (hasRole('HSE_OFFICER') ? `<button data-act="capa-verify" data-id="${esc(i.ID_Audit)}" class="bg-zinc-900 text-white px-2.5 py-1 rounded font-mono text-[10px]">Verifikasi & Tutup</button>` : badge('OPEN', 'bg-amber-50 text-amber-800 border-amber-200'))
+        : `<span class="text-emerald-700 font-mono text-[11px] font-semibold">✓ CLOSED</span><div class="text-[10px] text-zinc-500 mt-0.5 max-w-[220px]">${esc(i.Verification_Evidence)}</div>${evidenceLink(i.Evidence_URL)}`;
+      return `<tr class="hover:bg-zinc-50/80 align-top">
+        <td class="py-2.5 px-3 font-mono font-semibold whitespace-nowrap">${esc(i.ID_Audit)}<div class="text-[10px] text-zinc-400 font-normal">${esc(i.Tanggal)}</div></td>
+        <td class="py-2.5 px-3">${areaTag(i.Area_Hall)}<div class="text-[11px] text-zinc-600 mt-1">${esc(i.Sub_Area)}</div></td>
+        <td class="py-2.5 px-3 min-w-[220px] font-medium">${esc(i.Temuan_Ketidaksesuaian)}</td>
+        <td class="py-2.5 px-3 text-zinc-500">${esc(i.Kategori_Standar)}</td>
+        <td class="py-2.5 px-3">${badge(i.Tingkat_Risiko, riskCls[i.Tingkat_Risiko] || riskCls.MEDIUM)}</td>
+        <td class="py-2.5 px-3 font-mono whitespace-nowrap">${esc(i.Batas_Waktu)}${i.Is_Overdue ? `<div class="mt-0.5">${badge('OVERDUE ' + i.Days_Overdue + ' hr', LEVEL_CLS.EXPIRED)}</div>` : ''}</td>
+        <td class="py-2.5 px-3">${esc(i.Inspector)}</td>
+        <td class="py-2.5 px-3">${action}</td></tr>`;
+    }).join('') : `<tr><td colspan="8" class="py-6 text-center text-zinc-400 font-mono">Tidak ada temuan.</td></tr>`;
+  }
+
+  function renderEmployees() {
+    $('empBody').innerHTML = (S.data.employees || []).map(e => {
+      const mcu = e.MCU_Level === undefined ? badge(e.Eligible ? 'ELIGIBLE' : 'TIDAK ELIGIBLE', e.Eligible ? LEVEL_CLS.OK : LEVEL_CLS.EXPIRED)
+        : `${badge(e.Status_MCU, e.Status_MCU === 'FIT' ? LEVEL_CLS.OK : LEVEL_CLS.EXPIRED)} ${levelBadge(e.MCU_Level === 'BLOCKED' ? 'BLOCKED' : e.MCU_Level, e.MCU_Days_Left)}`;
+      const tags = (e.Kompetensi_List || []).map(t => `<span class="inline-block text-[10px] font-mono bg-zinc-100 border border-zinc-300 rounded px-1 mr-1 mb-0.5">${esc(t)}</span>`).join('') || '<span class="text-zinc-400">—</span>';
+      return `<tr data-act="edit-emp" data-nik="${esc(e.NIK)}" class="hover:bg-zinc-50 ${hasRole('HSE_OFFICER') ? 'cursor-pointer' : ''} align-top">
+        <td class="py-2.5 px-3 font-mono font-semibold whitespace-nowrap">${esc(e.NIK)}</td>
+        <td class="py-2.5 px-3 font-medium">${esc(e.Nama)}<div class="text-[11px] text-zinc-500 font-normal">${esc(e.Jabatan)}</div></td>
+        <td class="py-2.5 px-3 text-zinc-600">${esc(e.Departemen)}</td>
+        <td class="py-2.5 px-3">${mcu}</td>
+        <td class="py-2.5 px-3 whitespace-nowrap">${levelBadge(e.SIO_Level, e.SIO_Days_Left)}<div class="text-[10px] text-zinc-400 font-mono mt-0.5">${esc(e.SIO_Expiry)}</div></td>
+        <td class="py-2.5 px-3">${tags}</td>
+        <td class="py-2.5 px-3 text-zinc-600">${esc(e.Detail_Sertifikasi)}</td></tr>`;
+    }).join('');
+  }
+
+  function renderAssets() {
+    const canWrite = hasRole('HSE_OFFICER');
+    const assets = S.data.assets || [];
+    const paa = assets.filter(a => a.Tipe_Data === 'PAA_SIA');
+    const b3 = assets.filter(a => a.Tipe_Data === 'LIMBAH_B3');
+    $('paaBody').innerHTML = paa.map(a => `<tr class="align-top">
+      <td class="py-2.5 px-3 font-medium">${esc(a.Nama_Item)}<div class="text-[10px] text-zinc-400 font-mono">${esc(a.ID_Record)} • ${esc(a.Volume_Kapasitas)}</div></td>
+      <td class="py-2.5 px-3 font-mono text-[11px] text-zinc-600">${esc(a.Kode_Lokasi)}</td>
+      <td class="py-2.5 px-3 font-mono text-[11px]">${esc(a.Nomor_Dokumen)}<div class="text-zinc-400">${esc(a.Expiry_Date)}</div></td>
+      <td class="py-2.5 px-3">${levelBadge(a.Level, a.Days_Left)}</td>
+      <td class="py-2.5 px-3">${canWrite ? `<button data-act="paa-renew" data-id="${esc(a.ID_Record)}" class="border border-zinc-300 px-2 py-1 rounded font-mono text-[10px]">Renew</button>` : ''}</td></tr>`).join('') || '<tr><td colspan="5" class="py-4 text-center text-zinc-400 font-mono">Belum ada data.</td></tr>';
+    $('b3Body').innerHTML = b3.map(a => `<tr class="align-top ${a.Record_Status === 'DISPOSED' ? 'opacity-60' : ''}">
+      <td class="py-2.5 px-3 font-medium">${esc(a.Nama_Item)}<div class="text-[10px] text-zinc-400 font-mono">${esc(a.ID_Record)}</div></td>
+      <td class="py-2.5 px-3 font-mono text-[11px]">${esc(a.Kode_Lokasi)}</td>
+      <td class="py-2.5 px-3 font-mono text-[11px]">${esc(a.Volume_Kapasitas)}</td>
+      <td class="py-2.5 px-3">${levelBadge(a.Level, a.Days_Left)}<div class="text-[10px] text-zinc-400 font-mono mt-0.5">${esc(a.Record_Status === 'DISPOSED' ? a.Disposal_Manifest : a.Expiry_Date)}</div></td>
+      <td class="py-2.5 px-3">${canWrite && a.Record_Status !== 'DISPOSED' ? `<button data-act="b3-dispose" data-id="${esc(a.ID_Record)}" class="border border-zinc-300 px-2 py-1 rounded font-mono text-[10px]">Diangkut</button>` : ''}</td></tr>`).join('') || '<tr><td colspan="5" class="py-4 text-center text-zinc-400 font-mono">Belum ada data.</td></tr>';
+  }
+
+  function renderUsers() {
+    if (!hasRole('HSE_OFFICER') || !S.data.users) return;
+    $('usrVendorId').innerHTML = '<option value="">— pilih vendor —</option>' + (S.data.vendors || []).map(v => `<option value="${esc(v.Vendor_ID)}">${esc(v.Vendor_ID)} — ${esc(v.Nama)}</option>`).join('');
+    $('userBody').innerHTML = S.data.users.map(u => `<tr data-act="edit-user" data-nik="${esc(u.NIK)}" class="hover:bg-zinc-50 cursor-pointer">
+      <td class="py-2.5 px-3 font-mono font-semibold">${esc(u.NIK)}</td><td class="py-2.5 px-3">${esc(u.Nama)}</td>
+      <td class="py-2.5 px-3 font-mono text-[11px]">${esc(u.Role)}</td><td class="py-2.5 px-3 text-zinc-600">${esc(u.Departemen)}${u.Vendor_ID ? ` <span class="font-mono text-[10px] bg-zinc-100 border px-1 rounded">${esc(u.Vendor_ID)}</span>` : ''}</td>
+      <td class="py-2.5 px-3">${badge(u.Status, u.Status === 'ACTIVE' ? LEVEL_CLS.OK : LEVEL_CLS.UNKNOWN)}</td>
+      <td class="py-2.5 px-3"><button data-act="reset-pin" data-nik="${esc(u.NIK)}" class="border border-zinc-300 px-2 py-1 rounded font-mono text-[10px]">Reset PIN</button></td></tr>`).join('');
+  }
+
+  function renderAudit() {
+    if (!hasRole('HSE_OFFICER')) return;
+    $('auditBody').innerHTML = (S.data.auditLogs || []).map(l => `<tr class="align-top">
+      <td class="py-2 px-3 font-mono text-zinc-500 whitespace-nowrap">${esc(l.Timestamp)}</td>
+      <td class="py-2 px-3 whitespace-nowrap">${esc(l.Actor_Name)} <span class="text-zinc-400 font-mono text-[11px]">${esc(l.Actor_NIK)}</span></td>
+      <td class="py-2 px-3 font-mono text-[11px]">${esc(l.Role)}</td>
+      <td class="py-2 px-3 font-mono text-[11px] font-semibold">${esc(l.Action_Type)}</td>
+      <td class="py-2 px-3 font-mono text-[11px]">${esc(l.Target_ID)}</td>
+      <td class="py-2 px-3 text-zinc-700">${esc(l.Details)}</td></tr>`).join('');
+  }
+
+  // ==========================================================================
+  // RENDER MODUL VENDOR (PTW VENDOR, MASTER VENDOR, PEKERJA VENDOR)
+  // ==========================================================================
+  function renderVendor() {
+    const vendors = S.data.vendors || [];
+    const workers = S.data.vendorWorkers || [];
+    const permits = S.data.vendorPermits || [];
+    const vmap = {};
+    vendors.forEach(v => { vmap[v.Vendor_ID] = v; });
+
+    const activeCount = permits.filter(p => ['SUBMITTED', 'APPROVED', 'ACTIVE', 'SUSPENDED', 'EXPIRED_UNCLOSED'].includes(p.Effective_Status)).length;
+    $('badge-vptw').textContent = activeCount;
+
+    // Filter dropdown vendor di tab Pekerja Vendor
+    const selV = $('vWorkerVendor');
+    const curFilter = selV.value;
+    selV.innerHTML = '<option value="">Semua Vendor</option>' + vendors.map(v => `<option value="${esc(v.Vendor_ID)}">${esc(v.Vendor_ID)} — ${esc(v.Nama)}</option>`).join('');
+    if (curFilter) selV.value = curFilter;
+
+    // 1. Render Tabel PTW Vendor
+    const q = ($('vSearch').value || '').toLowerCase();
+    const showHist = $('vHist').checked;
+    const ptwTypes = (S.data.config && S.data.config.ptwTypes) || {};
+    const filteredVptw = permits.filter(p => {
+      if (!showHist && !VPTW_LIVE_SET.includes(p.Effective_Status)) return false;
+      const vName = (vmap[p.Vendor_ID] || {}).Nama || '';
+      if (q && ![p.VPTW_ID, p.Vendor_ID, vName, p.Uraian, p.Kode_LOTO, p.Sub_Area].join(' ').toLowerCase().includes(q)) return false;
+      return true;
+    });
+
+    $('vptwBody').innerHTML = filteredVptw.length ? filteredVptw.map(p => {
+      const v = vmap[p.Vendor_ID] || {};
+      const st = VPTW_STATUS[p.Effective_Status] || [p.Effective_Status, LEVEL_CLS.UNKNOWN];
+      const typesHtml = (p.Types_List || []).map(t => `<span class="inline-block font-mono text-[10px] bg-red-50 text-red-800 border border-red-200 px-1.5 py-0.5 rounded mr-1 mb-0.5">${esc((ptwTypes[t] || {}).label || t)}</span>`).join('');
+      const flags = [];
+      if (p.Problems && p.Problems.length) flags.push(badge(p.Problems.length + ' syarat belum lengkap', LEVEL_CLS.WARNING));
+      if (p.Gas_Alert) flags.push(badge('WAJIB UJI GAS ULANG', LEVEL_CLS.EXPIRED));
+      if (p.Needs_Revalidation) flags.push(badge('REVALIDASI SHIFT HARI INI', LEVEL_CLS.WARNING));
+      return `<tr class="hover:bg-zinc-50/80 align-top">
+        <td class="py-2.5 px-3 font-mono font-semibold whitespace-nowrap">${esc(p.VPTW_ID)}<div class="text-[10px] text-zinc-400 font-normal">LOTO: ${esc(p.Kode_LOTO || '—')}</div></td>
+        <td class="py-2.5 px-3"><div class="font-medium">${esc(v.Nama || p.Vendor_ID)}</div><div class="font-mono text-[10px] text-zinc-400">${esc(p.Vendor_ID)} • Sponsor: ${esc(p.Sponsor_Name || '—')}</div></td>
+        <td class="py-2.5 px-3">${typesHtml || '—'}</td>
+        <td class="py-2.5 px-3 min-w-[200px]"><div>${areaTag(p.Area_Hall)} <span class="text-[11px] text-zinc-600">${esc(p.Sub_Area)}</span></div><div class="mt-1">${esc(p.Uraian)}</div></td>
+        <td class="py-2.5 px-3 font-mono text-[11px] whitespace-nowrap">${esc(p.Valid_From || '—')}<div class="text-zinc-400">s/d ${esc(p.Valid_Until || '—')}</div></td>
+        <td class="py-2.5 px-3">${badge(st[0], st[1])}${flags.length ? `<div class="mt-1 space-y-0.5">${flags.join(' ')}</div>` : ''}</td>
+        <td class="py-2.5 px-3"><button data-act="vptw-open" data-id="${esc(p.VPTW_ID)}" class="bg-zinc-900 hover:bg-zinc-800 text-white px-2.5 py-1 rounded font-mono text-[10px]">Detail & Aksi</button></td>
+      </tr>`;
+    }).join('') : `<tr><td colspan="7" class="py-6 text-center text-zinc-400 font-mono">Belum ada PTW Vendor pada filter ini.</td></tr>`;
+
+    // 2. Render Tabel Master Vendor
+    const vStatusCls = { APPROVED: LEVEL_CLS.OK, CONDITIONAL: LEVEL_CLS.WARNING, PENDING: LEVEL_CLS.UNKNOWN, BLOCKED: LEVEL_CLS.EXPIRED };
+    $('vendorBody').innerHTML = vendors.length ? vendors.map(v => `<tr class="hover:bg-zinc-50/80 align-top">
+      <td class="py-2.5 px-3 font-mono font-semibold whitespace-nowrap">${esc(v.Vendor_ID)}</td>
+      <td class="py-2.5 px-3 font-medium">${esc(v.Nama)}<div class="text-[11px] text-zinc-500 font-normal">${esc(v.Kategori)}</div>${evidenceLink(v.Doc_URL)}</td>
+      <td class="py-2.5 px-3">${esc(v.PIC_Nama)}<div class="font-mono text-[11px] text-zinc-500">${esc(v.PIC_Kontak)}</div></td>
+      <td class="py-2.5 px-3">${badge(v.Status, vStatusCls[v.Status] || LEVEL_CLS.UNKNOWN)}</td>
+      <td class="py-2.5 px-3 whitespace-nowrap">${levelBadge(v.Prakualifikasi_Level, v.Prakualifikasi_Days)}<div class="text-[10px] font-mono text-zinc-400 mt-0.5">${esc(v.Prakualifikasi_Expiry || '—')}</div></td>
+      <td class="py-2.5 px-3 whitespace-nowrap">${levelBadge(v.Asuransi_Level, v.Asuransi_Days)}<div class="text-[10px] font-mono text-zinc-400 mt-0.5">${esc(v.Asuransi_Expiry || '—')}</div></td>
+      <td class="py-2.5 px-3 whitespace-nowrap">${levelBadge(v.SMK3_Level, v.SMK3_Days)}<div class="text-[10px] font-mono text-zinc-400 mt-0.5">${esc(v.SMK3_Expiry || '—')}</div></td>
+      <td class="py-2.5 px-3">${hasRole('HSE_OFFICER') ? `<button data-act="vendor-edit" data-id="${esc(v.Vendor_ID)}" class="border border-zinc-300 px-2 py-1 rounded font-mono text-[10px]">Edit</button>` : ''}</td>
+    </tr>`).join('') : `<tr><td colspan="8" class="py-6 text-center text-zinc-400 font-mono">Belum ada vendor terdaftar.</td></tr>`;
+
+    // 3. Render Tabel Pekerja Vendor
+    const wf = selV.value;
+    const filteredWorkers = workers.filter(w => !wf || w.Vendor_ID === wf);
+    $('vworkerBody').innerHTML = filteredWorkers.length ? filteredWorkers.map(w => {
+      const tags = (w.Kompetensi_List || []).map(t => `<span class="inline-block text-[10px] font-mono bg-zinc-100 border border-zinc-300 rounded px-1 mr-1 mb-0.5">${esc(t)}</span>`).join('') || '—';
+      const mcuCell = w.MCU_Status === undefined
+        ? badge(w.Eligible ? 'ELIGIBLE' : 'NON-ELIGIBLE', w.Eligible ? LEVEL_CLS.OK : LEVEL_CLS.EXPIRED)
+        : `${badge(w.MCU_Status, w.MCU_Status === 'FIT' ? LEVEL_CLS.OK : LEVEL_CLS.EXPIRED)} ${levelBadge(w.MCU_Level, w.MCU_Days)}`;
+      const acts = [];
+      if (hasRole('HSE_OFFICER')) {
+        acts.push(`<button data-act="vworker-verify" data-id="${esc(w.Worker_ID)}" class="bg-zinc-900 text-white px-2 py-1 rounded font-mono text-[10px]">Verifikasi Induksi</button>`);
+      }
+      if (hasRole('HSE_OFFICER', 'VENDOR_ADMIN')) {
+        acts.push(`<button data-act="vworker-edit" data-id="${esc(w.Worker_ID)}" class="border border-zinc-300 px-2 py-1 rounded font-mono text-[10px]">Edit</button>`);
+      }
+      return `<tr class="hover:bg-zinc-50/80 align-top">
+        <td class="py-2.5 px-3 font-mono font-semibold whitespace-nowrap">${esc(w.Worker_ID)}</td>
+        <td class="py-2.5 px-3 font-medium">${esc(w.Nama)} ${w.Is_Supervisor === 'YES' ? badge('SUPERVISOR', 'bg-blue-50 text-blue-800 border-blue-200') : ''}<div class="text-[11px] text-zinc-500 font-normal">${esc(w.Jabatan)} ${w.ID_Last4 ? '• KTP *' + esc(w.ID_Last4) : ''}</div></td>
+        <td class="py-2.5 px-3 font-mono text-[11px]">${esc(w.Vendor_ID)}</td>
+        <td class="py-2.5 px-3 whitespace-nowrap">${w.Verified === 'YES' ? levelBadge(w.Induksi_Level, w.Induksi_Days) : badge('BELUM VERIFIKASI HSE', LEVEL_CLS.WARNING)}<div class="text-[10px] font-mono text-zinc-400 mt-0.5">${esc(w.Induksi_Expiry || '—')}</div></td>
+        <td class="py-2.5 px-3 whitespace-nowrap">${mcuCell}</td>
+        <td class="py-2.5 px-3">${tags}<div class="text-[10px] text-zinc-500 mt-0.5">${esc(w.Sertifikat_Detail)}</div></td>
+        <td class="py-2.5 px-3">${badge(w.Eligible ? 'ELIGIBLE' : w.Status, w.Eligible ? LEVEL_CLS.OK : LEVEL_CLS.WARNING)}</td>
+        <td class="py-2.5 px-3"><div class="flex flex-wrap gap-1">${acts.join('')}</div></td>
+      </tr>`;
+    }).join('') : `<tr><td colspan="8" class="py-6 text-center text-zinc-400 font-mono">Belum ada pekerja vendor.</td></tr>`;
+
+    if (S.openVptwId && !$('modalVdetail').classList.contains('hidden')) {
+      openVptwDetail(S.openVptwId);
+    }
+  }
+
+  // Modal Detail & Editor Lengkap PTW Vendor
+  function openVptwDetail(vptwId) {
+    const p = (S.data.vendorPermits || []).find(x => x.VPTW_ID === vptwId);
+    if (!p) { $('modalVdetail').classList.add('hidden'); return; }
+    S.openVptwId = vptwId;
+    const v = (S.data.vendors || []).find(x => x.Vendor_ID === p.Vendor_ID) || {};
+    const vcfg = S.data.vendorConfig || { checklists: {}, shifts: ['PAGI', 'SIANG', 'MALAM'] };
+    const ptwTypes = (S.data.config && S.data.config.ptwTypes) || {};
+    const hallSubs = (S.data.config && S.data.config.hallSubareas) || {};
+    const isDraft = p.Status === 'DRAFT';
+    const st = VPTW_STATUS[p.Effective_Status] || [p.Effective_Status, LEVEL_CLS.UNKNOWN];
+
+    $('vdTitle').textContent = `${p.VPTW_ID} — ${v.Nama || p.Vendor_ID} (${st[0]})`;
+
+    // Kumpulkan item checklist berdasarkan jenis izin yang dipilih
+    const types = p.Types_List || [];
+    let clItems = (vcfg.checklists.COMMON || []).slice();
+    types.forEach(t => { clItems = clItems.concat((vcfg.checklists && vcfg.checklists[t]) || []); });
+    const clVal = p.Checklist || {};
+
+    // Daftar pekerja vendor ini
+    const myWorkers = (S.data.vendorWorkers || []).filter(w => w.Vendor_ID === p.Vendor_ID && w.Status === 'ACTIVE');
+    const curRec = (p.Assign || []).find(a => a.Role === 'RECEIVER');
+    const curAtt = (p.Assign || []).find(a => a.Role === 'ATTENDANT');
+    const curFw = (p.Assign || []).find(a => a.Role === 'FIRE_WATCH');
+    const curWrk = (p.Assign || []).filter(a => a.Role === 'WORKER').map(a => a.Worker_ID);
+
+    let html = '';
+
+    // Masalah interlock jika masih DRAFT / SUBMITTED
+    if (p.Problems && p.Problems.length) {
+      html += `<div class="p-3 rounded border bg-amber-50 border-amber-300 text-amber-900">
+        <div class="font-semibold mb-1">Syarat Interlock Belum Terpenuhi (${p.Problems.length}):</div>
+        <ul class="list-disc pl-4 space-y-0.5 text-[11px] font-mono">${p.Problems.map(pr => `<li>${esc(pr)}</li>`).join('')}</ul>
+      </div>`;
+    }
+
+    if (isDraft && hasRole('HSE_OFFICER', 'SUPERVISOR', 'VENDOR_ADMIN')) {
+      const areaOpts = Object.keys(hallSubs).map(a => `<option value="${esc(a)}" ${p.Area_Hall === a ? 'selected' : ''}>${esc(AREA_LABEL[a] || a)}</option>`).join('');
+      const curArea = p.Area_Hall || Object.keys(hallSubs)[0] || 'HALL_A';
+      const subOpts = (hallSubs[curArea] || []).map(s => `<option value="${esc(s)}" ${p.Sub_Area === s ? 'selected' : ''}>${esc(s)}</option>`).join('');
+      const empOpts = hasRole('VENDOR_ADMIN') ? `<option value="">${esc(p.Sponsor_Name || p.Sponsor_NIK || '— ditetapkan HSE —')}</option>` : '<option value="">— pilih sponsor internal —</option>' + (S.data.employees || []).map(e => `<option value="${esc(e.NIK)}" ${p.Sponsor_NIK === e.NIK ? 'selected' : ''}>${esc(e.NIK)} — ${esc(e.Nama)} (${esc(e.Departemen)})</option>`).join('');
+      const paaOpts = hasRole('VENDOR_ADMIN') ? `<option value="">${esc(p.PAA_ID || '— ditetapkan HSE —')}</option>` : '<option value="">— tidak pakai / pilih PAA —</option>' + (S.data.assets || []).filter(a => a.Tipe_Data === 'PAA_SIA' && a.Record_Status !== 'DISPOSED').map(a => `<option value="${esc(a.ID_Record)}" ${p.PAA_ID === a.ID_Record ? 'selected' : ''}>${esc(a.ID_Record)} — ${esc(a.Nama_Item)} (${esc(a.Level)})</option>`).join('');
+      const wOpts = selId => '<option value="">— pilih —</option>' + myWorkers.map(w => `<option value="${esc(w.Worker_ID)}" ${selId === w.Worker_ID ? 'selected' : ''}>${esc(w.Worker_ID)} — ${esc(w.Nama)} (${esc(w.Kompetensi || 'tanpa tag')}${w.Eligible ? '' : ' ⚠'})</option>`).join('');
+
+      html += `<form id="vptwEditForm" class="space-y-3 border border-zinc-200 rounded p-3 bg-zinc-50/50">
+        <div class="font-semibold uppercase text-[11px] font-mono text-zinc-600">1. Rincian Pekerjaan & Isolasi LOTO</div>
+        <div>
+          <label class="block font-medium text-zinc-700 mb-1">Jenis Izin Berisiko Tinggi (bisa pilih lebih dari satu)</label>
+          <div class="flex flex-wrap gap-3">${Object.keys(ptwTypes).map(k => `<label class="flex items-center gap-1.5"><input type="checkbox" class="vdType" value="${esc(k)}" ${types.includes(k) ? 'checked' : ''} /> <span class="font-mono text-[11px]">${esc(ptwTypes[k].label)}</span></label>`).join('')}</div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-2.5">
+          <div><label class="block font-medium text-zinc-700 mb-1">Area Hall</label><select id="vdArea" class="w-full border border-zinc-300 rounded px-2 py-1.5 bg-white font-mono">${areaOpts}</select></div>
+          <div><label class="block font-medium text-zinc-700 mb-1">Sub-Area</label><select id="vdSub" class="w-full border border-zinc-300 rounded px-2 py-1.5 bg-white">${subOpts}</select></div>
+          <div><label class="block font-medium text-zinc-700 mb-1">Sponsor Internal Elsewedy</label><select id="vdSponsor" ${hasRole('VENDOR_ADMIN') ? 'disabled' : ''} class="w-full border border-zinc-300 rounded px-2 py-1.5 bg-white">${empOpts}</select></div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-2.5">
+          <div><label class="block font-medium text-zinc-700 mb-1">Kode LOTO</label><input id="vdLoto" value="${esc(p.Kode_LOTO || '')}" placeholder="LOTO-TNK-01" class="w-full border border-zinc-300 rounded px-2.5 py-1.5 font-mono bg-white" /></div>
+          <div><label class="block font-medium text-zinc-700 mb-1">Mulai Berlaku</label><input id="vdFrom" type="datetime-local" value="${esc((p.Valid_From || '').replace(' ', 'T'))}" class="w-full border border-zinc-300 rounded px-2 py-1.5 font-mono bg-white" /></div>
+          <div><label class="block font-medium text-zinc-700 mb-1">Selesai Berlaku</label><input id="vdUntil" type="datetime-local" value="${esc((p.Valid_Until || '').replace(' ', 'T'))}" class="w-full border border-zinc-300 rounded px-2 py-1.5 font-mono bg-white" /></div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5">
+          <div><label class="block font-medium text-zinc-700 mb-1">Uraian Pekerjaan (min. 10 karakter)</label><input id="vdUraian" value="${esc(p.Uraian || '')}" placeholder="Perbaikan las sirip tangki trafo 60MVA..." class="w-full border border-zinc-300 rounded px-2.5 py-1.5 bg-white" /></div>
+          <div><label class="block font-medium text-zinc-700 mb-1">Alat Angkat PAA (khusus Heavy Lifting)</label><select id="vdPaa" ${hasRole('VENDOR_ADMIN') ? 'disabled' : ''} class="w-full border border-zinc-300 rounded px-2 py-1.5 bg-white">${paaOpts}</select></div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5">
+          <div><label class="block font-medium text-zinc-700 mb-1">Tautan JSA (https Drive/OneDrive)</label><input id="vdJsa" value="${esc(p.JSA_URL || '')}" placeholder="https://drive.google.com/..." class="w-full border border-zinc-300 rounded px-2.5 py-1.5 font-mono bg-white" /></div>
+          <div><label class="block font-medium text-zinc-700 mb-1">Tautan Metode Kerja (https Drive/OneDrive)</label><input id="vdMetode" value="${esc(p.Metode_URL || '')}" placeholder="https://drive.google.com/..." class="w-full border border-zinc-300 rounded px-2.5 py-1.5 font-mono bg-white" /></div>
+        </div>
+        <div><label class="block font-medium text-zinc-700 mb-1">Rencana Penyelamatan / Rescue Plan (wajib untuk Confined Space / Ketinggian)</label><input id="vdRescue" value="${esc(p.Rescue_Plan || '')}" placeholder="Tripod hoist siaga, tim rescue internal & klinik..." class="w-full border border-zinc-300 rounded px-2.5 py-1.5 bg-white" /></div>
+
+        <div class="font-semibold uppercase text-[11px] font-mono text-zinc-600 pt-2 border-t">2. Penugasan Personel Vendor</div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-2.5">
+          <div><label class="block font-medium text-zinc-700 mb-1">Penerima Izin (Wajib Supervisor)</label><select id="vdReceiver" class="w-full border border-zinc-300 rounded px-2 py-1.5 bg-white">${wOpts(curRec && curRec.Worker_ID)}</select></div>
+          <div><label class="block font-medium text-zinc-700 mb-1">Attendant (Confined Space)</label><select id="vdAttendant" class="w-full border border-zinc-300 rounded px-2 py-1.5 bg-white">${wOpts(curAtt && curAtt.Worker_ID)}</select></div>
+          <div><label class="block font-medium text-zinc-700 mb-1">Fire Watch (Hot Work)</label><select id="vdFireWatch" class="w-full border border-zinc-300 rounded px-2 py-1.5 bg-white">${wOpts(curFw && curFw.Worker_ID)}</select></div>
+        </div>
+        <div>
+          <label class="block font-medium text-zinc-700 mb-1">Anggota Tim Kerja (Workers)</label>
+          <div class="flex flex-wrap gap-3">${myWorkers.map(w => `<label class="flex items-center gap-1.5"><input type="checkbox" class="vdWorker" value="${esc(w.Worker_ID)}" ${curWrk.includes(w.Worker_ID) ? 'checked' : ''} /> <span>${esc(w.Nama)} <span class="font-mono text-[10px] text-zinc-500">[${esc(w.Kompetensi)}]</span></span></label>`).join('') || '<span class="text-zinc-400">Belum ada pekerja aktif untuk vendor ini.</span>'}</div>
+        </div>
+
+        <div class="font-semibold uppercase text-[11px] font-mono text-zinc-600 pt-2 border-t">3. Checklist Kesiapan K3 (${clItems.length} item)</div>
+        <div class="space-y-1.5 max-h-56 overflow-y-auto pr-1">
+          ${clItems.map(item => {
+            const vNow = clVal[item.k] || '';
+            return `<div class="flex items-center justify-between gap-2 py-1 border-b border-zinc-200/70">
+              <span>${esc(item.t)} ${item.c ? badge('KRITIS', LEVEL_CLS.EXPIRED) : ''}</span>
+              <select data-clk="${esc(item.k)}" class="vdCl border border-zinc-300 rounded px-2 py-0.5 font-mono bg-white shrink-0">
+                <option value="" ${vNow === '' ? 'selected' : ''}>— pilih —</option>
+                <option value="YES" ${vNow === 'YES' ? 'selected' : ''}>YES</option>
+                <option value="NO" ${vNow === 'NO' ? 'selected' : ''}>NO</option>
+                <option value="NA" ${vNow === 'NA' ? 'selected' : ''}>NA</option>
+              </select>
+            </div>`;
+          }).join('')}
+        </div>
+
+        <div class="flex flex-wrap justify-end gap-2 pt-2">
+          <button type="submit" id="btnVdSave" class="bg-zinc-900 text-white px-4 py-1.5 rounded font-medium">Simpan Draft</button>
+          <button type="button" data-act="vptw-submit" data-id="${esc(p.VPTW_ID)}" class="bg-red-600 hover:bg-red-700 text-white px-4 py-1.5 rounded font-medium">Ajukan ke HSE (Submit)</button>
+        </div>
+      </form>`;
+    } else {
+      // Tampilan ringkasan saat status bukan DRAFT
+      html += `<div class="grid grid-cols-2 md:grid-cols-4 gap-2.5 bg-zinc-50 p-3 rounded border border-zinc-200">
+        <div><div class="text-[10px] font-mono text-zinc-500">AREA / SUB-AREA</div><div class="font-medium mt-0.5">${esc(p.Area_Hall)} • ${esc(p.Sub_Area)}</div></div>
+        <div><div class="text-[10px] font-mono text-zinc-500">LOTO & SPONSOR</div><div class="font-mono mt-0.5">${esc(p.Kode_LOTO)} • ${esc(p.Sponsor_Name || p.Sponsor_NIK)}</div></div>
+        <div><div class="text-[10px] font-mono text-zinc-500">MASA BERLAKU</div><div class="font-mono mt-0.5">${esc(p.Valid_From)} s/d ${esc(p.Valid_Until)}</div></div>
+        <div><div class="text-[10px] font-mono text-zinc-500">DOKUMEN</div><div class="mt-0.5">${evidenceLink(p.JSA_URL)} ${evidenceLink(p.Metode_URL)}</div></div>
+        <div class="col-span-2 md:col-span-4"><div class="text-[10px] font-mono text-zinc-500">URAIAN PEKERJAAN</div><div class="mt-0.5">${esc(p.Uraian)} ${p.Closeout_Notes ? `<div class="text-[11px] font-mono text-zinc-600 mt-1">${esc(p.Closeout_Notes)}</div>` : ''}</div></div>
+      </div>`;
+
+      html += `<div><div class="font-semibold uppercase text-[11px] font-mono text-zinc-600 mb-1">Tim Pelaksana Vendor</div>
+        <div class="flex flex-wrap gap-1.5">${(p.Assign || []).map(a => badge(`${a.Role}: ${a.Nama}`, 'bg-zinc-100 text-zinc-800 border-zinc-300')).join('') || '—'}</div>
+      </div>`;
+    }
+
+    // Penetapan Sponsor & PAA oleh HSE saat review (status SUBMITTED)
+    if (p.Effective_Status === 'SUBMITTED' && hasRole('HSE_OFFICER')) {
+      const needPaa = (p.Types_List || []).includes('HEAVY_LIFTING_CRANE');
+      const spOpts = '<option value="">— pilih sponsor internal —</option>' + (S.data.employees || []).map(e => `<option value="${esc(e.NIK)}" ${p.Sponsor_NIK === e.NIK ? 'selected' : ''}>${esc(e.NIK)} — ${esc(e.Nama)} (${esc(e.Departemen)})</option>`).join('');
+      const pOpts = '<option value="">— pilih alat angkat —</option>' + (S.data.assets || []).filter(a => a.Tipe_Data === 'PAA_SIA' && a.Record_Status !== 'DISPOSED').map(a => `<option value="${esc(a.ID_Record)}" ${p.PAA_ID === a.ID_Record ? 'selected' : ''}>${esc(a.ID_Record)} — ${esc(a.Nama_Item)} (${esc(a.Level)})</option>`).join('');
+      html += `<div class="p-3 rounded border border-blue-200 bg-blue-50/50 space-y-2">
+        <div class="font-semibold uppercase text-[11px] font-mono text-zinc-600">Penetapan HSE: Sponsor${needPaa ? ' & Alat Angkat (PAA)' : ''} — wajib sebelum Approve</div>
+        <div class="grid grid-cols-1 ${needPaa ? 'md:grid-cols-2' : ''} gap-2.5">
+          <select id="rvSponsor" class="w-full border border-zinc-300 rounded px-2 py-1.5 bg-white">${spOpts}</select>
+          ${needPaa ? `<select id="rvPaa" class="w-full border border-zinc-300 rounded px-2 py-1.5 bg-white">${pOpts}</select>` : ''}
+        </div>
+        <div class="flex justify-end"><button type="button" data-act="vptw-assign" data-id="${esc(p.VPTW_ID)}" class="bg-blue-700 hover:bg-blue-800 text-white px-3 py-1.5 rounded font-medium">Simpan Sponsor${needPaa ? ' & PAA' : ''}</button></div>
+      </div>`;
+    }
+
+    // Riwayat Uji Gas & Shift
+    if (p.Gas_Tests && p.Gas_Tests.length) {
+      html += `<div><div class="font-semibold uppercase text-[11px] font-mono text-zinc-600 mb-1">Riwayat Uji Gas (${p.Gas_Fresh ? 'TERBARU FRESH' : 'PERLU UJI ULANG'})</div>
+        <div class="space-y-1 font-mono text-[11px]">${p.Gas_Tests.map(g => `<div class="p-2 rounded border ${g.Result === 'PASS' ? 'bg-emerald-50 border-emerald-200' : 'bg-red-50 border-red-200'}">${esc(g.Tested_At)} • O2:${esc(g.O2)}% LEL:${esc(g.LEL)}% H2S:${esc(g.H2S)}ppm CO:${esc(g.CO)}ppm • Alat:${esc(g.Instrument)} • <b>${esc(g.Result)}</b></div>`).join('')}</div>
+      </div>`;
+    }
+    if (p.Shifts && p.Shifts.length) {
+      html += `<div><div class="font-semibold uppercase text-[11px] font-mono text-zinc-600 mb-1">Riwayat Revalidasi Shift</div>
+        <div class="space-y-1 font-mono text-[11px]">${p.Shifts.map(sh => `<div class="p-1.5 rounded border border-zinc-200 bg-zinc-50">${esc(sh.Date)} Shift ${esc(sh.Shift)} • Oleh ${esc(sh.Revalidated_By)} (${esc(sh.Revalidated_At)}) ${sh.Notes ? '— ' + esc(sh.Notes) : ''}</div>`).join('')}</div>
+      </div>`;
+    }
+
+    // Tombol Aksi Siklus Hidup untuk HSE Officer / Penginput
+    const actBtns = [];
+    const eff = p.Effective_Status;
+    if (eff === 'SUBMITTED' && hasRole('HSE_OFFICER')) {
+      actBtns.push(`<button data-act="vptw-approve" data-id="${esc(p.VPTW_ID)}" class="bg-emerald-700 hover:bg-emerald-800 text-white px-3 py-1.5 rounded font-medium">Setujui (Approve)</button>`);
+      actBtns.push(`<button data-act="vptw-reject" data-id="${esc(p.VPTW_ID)}" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded font-medium">Tolak</button>`);
+    }
+    if (['APPROVED', 'ACTIVE', 'SUSPENDED'].includes(eff) && hasRole('HSE_OFFICER')) {
+      actBtns.push(`<button data-act="vptw-gastest" data-id="${esc(p.VPTW_ID)}" class="bg-zinc-800 hover:bg-zinc-700 text-white px-3 py-1.5 rounded font-mono">+ Catat Uji Gas</button>`);
+    }
+    if (eff === 'APPROVED' && hasRole('HSE_OFFICER')) {
+      actBtns.push(`<button data-act="vptw-start" data-id="${esc(p.VPTW_ID)}" class="bg-emerald-700 hover:bg-emerald-800 text-white px-3 py-1.5 rounded font-medium">Verifikasi Lapangan & Mulai Kerja (ACTIVE)</button>`);
+    }
+    if (['ACTIVE', 'SUSPENDED'].includes(eff) && hasRole('HSE_OFFICER')) {
+      actBtns.push(`<button data-act="vptw-reval" data-id="${esc(p.VPTW_ID)}" class="bg-blue-700 hover:bg-blue-800 text-white px-3 py-1.5 rounded font-medium">Revalidasi Shift</button>`);
+    }
+    if (['ACTIVE', 'SUSPENDED', 'EXPIRED_UNCLOSED'].includes(eff) && hasRole('HSE_OFFICER')) {
+      actBtns.push(`<button data-act="vptw-close" data-id="${esc(p.VPTW_ID)}" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded font-medium">Closeout & Lepas LOTO</button>`);
+    }
+    if (['DRAFT', 'SUBMITTED', 'APPROVED'].includes(eff) && hasRole('HSE_OFFICER', 'SUPERVISOR', 'VENDOR_ADMIN')) {
+      actBtns.push(`<button data-act="vptw-cancel" data-id="${esc(p.VPTW_ID)}" class="border border-zinc-300 px-3 py-1.5 rounded">Batalkan PTW</button>`);
+    }
+
+    if (actBtns.length) {
+      html += `<div class="pt-3 border-t border-zinc-200 flex flex-wrap gap-2 justify-end">${actBtns.join('')}</div>`;
+    }
+
+    $('vdBody').innerHTML = html;
+    $('modalVdetail').classList.remove('hidden');
+
+    const areaSel = $('vdArea');
+    if (areaSel) {
+      areaSel.onchange = () => {
+        const subs = hallSubs[areaSel.value] || [];
+        $('vdSub').innerHTML = subs.map(s => `<option value="${esc(s)}">${esc(s)}</option>`).join('');
+      };
+    }
+    const editForm = $('vptwEditForm');
+    if (editForm) {
+      editForm.onsubmit = async ev => {
+        ev.preventDefault();
+        await saveDraftFromModal(p.VPTW_ID);
+      };
+    }
+  }
+
+  async function saveDraftFromModal(vptwId) {
+    const types = Array.from(document.querySelectorAll('.vdType:checked')).map(c => c.value);
+    const workers = Array.from(document.querySelectorAll('.vdWorker:checked')).map(c => c.value);
+    const checklist = {};
+    const isVendor = hasRole('VENDOR_ADMIN');
+    document.querySelectorAll('.vdCl').forEach(s => { if (s.value) checklist[s.dataset.clk] = s.value; });
+    return await mutate({
+      action: 'VPTW_SAVE',
+      vptwId: vptwId,
+      types: types,
+      area: $('vdArea').value,
+      subArea: $('vdSub').value,
+      sponsorNik: isVendor ? undefined : $('vdSponsor').value,
+      lotoCode: $('vdLoto').value,
+      validFrom: $('vdFrom').value,
+      validUntil: $('vdUntil').value,
+      uraian: $('vdUraian').value,
+      paaId: isVendor ? undefined : $('vdPaa').value,
+      jsaUrl: $('vdJsa').value,
+      metodeUrl: $('vdMetode').value,
+      rescuePlan: $('vdRescue').value,
+      checklist: checklist,
+      assign: {
+        receiver: $('vdReceiver').value,
+        attendant: $('vdAttendant').value,
+        fireWatch: $('vdFireWatch').value,
+        workers: workers
+      }
+    }, $('btnVdSave'), 'Menyimpan draft...');
+  }
+
+  // ==========================================================================
+  // EVENT: KLIK
+  // ==========================================================================
+  const ACTIONS = {
+    'nav': el => switchModule(el.dataset.v),
+    'nav-open': openNav, 'nav-close': closeNav,
+    'logout': () => logout(false),
+    'sync': () => syncNow(false),
+    'hall': el => { S.hall = el.dataset.v; renderZones(); renderPtw(); renderCapa(); },
+    'reload-portal': () => { const f = $('portalFrame'); f.src = f.src; },
+    'vtab': el => switchVendorTab(el.dataset.v),
+    'vdetail-close': () => { S.openVptwId = null; $('modalVdetail').classList.add('hidden'); },
+
+    'ptw-approve': async el => {
+      if (await confirmBox('Approve e-PTW', `Setujui ${el.dataset.id}? Interlock akan divalidasi ulang oleh server.`))
+        mutate({ action: 'UPDATE_PTW_STATUS', permitNo: el.dataset.id, targetStatus: 'ACTIVE_INTERLOCKED' }, el, '...');
+    },
+    'ptw-reject': async el => {
+      const r = await askForm('Tolak e-PTW ' + el.dataset.id, [{ key: 'n', label: 'Alasan penolakan', type: 'textarea', min: 5 }]);
+      if (r) mutate({ action: 'UPDATE_PTW_STATUS', permitNo: el.dataset.id, targetStatus: 'REJECTED', closeoutNotes: r.n }, el, '...');
+    },
+    'ptw-cancel': async el => {
+      if (await confirmBox('Batalkan e-PTW', `Batalkan ${el.dataset.id}?`))
+        mutate({ action: 'UPDATE_PTW_STATUS', permitNo: el.dataset.id, targetStatus: 'CANCELLED', closeoutNotes: 'Dibatalkan' }, el, '...');
+    },
+    'ptw-close': async el => {
+      const r = await askForm('Close & Lepas LOTO ' + el.dataset.id, [{ key: 'n', label: 'Catatan closeout (kondisi area, LOTO dilepas oleh siapa)', type: 'textarea', min: 5 }]);
+      if (r) mutate({ action: 'UPDATE_PTW_STATUS', permitNo: el.dataset.id, targetStatus: 'CLOSED_LOTO_RELEASED', closeoutNotes: r.n }, el, '...');
+    },
+
+    'capa-new': () => { $('modalCapa').classList.remove('hidden'); },
+    'capa-close': () => $('modalCapa').classList.add('hidden'),
+    'capa-verify': async el => {
+      const id = el.dataset.id;
+      const ins = (S.data.inspections || []).find(x => x.ID_Audit === id);
+      const needEv = !!ins && (S.data.config.evidenceUrlRiskLevels || []).includes(ins.Tingkat_Risiko);
+      const r = await askForm('Verifikasi & Tutup ' + id, [
+        { key: 'e', label: 'Uraian bukti perbaikan', type: 'textarea', min: 5 },
+        { key: 'f', label: 'Foto / dokumen bukti (maks. 3 file: foto atau PDF)' + (needEv ? ' — wajib (foto atau tautan)' : ' — opsional'), type: 'file', accept: 'image/*,application/pdf', required: false },
+        { key: 'u', label: 'Tautan bukti tambahan (Drive/Docs) — opsional', type: 'url', required: false }
+      ], 'Foto dikompres otomatis lalu disimpan ke folder Google Drive perusahaan.' + (needEv ? '\nRisiko ' + ins.Tingkat_Risiko + ': wajib melampirkan foto atau tautan bukti.' : ''));
+      if (!r) return;
+      if (r.f.length > 3) { toast('Maksimal 3 file bukti.', false); return; }
+      if (needEv && !r.f.length && !r.u) { toast('Risiko ' + ins.Tingkat_Risiko + ': foto atau tautan bukti wajib.', false); return; }
+      const urls = r.u ? [r.u] : [];
+      try {
+        for (let i = 0; i < r.f.length; i++) {
+          toast(`Mengunggah bukti ${i + 1}/${r.f.length}...`, true);
+          const payload = await fileToPayload(r.f[i]);
+          const up = await call({ action: 'UPLOAD_EVIDENCE', auditId: id, file: payload });
+          if (!up.success) throw new Error(up.message || 'Unggah gagal.');
+          urls.push(up.file.url);
+        }
+      } catch (err) { toast('Unggah gagal: ' + err.message, false); return; }
+      mutate({ action: 'CLOSE_FINDING', auditId: id, evidence: r.e, evidenceUrl: urls.join('\n') }, el, '...');
+    },
+
+    'edit-emp': el => {
+      if (!hasRole('HSE_OFFICER')) return;
+      const e = (S.data.employees || []).find(x => x.NIK === el.dataset.nik); if (!e) return;
+      $('empNik').value = e.NIK; $('empNama').value = e.Nama; $('empDept').value = e.Departemen; $('empRole').value = e.Jabatan;
+      $('empMcu').value = e.Status_MCU || 'FIT'; $('empMcuExp').value = e.MCU_Expiry || ''; $('empSioExp').value = e.SIO_Expiry || '';
+      $('empCert').value = e.Detail_Sertifikasi;
+      document.querySelectorAll('.empTag').forEach(c => { c.checked = (e.Kompetensi_List || []).includes(c.value); });
+      $('empForm').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    },
+
+    'paa-renew': async el => {
+      const r = await askForm('Perpanjang SIA ' + el.dataset.id, [
+        { key: 'd', label: 'Masa berlaku baru', type: 'date', value: shiftDate(365) },
+        { key: 'no', label: 'Nomor SIA baru (opsional)', required: false }]);
+      if (r) mutate({ action: 'RENEW_ASSET', recordId: el.dataset.id, newExpiry: r.d, newDocNo: r.no }, el, '...');
+    },
+    'b3-dispose': async el => {
+      const r = await askForm('Catat Pengangkutan ' + el.dataset.id, [{ key: 'm', label: 'Nomor manifest pengangkutan', min: 3 }]);
+      if (r) mutate({ action: 'DISPOSE_B3', recordId: el.dataset.id, manifestNo: r.m }, el, '...');
+    },
+
+    'edit-user': el => {
+      const u = (S.data.users || []).find(x => x.NIK === el.dataset.nik); if (!u) return;
+      $('usrNik').value = u.NIK; $('usrNama').value = u.Nama; $('usrDept').value = u.Departemen; $('usrRole').value = u.Role; $('usrStatus').value = u.Status;
+      $('usrVendorWrap').classList.toggle('hidden', u.Role !== 'VENDOR_ADMIN');
+      $('usrVendorId').value = u.Vendor_ID || '';
+    },
+    'reset-pin': async el => {
+      el.stopPropagation && el.stopPropagation();
+      if (!(await confirmBox('Reset PIN', `Reset PIN ${el.dataset.nik}? PIN sementara baru hanya tampil sekali.`))) return;
+      const res = await mutate({ action: 'RESET_USER_PIN', nik: el.dataset.nik }, el, '...');
+      if (res.success && res.tempPin) await askForm('PIN Sementara', [], `NIK: ${el.dataset.nik}\nPIN sementara: ${res.tempPin}\n\nSampaikan secara langsung. PIN ini tidak akan ditampilkan lagi dan wajib diganti saat login pertama.`, { okLabel: 'Tutup', noCancel: true });
+    },
+
+    // ---- AKSI MODUL VENDOR ----
+    'vendor-register': async el => {
+      const r = await askForm('Daftar sebagai Vendor', [
+        { key: 'nama', label: 'Nama Perusahaan', min: 3 },
+        { key: 'kategori', label: 'Kategori Jasa (mis. Perbaikan Tangki / Crane / Sipil)', min: 3 },
+        { key: 'picNama', label: 'Nama PIC', min: 2 },
+        { key: 'picKontak', label: 'No. HP atau Email PIC', min: 5 }
+      ], 'Pendaftaran ini belum memberi akses ke sistem. Tim HSE akan memverifikasi, lalu membuatkan akun bila disetujui.', { okLabel: 'Kirim Pendaftaran' });
+      if (!r) return;
+      const res = await withBusy(el, 'Mengirim...', () => call(Object.assign({ action: 'REGISTER_VENDOR' }, r)));
+      toast(res.message || (res.success ? 'Pendaftaran terkirim.' : 'Gagal mengirim pendaftaran.'), !!res.success);
+    },
+    'vendor-new': async el => {
+      const r = await askForm('Tambah Master Vendor', [
+        { key: 'nama', label: 'Nama Perusahaan Vendor', min: 3 },
+        { key: 'kategori', label: 'Kategori Jasa (mis. Perbaikan Tangki / Crane / Sipil)' },
+        { key: 'picNama', label: 'Nama PIC Vendor' },
+        { key: 'picKontak', label: 'Nomor Kontak PIC' },
+        { key: 'status', label: 'Status Prakualifikasi CSMS', type: 'select', options: ['PENDING', 'APPROVED', 'CONDITIONAL', 'BLOCKED'], value: 'PENDING' },
+        { key: 'praExpiry', label: 'Berlaku Prakualifikasi s/d (boleh kosong bila PENDING)', type: 'date', required: false },
+        { key: 'asuransiExpiry', label: 'Berlaku Asuransi s/d (boleh kosong bila PENDING)', type: 'date', required: false },
+        { key: 'smk3Expiry', label: 'Berlaku Sertifikat SMK3 s/d (opsional)', type: 'date', required: false },
+        { key: 'docUrl', label: 'Tautan Dokumen CSMS (https Drive/OneDrive — opsional)', type: 'url', required: false }
+      ]);
+      if (!r) return;
+      if (r.status === 'APPROVED' && (!r.praExpiry || !r.asuransiExpiry)) { toast('Status APPROVED wajib mengisi tanggal prakualifikasi dan asuransi.', false); return; }
+      mutate(Object.assign({ action: 'SAVE_VENDOR' }, r), el, '...');
+    },
+    'vendor-edit': async el => {
+      const v = (S.data.vendors || []).find(x => x.Vendor_ID === el.dataset.id); if (!v) return;
+      const r = await askForm('Edit Vendor ' + v.Vendor_ID, [
+        { key: 'nama', label: 'Nama Perusahaan Vendor', value: v.Nama, min: 3 },
+        { key: 'kategori', label: 'Kategori Jasa', value: v.Kategori },
+        { key: 'picNama', label: 'Nama PIC Vendor', value: v.PIC_Nama },
+        { key: 'picKontak', label: 'Nomor Kontak PIC', value: v.PIC_Kontak },
+        { key: 'status', label: 'Status CSMS', type: 'select', options: ['APPROVED', 'CONDITIONAL', 'PENDING', 'BLOCKED'], value: v.Status },
+        { key: 'praExpiry', label: 'Berlaku Prakualifikasi s/d (wajib bila APPROVED)', type: 'date', value: v.Prakualifikasi_Expiry, required: false },
+        { key: 'asuransiExpiry', label: 'Berlaku Asuransi s/d (wajib bila APPROVED)', type: 'date', value: v.Asuransi_Expiry, required: false },
+        { key: 'smk3Expiry', label: 'Berlaku SMK3 s/d', type: 'date', value: v.SMK3_Expiry, required: false },
+        { key: 'docUrl', label: 'Tautan Dokumen CSMS (opsional)', type: 'url', value: v.Doc_URL, required: false }
+      ]);
+      if (!r) return;
+      if (r.status === 'APPROVED' && (!r.praExpiry || !r.asuransiExpiry)) { toast('Status APPROVED wajib mengisi tanggal prakualifikasi dan asuransi.', false); return; }
+      mutate(Object.assign({ action: 'SAVE_VENDOR', vendorId: v.Vendor_ID }, r), el, '...');
+    },
+    'vworker-new': async el => {
+      const vendors = S.data.vendors || [];
+      if (!vendors.length) { toast('Tambahkan Master Vendor terlebih dahulu.', false); return; }
+      const vOpts = vendors.map(v => ({ value: v.Vendor_ID, label: `${v.Vendor_ID} — ${v.Nama}` }));
+      const fields = [
+        { key: 'vendorId', label: 'Perusahaan Vendor', type: 'select', options: vOpts, value: $('vWorkerVendor').value || vendors[0].Vendor_ID },
+        { key: 'nama', label: 'Nama Lengkap Pekerja', min: 2 },
+        { key: 'idLast4', label: '4 Digit Terakhir KTP', placeholder: '1234', required: false },
+        { key: 'jabatan', label: 'Jabatan Lapangan (mis. Welder / Supervisor / Helper)' },
+        { key: 'isSupervisor', label: 'Personel ini adalah Supervisor / Penerima Izin (Receiver)', type: 'checkbox' },
+        { key: 'mcuStatus', label: 'Status MCU', type: 'select', options: ['FIT', 'UNFIT'], value: 'FIT' },
+        { key: 'mcuExpiry', label: 'Tanggal Berlaku MCU', type: 'date', value: shiftDate(180) },
+        { key: 'kompetensi', label: 'Tag Kompetensi (pisah koma: CRANE,HV_ELECTRICAL,CONFINED_SPACE,HOT_WORK,HEIGHT,ATTENDANT,FIRE_WATCH,RIGGER,WELDER)', placeholder: 'HOT_WORK,WELDER,CONFINED_SPACE', required: false },
+        { key: 'certDetail', label: 'Detail Sertifikat / Lisensi K3', required: false }
+      ];
+      if (hasRole('HSE_OFFICER')) {
+        fields.push({ key: 'induksiExpiry', label: 'Berlaku Safety Induction s/d (langsung verifikasi HSE)', type: 'date', value: shiftDate(180), required: false });
+      }
+      const r = await askForm('Tambah Pekerja Vendor', fields);
+      if (r) mutate(Object.assign({ action: 'SAVE_VENDOR_WORKER' }, r), el, '...');
+    },
+    'vworker-edit': async el => {
+      const w = (S.data.vendorWorkers || []).find(x => x.Worker_ID === el.dataset.id); if (!w) return;
+      const fields = [
+        { key: 'nama', label: 'Nama Lengkap Pekerja', value: w.Nama, min: 2 },
+        { key: 'idLast4', label: '4 Digit Terakhir KTP', value: w.ID_Last4 || '', required: false },
+        { key: 'jabatan', label: 'Jabatan Lapangan', value: w.Jabatan },
+        { key: 'isSupervisor', label: 'Personel ini adalah Supervisor / Penerima Izin', type: 'checkbox', value: w.Is_Supervisor === 'YES' },
+        { key: 'mcuStatus', label: 'Status MCU', type: 'select', options: ['FIT', 'UNFIT'], value: w.MCU_Status || 'FIT' },
+        { key: 'mcuExpiry', label: 'Tanggal Berlaku MCU', type: 'date', value: w.MCU_Expiry || shiftDate(180) },
+        { key: 'kompetensi', label: 'Tag Kompetensi (pisah koma)', value: w.Kompetensi || '', required: false },
+        { key: 'certDetail', label: 'Detail Sertifikat', value: w.Sertifikat_Detail || '', required: false },
+        { key: 'status', label: 'Status Keaktifan', type: 'select', options: ['ACTIVE', 'INACTIVE'], value: w.Status || 'ACTIVE' }
+      ];
+      if (hasRole('HSE_OFFICER')) {
+        fields.push({ key: 'induksiExpiry', label: 'Berlaku Safety Induction s/d', type: 'date', value: w.Induksi_Expiry || shiftDate(180), required: false });
+      }
+      const r = await askForm('Edit Pekerja ' + w.Worker_ID, fields);
+      if (r) mutate(Object.assign({ action: 'SAVE_VENDOR_WORKER', workerId: w.Worker_ID, vendorId: w.Vendor_ID }, r), el, '...');
+    },
+    'vworker-verify': async el => {
+      const w = (S.data.vendorWorkers || []).find(x => x.Worker_ID === el.dataset.id); if (!w) return;
+      const r = await askForm('Verifikasi Safety Induction — ' + w.Nama, [
+        { key: 'induksiExpiry', label: 'Berlaku Induksi Keselamatan Sampai', type: 'date', value: w.Induksi_Expiry || shiftDate(180) }
+      ]);
+      if (r) mutate({ action: 'VERIFY_VENDOR_WORKER', workerId: w.Worker_ID, induksiExpiry: r.induksiExpiry }, el, '...');
+    },
+    'vptw-new': async el => {
+      const vendors = (S.data.vendors || []).filter(v => v.Status === 'APPROVED');
+      if (!vendors.length) { toast('Belum ada vendor berstatus APPROVED. Buat/setujui vendor di tab Master Vendor terlebih dahulu.', false); return; }
+      const vOpts = vendors.map(v => ({ value: v.Vendor_ID, label: `${v.Vendor_ID} — ${v.Nama}` }));
+      const r = await askForm('Buat Draft PTW Vendor Baru', [
+        { key: 'vendorId', label: 'Pilih Vendor Pelaksana', type: 'select', options: vOpts, value: vendors[0].Vendor_ID },
+        { key: 'uraian', label: 'Uraian Singkat Pekerjaan (min. 10 karakter)', min: 10, placeholder: 'Perbaikan kebocoran sirip tangki trafo...' }
+      ]);
+      if (!r) return;
+      const res = await mutate({ action: 'VPTW_SAVE', vendorId: r.vendorId, uraian: r.uraian, area: 'HALL_C', subArea: 'Final Assembly' }, el, '...');
+      if (res.success && res.vptwId) openVptwDetail(res.vptwId);
+    },
+    'vptw-open': el => openVptwDetail(el.dataset.id),
+    'vptw-assign': el => {
+      const sp = $('rvSponsor') ? $('rvSponsor').value : '';
+      if (!sp) { toast('Pilih sponsor internal terlebih dahulu.', false); return; }
+      const paaEl = $('rvPaa');
+      if (paaEl && !paaEl.value) { toast('Izin Heavy Lifting wajib memilih alat angkat (PAA).', false); return; }
+      mutate({ action: 'VPTW_SAVE', vptwId: el.dataset.id, sponsorNik: sp, paaId: paaEl ? paaEl.value : undefined }, el, '...');
+    },
+    'vptw-submit': async el => {
+      const saved = await saveDraftFromModal(el.dataset.id);
+      if (!saved || !saved.success) return;
+      await mutate({ action: 'VPTW_SUBMIT', vptwId: el.dataset.id }, el, 'Mengajukan...');
+    },
+    'vptw-approve': async el => {
+      if (await confirmBox('Setujui PTW Vendor', `Setujui ${el.dataset.id}? Sistem akan memvalidasi ulang seluruh interlock vendor, personel, dan konflik LOTO.`))
+        mutate({ action: 'VPTW_DECIDE', vptwId: el.dataset.id, decision: 'APPROVE' }, el, '...');
+    },
+    'vptw-reject': async el => {
+      const r = await askForm('Tolak PTW Vendor ' + el.dataset.id, [{ key: 'n', label: 'Alasan penolakan (min. 5 karakter)', type: 'textarea', min: 5 }]);
+      if (r) mutate({ action: 'VPTW_DECIDE', vptwId: el.dataset.id, decision: 'REJECT', notes: r.n }, el, '...');
+    },
+    'vptw-gastest': async el => {
+      const r = await askForm('Catat Hasil Uji Gas Detector — ' + el.dataset.id, [
+        { key: 'o2', label: 'Kadar O2 (%) [Normal: 19.5 - 23.5]', value: '20.9' },
+        { key: 'lel', label: 'LEL (% Lower Explosive Limit) [Maks: 10]', value: '0' },
+        { key: 'h2s', label: 'H2S (ppm) [Maks: 10]', value: '0' },
+        { key: 'co', label: 'CO (ppm) [Maks: 25]', value: '0' },
+        { key: 'instrument', label: 'Nama & No. Seri Alat Gas Detector', value: 'BW MicroClip XL' },
+        { key: 'location', label: 'Titik Pengukuran Spesifik', value: 'Dalam Main Tank Trafo' }
+      ]);
+      if (r) mutate(Object.assign({ action: 'VPTW_GAS_TEST', vptwId: el.dataset.id }, r), el, '...');
+    },
+    'vptw-start': async el => {
+      const r = await askForm('Mulai Pekerjaan Vendor — ' + el.dataset.id, [
+        { key: 'shift', label: 'Shift Kerja', type: 'select', options: ['PAGI', 'SIANG', 'MALAM'], value: 'PAGI' },
+        { key: 'lotoVerified', label: 'Isolasi energi (LOTO) telah diverifikasi terpasang di lapangan', type: 'checkbox', value: true },
+        { key: 'receiverPresent', label: 'Penerima izin (Supervisor Vendor) hadir di lokasi kerja', type: 'checkbox', value: true }
+      ]);
+      if (r) mutate(Object.assign({ action: 'VPTW_START', vptwId: el.dataset.id }, r), el, '...');
+    },
+    'vptw-reval': async el => {
+      const r = await askForm('Revalidasi Pergantian Shift — ' + el.dataset.id, [
+        { key: 'shift', label: 'Shift Kerja', type: 'select', options: ['PAGI', 'SIANG', 'MALAM'], value: 'SIANG' },
+        { key: 'areaChecked', label: 'Kondisi area kerja dan LOTO telah diperiksa aman', type: 'checkbox', value: true },
+        { key: 'notes', label: 'Catatan pemeriksaan shift (opsional)', required: false }
+      ]);
+      if (r) mutate(Object.assign({ action: 'VPTW_REVALIDATE', vptwId: el.dataset.id }, r), el, '...');
+    },
+    'vptw-close': async el => {
+      const r = await askForm('Closeout & Lepas LOTO — ' + el.dataset.id, [
+        { key: 'vendorConfirmName', label: 'Nama Supervisor Vendor yang menyerahkan area', min: 3 },
+        { key: 'notes', label: 'Catatan penyelesaian pekerjaan & kondisi akhir area', type: 'textarea', min: 5 },
+        { key: 'lotoReleased', label: 'Seluruh gembok LOTO telah dilepas', type: 'checkbox', value: true },
+        { key: 'areaHandedOver', label: 'Area kerja bersih dan diserahterimakan dalam kondisi aman', type: 'checkbox', value: true }
+      ]);
+      if (r) mutate(Object.assign({ action: 'VPTW_CLOSE', vptwId: el.dataset.id }, r), el, '...');
+    },
+    'vptw-cancel': async el => {
+      const r = await askForm('Batalkan PTW Vendor ' + el.dataset.id, [{ key: 'n', label: 'Alasan pembatalan', value: 'Dibatalkan' }]);
+      if (r) mutate({ action: 'VPTW_CANCEL', vptwId: el.dataset.id, notes: r.n }, el, '...');
+    }
+  };
+
+  document.addEventListener('click', e => {
+    const el = e.target.closest('[data-act]');
+    if (!el || !ACTIONS[el.dataset.act]) return;
+    if (el.dataset.act === 'edit-user' && e.target.closest('[data-act="reset-pin"]')) return;
+    ACTIONS[el.dataset.act](el, e);
+  });
+
+  // ==========================================================================
+  // EVENT: FORM
+  // ==========================================================================
+  $('searchPtw').addEventListener('input', renderPtw);
+  $('showHist').addEventListener('change', renderPtw);$('vSearch').addEventListener('input', renderVendor);
+  $('vHist').addEventListener('change', renderVendor);$('vWorkerVendor').addEventListener('change', renderVendor);
+  $('ptwArea').addEventListener('change', () => fillSubs('ptwArea', 'ptwSubArea'));$('insArea').addEventListener('change', () => fillSubs('insArea', 'insDept'));
+  $('ptwType').addEventListener('change', updatePaaVisibility);$('usrRole').addEventListener('change', () => {
+    $('usrVendorWrap').classList.toggle('hidden',$('usrRole').value !== 'VENDOR_ADMIN');
+  });
+
+  $('ptwForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    const box = $('ptwAlert');
+    const picNik = getPicNik();
+    if (!picNik) { toast('Pilih PIC dari daftar saran (ketik NIK atau nama).', false); $('ptwNik').focus(); return; }
+    const res = await mutate({
+      action: 'CREATE_PTW', nik: picNik, type: $('ptwType').value, area: $('ptwArea').value, subArea:$('ptwSubArea').value,
+      location: $('ptwLoc').value, lotoCode:$('ptwLoto').value, validUntil: $('ptwValid').value, paaId:$('ptwPaa').value
+    }, $('btnPtw'), 'Memvalidasi interlock...');
+    box.classList.remove('hidden');
+    box.className = 'p-3 rounded border text-xs font-mono font-medium ' + (res.success ? 'bg-emerald-50 border-emerald-300 text-emerald-900' : 'bg-red-50 border-red-300 text-red-900');
+    box.textContent = res.message || '';
+    if (res.success) { $('ptwLoto').value = '';$('ptwLoc').value = ''; setTimeout(() => { box.classList.add('hidden'); switchModule('OVERVIEW'); }, 1200); }
+  });
+
+  $('capaForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    const res = await mutate({
+      action: 'CREATE_INSPECTION', area: $('insArea').value, dept: $('insDept').value, risk:$('insRisk').value,
+      dueDate: $('insDue').value, category: $('insCat').value, finding:$('insFinding').value
+    }, $('btnCapa'), 'Menyimpan...');
+    if (res.success) { $('insFinding').value = '';$('modalCapa').classList.add('hidden'); }
+  });
+
+  $('empForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    const res = await mutate({
+      action: 'SAVE_EMPLOYEE_SIO', nik: $('empNik').value, nama:$('empNama').value, dept: $('empDept').value, jabatan:$('empRole').value,
+      mcuStatus: $('empMcu').value, mcuExpiry:$('empMcuExp').value, sioExpiry: $('empSioExp').value, certDetail:$('empCert').value,
+      kompetensi: Array.from(document.querySelectorAll('.empTag:checked')).map(c => c.value)
+    }, $('btnEmp'), 'Menyimpan...');
+    if (res.success) { $('empForm').reset(); }
+  });
+
+  $('paaForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    const res = await mutate({
+      action: 'ADD_PAA_SIA', namaAlat: $('paaNama').value, lokasiHall: $('paaLokasi').value, nomorSia:$('paaNo').value,
+      kapasitas: $('paaKap').value, masaBerlaku:$('paaExp').value
+    }, $('btnPaa'), 'Menyimpan...');
+    if (res.success) { $('paaNama').value = ''; $('paaNo').value = '';$('paaKap').value = ''; }
+  });
+
+  $('b3Form').addEventListener('submit', async e => {
+    e.preventDefault();
+    const res = await mutate({
+      action: 'ADD_LIMBAH_B3', jenisLimbah: $('b3Jenis').value, kodeLimbah:$('b3Kode').value, volume: $('b3Vol').value, batasSimpan:$('b3Batas').value
+    }, $('btnB3'), 'Menyimpan...');
+    if (res.success) { $('b3Jenis').value = ''; $('b3Kode').value = '';$('b3Vol').value = ''; }
+  });
+
+  $('userForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    const nik = $('usrNik').value;
+    const role = $('usrRole').value;
+    const res = await mutate({
+      action: 'SAVE_USER', nik: nik, nama: $('usrNama').value, dept:$('usrDept').value,
+      role: role, status: $('usrStatus').value, vendorId: role === 'VENDOR_ADMIN' ?$('usrVendorId').value : ''
+    }, $('btnUser'), 'Menyimpan...');
+    if (res.success) {
+      $('userForm').reset();$('usrVendorWrap').classList.add('hidden');
+      if (res.tempPin) await askForm('PIN Sementara', [], `NIK: ${nik.toUpperCase()}\nPIN sementara: ${res.tempPin}\n\nSampaikan secara langsung. PIN ini tidak akan ditampilkan lagi dan wajib diganti saat login pertama.`, { okLabel: 'Tutup', noCancel: true });
+    }
+  });
+
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) syncNow(true); });
+  setInterval(() => {
+    if (document.hidden || !S.token || !S.data) return;
+    if (!$('modalAsk').classList.contains('hidden') || !$('modalCapa').classList.contains('hidden') || !$('modalVdetail').classList.contains('hidden')) return;
+    syncNow(true);
+  }, 90000);
+
+  document.querySelectorAll('table').forEach(t => t.classList.add('rt'));
+  document.querySelectorAll('tbody').forEach(tb => new MutationObserver(() => labelCells(tb)).observe(tb, { childList: true }));
+  $('ptwNik').addEventListener('input', renderPicInfo);$('ptwType').addEventListener('change', renderPicInfo);
+
+  bootstrap();
+</script>
+</body>
+</html>
