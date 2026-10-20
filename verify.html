@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta name="referrer" content="no-referrer">
+<title>Verifikasi Gate Pass — Elsewedy Cileungsi</title>
+<style>
+  *{box-sizing:border-box} body{margin:0;font:15px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:#f4f4f5;color:#18181b}
+  header{background:#18181b;color:#fff;padding:10px 14px;font-weight:600;font-size:13px;letter-spacing:.3px}
+  main{max-width:640px;margin:0 auto;padding:12px}
+  .banner{border-radius:10px;padding:18px 12px;text-align:center;color:#fff;font-weight:800;font-size:22px;line-height:1.2}
+  .banner small{display:block;font-weight:500;font-size:13px;margin-top:6px;opacity:.95}
+  .ok{background:#047857}.no{background:#b91c1c}.wait{background:#52525b}
+  .card{background:#fff;border:1px solid #e4e4e7;border-radius:10px;margin-top:12px;overflow:hidden}
+  .card h2{margin:0;padding:8px 12px;font-size:12px;letter-spacing:.4px;text-transform:uppercase;background:#fafafa;border-bottom:1px solid #e4e4e7;color:#52525b}
+  dl{margin:0;padding:4px 12px} dl div{display:flex;gap:10px;padding:6px 0;border-bottom:1px solid #f4f4f5} dl div:last-child{border:0}
+  dt{flex:0 0 38%;color:#71717a;font-size:13px} dd{margin:0;flex:1;font-weight:500;word-break:break-word}
+  .scroll{overflow-x:auto} table{width:100%;border-collapse:collapse;font-size:13px}
+  th,td{padding:7px 10px;border-bottom:1px solid #f0f0f0;text-align:left;white-space:nowrap} th{background:#fafafa;color:#52525b;font-size:11px;text-transform:uppercase}
+  .g{color:#047857;font-weight:700}.r{color:#b91c1c;font-weight:700}
+  .why{margin:10px 0 0;padding:10px 12px;background:#fef2f2;border:1px solid #fecaca;color:#991b1b;border-radius:8px;font-size:14px}
+  .warn{margin:10px 0 0;padding:10px 12px;background:#fffbeb;border:1px solid #fde68a;color:#92400e;border-radius:8px;font-size:14px}
+  button{margin-top:14px;width:100%;padding:12px;border:0;border-radius:8px;background:#18181b;color:#fff;font-size:15px;font-weight:600}
+  .foot{margin-top:10px;font-size:12px;color:#71717a;text-align:center}
+</style>
+</head>
+<body>
+<header>PT. ELSEWEDY ELECTRIC INDONESIA — CILEUNGSI PLANT • VERIFIKASI GATE PASS</header>
+<main id="app"><div class="banner wait">Memeriksa…<small>Menghubungi server</small></div></main>
+<script>
+  // Samakan dengan GAS_API_URL pada EHS_Suite (deployment Web App yang sama).
+  const GAS_API_URL = "https://script.google.com/macros/s/AKfycbx37Aw82hgcWAkHQu9XdqMY-__nKtr_-2V1q0e8q-scQjcA7b5cLIODgPmoESXKwFrxvg/exec";
+  const app = document.getElementById('app');
+  const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const v = x => esc(x === '' || x == null ? '-' : x);
+  const ROLE = { PIC:'PIC', RECEIVER:'RECEIVER', WORKER:'WORKER', ATTENDANT:'ATTENDANT', FIRE_WATCH:'FIRE WATCH' };
+  const q = new URLSearchParams(location.search);
+  const id = (q.get('verify') || '').trim(), sig = (q.get('sig') || '').trim();
+
+  function render(res) {
+    if (!res.success) {
+      app.innerHTML = '<div class="banner no">QR TIDAK VALID<small>DILARANG MASUK</small></div><div class="why">' + esc(res.message || 'Verifikasi gagal.') + '</div>' + btn();
+      return;
+    }
+    const r = res.result;
+    const head = r.allowed
+      ? '<div class="banner ok">VALID<br>DIIZINKAN MASUK<small>' + esc(r.id) + ' • ' + esc(r.company) + '</small></div>'
+      : '<div class="banner no">DILARANG MASUK<small>' + esc(r.id) + ' • ' + esc(r.company) + '</small></div>';
+    const why = (r.reasons || []).length ? '<div class="why"><b>Alasan:</b><br>' + r.reasons.map(esc).join('<br>') + '</div>' : '';
+    const warn = (r.warnings || []).length ? '<div class="warn">' + r.warnings.map(esc).join('<br>') + '</div>' : '';
+    const rows = (r.workers || []).map((w, i) => '<tr><td>' + (i + 1) + '</td><td>' + v(w.nama) + '</td><td>' + esc(ROLE[w.role] || w.role) + '</td><td>' + v(w.jabatan) + '</td><td><b>' + v(w.last4) + '</b></td><td>' +
+      (w.eligible ? '<span class="g">ELIGIBLE</span>' : '<span class="r">TIDAK ELIGIBLE</span>') + '</td></tr>').join('') || '<tr><td colspan="6">Belum ada personel terdaftar.</td></tr>';
+    const veh = r.vehicle ? '<div class="card"><h2>Kendaraan</h2><dl><div><dt>No. Polisi</dt><dd>' + v(r.vehicle.nopol) + '</dd></div><div><dt>Jenis</dt><dd>' + v(r.vehicle.jenis) +
+      '</dd></div><div><dt>KIR s/d</dt><dd>' + v(r.vehicle.kirExpiry) + '</dd></div><div><dt>Hasil HSE</dt><dd class="' + (r.vehicle.hasil === 'LAYAK' ? 'g' : 'r') + '">' + v(r.vehicle.hasil) + '</dd></div></dl></div>' : '';
+    app.innerHTML = head + why + warn +
+      '<div class="card"><h2>Informasi Izin Kerja</h2><dl>' +
+      '<div><dt>Status</dt><dd>' + v(r.status) + '</dd></div>' +
+      '<div><dt>Berlaku</dt><dd>' + v(r.validFrom) + '<br>s/d ' + v(r.validUntil) + '</dd></div>' +
+      '<div><dt>Area</dt><dd>' + v(r.area) + ' — ' + v(r.subArea) + '</dd></div>' +
+      '<div><dt>Jenis izin</dt><dd>' + esc((r.jenis || []).join(', ') || '-') + '</dd></div>' +
+      '<div><dt>Kode LOTO</dt><dd>' + v(r.loto) + '</dd></div>' +
+      '<div><dt>Pekerjaan</dt><dd>' + v(r.uraian) + '</dd></div></dl></div>' + veh +
+      '<div class="card"><h2>Daftar Pekerja (cocokkan wajah &amp; KTP)</h2><div class="scroll"><table><thead><tr><th>No</th><th>Nama</th><th>Peran</th><th>Jabatan</th><th>4 digit KTP</th><th>K3</th></tr></thead><tbody>' + rows + '</tbody></table></div></div>' +
+      btn() + '<div class="foot">Status real-time server: ' + esc(r.checkedAt) + '</div>';
+  }
+  const btn = () => '<button onclick="run()">↻ Periksa ulang</button>';
+
+  async function run() {
+    app.innerHTML = '<div class="banner wait">Memeriksa…<small>Menghubungi server</small></div>';
+    if (!id || !sig) return render({ success: false, message: 'Tautan verifikasi tidak lengkap. Pindai ulang QR pada Gate Pass.' });
+    try {
+      const res = await fetch(GAS_API_URL, { method: 'POST', redirect: 'follow', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ action: 'VERIFY_GATEPASS', id: id, sig: sig }) });
+      render(await res.json());
+    } catch (e) {
+      app.innerHTML = '<div class="banner wait">TIDAK TERHUBUNG<small>Periksa sinyal, lalu coba lagi. Jangan izinkan masuk tanpa verifikasi.</small></div>' + btn();
+    }
+  }
+  run();
+</script>
+</body>
+</html>
