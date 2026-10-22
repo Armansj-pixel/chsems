@@ -127,7 +127,7 @@
           <div class="w-2.5 h-6 bg-red-600 rounded-sm"></div>
           <div>
             <div class="text-xs font-bold tracking-wider text-white uppercase leading-none">ELSEWEDY ELECTRIC</div>
-            <div class="text-[10px] font-mono text-zinc-500 mt-0.5">ID-CLG • EHS SUITE v4.0</div>
+            <div class="text-[10px] font-mono text-zinc-500 mt-0.5">ID-CLG • EHS SUITE v4.1</div>
           </div>
         </div>
       </div>
@@ -543,7 +543,7 @@
             <button data-act="ttab" data-v="QUIZ" class="ttab-btn px-3 py-1.5 text-xs font-medium rounded border bg-white text-zinc-700 border-zinc-300">Kuis Induksi Vendor</button>
           </div>
           <div id="tpanel-TBM"><div class="bg-white border border-zinc-200 rounded"><div class="px-4 py-3 border-b border-zinc-200 flex flex-wrap items-center justify-between gap-2"><div><h3 class="text-xs font-semibold uppercase tracking-wider">Log Toolbox Meeting (TBM)</h3><p class="text-[11px] text-zinc-500">Pelaksanaan TBM harian per area.</p></div><div class="flex flex-wrap items-center gap-2"><button data-act="tbm-new" data-roles="HSE_OFFICER,SUPERVISOR"  class="text-xs bg-zinc-900 hover:bg-zinc-800 text-white px-3 py-1.5 rounded font-medium">+ Catat TBM</button></div></div><div class="overflow-x-auto"><table class="rt w-full text-left text-xs"><thead><tr class="bg-zinc-50 border-b border-zinc-200 text-[11px] font-mono uppercase text-zinc-500"><th class="py-2.5 px-3">ID</th><th class="py-2.5 px-3">Tanggal</th><th class="py-2.5 px-3">Area</th><th class="py-2.5 px-3">Topik</th><th class="py-2.5 px-3">Pemimpin</th><th class="py-2.5 px-3">Peserta</th></tr></thead><tbody id="tbmBody" class="divide-y divide-zinc-200"></tbody></table></div></div></div>
-          <div id="tpanel-MATRIX" class="hidden"><div class="bg-white border border-zinc-200 rounded"><div class="px-4 py-3 border-b border-zinc-200 flex flex-wrap items-center justify-between gap-2"><div><h3 class="text-xs font-semibold uppercase tracking-wider">Matriks Pelatihan Internal</h3><p class="text-[11px] text-zinc-500">ERP, P3K, Pemadam Kebakaran, K3 Umum. Hanya personel yang punya catatan pelatihan yang tampil.</p></div><div class="flex flex-wrap items-center gap-2"><button data-act="train-new" data-roles="HSE_OFFICER"  class="text-xs bg-zinc-900 hover:bg-zinc-800 text-white px-3 py-1.5 rounded font-medium">+ Catat Pelatihan</button></div></div><div class="overflow-x-auto"><table class="rt w-full text-left text-xs"><thead id="matHead"></thead><tbody id="matBody" class="divide-y divide-zinc-200"></tbody></table></div></div></div>
+          <div id="tpanel-MATRIX" class="hidden"><div class="bg-white border border-zinc-200 rounded"><div class="px-4 py-3 border-b border-zinc-200 flex flex-wrap items-center justify-between gap-2"><div><h3 class="text-xs font-semibold uppercase tracking-wider">Matriks Pelatihan Internal</h3><p class="text-[11px] text-zinc-500">ERP, P3K, Pemadam Kebakaran, K3 Umum. Hanya personel yang punya catatan pelatihan yang tampil.</p></div><div class="flex flex-wrap items-center gap-2"><button data-act="train-new" data-roles="HSE_OFFICER"  class="text-xs bg-zinc-900 hover:bg-zinc-800 text-white px-3 py-1.5 rounded font-medium">+ Catat Pelatihan</button> <button data-act="train-del" data-roles="HSE_OFFICER" class="text-xs border border-zinc-300 hover:bg-zinc-50 px-3 py-1.5 rounded font-medium">Hapus Catatan</button></div></div><div class="overflow-x-auto"><table class="rt w-full text-left text-xs"><thead id="matHead"></thead><tbody id="matBody" class="divide-y divide-zinc-200"></tbody></table></div></div></div>
           <div id="tpanel-QUIZ" class="hidden space-y-4"><div class="bg-white border border-zinc-200 rounded"><div class="px-4 py-3 border-b border-zinc-200 flex flex-wrap items-center justify-between gap-2"><div><h3 class="text-xs font-semibold uppercase tracking-wider">Kuis Induksi Keselamatan</h3><p class="text-[11px] text-zinc-500">Dinilai di server; kunci jawaban tidak pernah dikirim ke vendor. Pekerja vendor mengerjakan kuis dari menu Vendor › Induksi.</p></div><div class="flex flex-wrap items-center gap-2"><button data-act="quiz-new" data-roles="HSE_OFFICER"  class="text-xs bg-zinc-900 hover:bg-zinc-800 text-white px-3 py-1.5 rounded font-medium">+ Kuis Baru</button></div></div><div class="overflow-x-auto"><table class="rt w-full text-left text-xs"><thead><tr class="bg-zinc-50 border-b border-zinc-200 text-[11px] font-mono uppercase text-zinc-500"><th class="py-2.5 px-3">ID</th><th class="py-2.5 px-3">Judul</th><th class="py-2.5 px-3">Soal</th><th class="py-2.5 px-3">Nilai Lulus</th><th class="py-2.5 px-3">Status</th><th class="py-2.5 px-3">Hasil</th><th class="py-2.5 px-3">Aksi</th></tr></thead><tbody id="quizBody" class="divide-y divide-zinc-200"></tbody></table></div></div><div class="bg-white border border-zinc-200 rounded"><div class="px-4 py-3 border-b border-zinc-200 flex flex-wrap items-center justify-between gap-2"><div><h3 class="text-xs font-semibold uppercase tracking-wider">Hasil Kuis Terbaru</h3><p class="text-[11px] text-zinc-500">20 percobaan terakhir.</p></div><div class="flex flex-wrap items-center gap-2"></div></div><div class="overflow-x-auto"><table class="rt w-full text-left text-xs"><thead><tr class="bg-zinc-50 border-b border-zinc-200 text-[11px] font-mono uppercase text-zinc-500"><th class="py-2.5 px-3">Waktu</th><th class="py-2.5 px-3">Pekerja</th><th class="py-2.5 px-3">Vendor</th><th class="py-2.5 px-3">Kuis</th><th class="py-2.5 px-3">Skor</th><th class="py-2.5 px-3">Hasil</th></tr></thead><tbody id="quizResBody" class="divide-y divide-zinc-200"></tbody></table></div></div></div>
         </section>
         <section id="mod-REPORT" class="hidden max-w-3xl mx-auto">
@@ -1863,7 +1863,7 @@
     LOW: 'bg-zinc-50 text-zinc-600 border-zinc-200', MEDIUM: 'bg-zinc-100 text-zinc-800 border-zinc-300',
     HIGH: 'bg-amber-50 text-amber-800 border-amber-200', CRITICAL: 'bg-red-50 text-red-800 border-red-200', UNKNOWN: 'bg-zinc-100 text-zinc-500 border-zinc-300'
   };
-  const INC_LABEL = { NEAR_MISS: 'Near-Miss', FIRST_AID: 'First Aid', MEDICAL_TREATMENT: 'Medical Treatment', LTI: 'Lost Time Injury', PROPERTY_DAMAGE: 'Property Damage', ENV_SPILL: 'Environmental Spill' };
+  const INC_LABEL = { NEAR_MISS: 'Near-Miss', FIRST_AID: 'First Aid', MEDICAL_TREATMENT: 'Medical Treatment', LTI: 'Lost Time Injury', FATALITY: 'Fatality (Meninggal)', PROPERTY_DAMAGE: 'Property Damage', ENV_SPILL: 'Environmental Spill' };
   const INC_STATUS = {
     REPORTED: ['DILAPORKAN', 'bg-amber-50 text-amber-800 border-amber-200'],
     INVESTIGATING: ['INVESTIGASI', 'bg-blue-50 text-blue-800 border-blue-200'],
@@ -1995,8 +1995,11 @@
       kpiCard('Severity Rate', m.severityRate === null || m.severityRate === undefined ? '—' : String(m.severityRate), 'hari hilang x ' + fmtNum(m.rateBase) + ' / jam kerja') +
       kpiCard('LTI Tahun Ini', fmtNum(m.ltiYtd), fmtNum(m.incidentsYtd) + ' kejadian • ' + fmtNum(m.lostDaysYtd) + ' hari hilang', m.ltiYtd ? 'bad' : '');
     const warn = $('incWarn');
-    warn.classList.toggle('hidden', !m.hoursMissing);
-    warn.textContent = 'Jam kerja tahun ini belum diisi, sehingga Frequency Rate dan Severity Rate belum dapat dihitung. Isi lewat tombol "Jam Kerja Bulanan".';
+    const mp = m.missingPeriods || [];
+    warn.classList.toggle('hidden', !m.hoursMissing && !mp.length);
+    warn.textContent = m.hoursMissing
+      ? 'Jam kerja tahun ini belum diisi, sehingga Frequency Rate dan Severity Rate belum dapat dihitung. Isi lewat tombol "Jam Kerja Bulanan".'
+      : 'Jam kerja belum diisi untuk periode: ' + mp.join(', ') + '. Frequency Rate dan Severity Rate bisa tidak akurat sampai data dilengkapi.';
     const canInv = hasRole('HSE_OFFICER');
     $('incBody').innerHTML = list.length ? list.map(i => {
       const st = INC_STATUS[i.Status] || [i.Status, LEVEL_CLS.UNKNOWN];
@@ -2007,11 +2010,12 @@
       } else if (canInv && i.Status === 'ACTION_ISSUED') {
         act = `<button data-act="inc-close" data-id="${esc(i.Incident_ID)}" class="bg-emerald-600 text-white px-2.5 py-1 rounded font-mono text-[10px]">Tutup Insiden</button>`;
       }
+      if (canInv) act += ` <button data-act="inc-edit" data-id="${esc(i.Incident_ID)}" class="border border-zinc-300 px-2.5 py-1 rounded font-mono text-[10px]">Koreksi</button>`;
       const whys = (i.Why_List || []).length ? `<details class="mt-1"><summary class="cursor-pointer text-[11px] text-zinc-500">Analisis 5-Why</summary><ol class="list-decimal pl-4 text-[11px] text-zinc-600 mt-1 space-y-0.5">${i.Why_List.map(w => `<li>${esc(w)}</li>`).join('')}</ol>${i.Akar_Masalah ? `<div class="text-[11px] mt-1"><b>Akar masalah:</b> ${esc(i.Akar_Masalah)}</div>` : ''}</details>` : '';
       const capas = (i.CAPA_List || []).length ? `<div class="text-[10px] font-mono text-zinc-500 mt-1">CAPA: ${esc(i.CAPA_List.join(', '))}</div>` : '';
       return `<tr class="hover:bg-zinc-50/80 align-top">
         <td class="py-2.5 px-3 font-mono font-semibold whitespace-nowrap">${esc(i.Incident_ID)}<div class="text-[10px] text-zinc-400 font-normal">${esc(i.Tanggal)} ${esc(i.Waktu)}</div></td>
-        <td class="py-2.5 px-3">${badge(INC_LABEL[i.Jenis] || i.Jenis, 'bg-zinc-100 text-zinc-800 border-zinc-300')}${i.Jenis === 'LTI' ? `<div class="text-[10px] font-mono text-red-700 mt-1">${esc(i.Hari_Hilang)} hari hilang</div>` : ''}</td>
+        <td class="py-2.5 px-3">${badge(INC_LABEL[i.Jenis] || i.Jenis, 'bg-zinc-100 text-zinc-800 border-zinc-300')}${(i.Jenis === 'LTI' || i.Jenis === 'FATALITY') ? `<div class="text-[10px] font-mono text-red-700 mt-1">${esc(i.Hari_Hilang)} hari hilang</div>` : ''}</td>
         <td class="py-2.5 px-3">${areaTag(i.Area_Hall)}<div class="text-[11px] text-zinc-600 mt-1">${esc(i.Sub_Area)}</div>${i.Lokasi_Spesifik ? `<div class="text-[10px] text-zinc-400">${esc(i.Lokasi_Spesifik)}</div>` : ''}</td>
         <td class="py-2.5 px-3 min-w-[220px]">${esc(i.Uraian)}${i.Korban_Nama ? `<div class="text-[11px] text-zinc-500 mt-1">Korban: ${esc(i.Korban_Nama)}${i.Korban_NIK ? ' (' + esc(i.Korban_NIK) + ')' : ''}</div>` : ''}${whys}${capas}</td>
         <td class="py-2.5 px-3">${riskBadge(i.Tingkat_Risiko)}</td>
@@ -2110,7 +2114,7 @@
     const since = shiftDate(-30);
     const exceeded = env.filter(e => e.Status_Kepatuhan === 'EXCEEDED');
     const recentEx = exceeded.filter(e => e.Tanggal >= since).length;
-    const overdueSch = env.filter(e => ['EXPIRED'].includes(e.Jadwal_Level)).length;
+    const overdueSch = env.filter(e => e.Is_Latest !== false && e.Jadwal_Level === 'EXPIRED').length;
     $('envSummary').innerHTML = kpiCard('Hasil Uji Tercatat', env.length) + kpiCard('Melebihi Baku Mutu', exceeded.length, recentEx + ' dalam 30 hari terakhir', recentEx ? 'bad' : '') +
       kpiCard('Jadwal Uji Terlewat', overdueSch, '', overdueSch ? 'warn' : '') + kpiCard('Periode ESG Terisi', esg.length);
     $('envBody').innerHTML = env.length ? env.map(e => {
@@ -2120,10 +2124,10 @@
         <td class="py-2.5 px-3">${badge(ENV_LABEL[e.Kategori] || e.Kategori, 'bg-zinc-100 text-zinc-800 border-zinc-300')}</td>
         <td class="py-2.5 px-3"><div class="font-medium">${esc(e.Parameter)}</div><div class="text-[11px] text-zinc-500">${esc(e.Lokasi)}</div></td>
         <td class="py-2.5 px-3 font-mono font-semibold whitespace-nowrap">${esc(e.Hasil)} ${esc(e.Satuan)}</td>
-        <td class="py-2.5 px-3 font-mono whitespace-nowrap text-zinc-600">${esc(e.Operator_BM)} ${esc(e.Baku_Mutu)} ${esc(e.Satuan)}</td>
+        <td class="py-2.5 px-3 font-mono whitespace-nowrap text-zinc-600">${esc(e.Operator_BM === 'RANGE' ? 'rentang ' + String(e.Baku_Mutu).replace('..', ' – ') : e.Operator_BM + ' ' + e.Baku_Mutu)} ${esc(e.Satuan)}</td>
         <td class="py-2.5 px-3">${st}</td>
         <td class="py-2.5 px-3">${esc(e.Lab || '-')}${e.Laporan_URL ? '<div>' + evidenceLink(e.Laporan_URL) + '</div>' : ''}</td>
-        <td class="py-2.5 px-3 font-mono whitespace-nowrap">${e.Jadwal_Berikutnya ? esc(e.Jadwal_Berikutnya) + '<div class="mt-0.5">' + levelBadge(e.Jadwal_Level, e.Jadwal_Days) + '</div>' : '<span class="text-zinc-400">-</span>'}</td></tr>`;
+        <td class="py-2.5 px-3 font-mono whitespace-nowrap">${e.Jadwal_Berikutnya ? esc(e.Jadwal_Berikutnya) + (e.Is_Latest === false ? '<div class="text-[10px] text-zinc-400 mt-0.5">digantikan uji terbaru</div>' : '<div class="mt-0.5">' + levelBadge(e.Jadwal_Level, e.Jadwal_Days) + '</div>') : '<span class="text-zinc-400">-</span>'}</td></tr>`;
     }).join('') : emptyRow(8, 'Belum ada hasil uji lingkungan.');
     labelCells($('envBody'));
     const rev = esg.slice().reverse();
@@ -2142,7 +2146,7 @@
 
   function renderTraining() {
     const tbm = dflt('tbmLogs', []);
-    $('tbmBody').innerHTML = tbm.length ? tbm.map(t => `<tr class="align-top hover:bg-zinc-50/80"><td class="py-2.5 px-3 font-mono font-semibold">${esc(t.TBM_ID)}</td><td class="py-2.5 px-3 font-mono">${esc(t.Tanggal)}</td><td class="py-2.5 px-3">${areaTag(t.Area_Hall)}<div class="text-[11px] text-zinc-600 mt-1">${esc(t.Sub_Area)}</div></td><td class="py-2.5 px-3 min-w-[200px]">${esc(t.Topik)}${t.Catatan ? '<div class="text-[11px] text-zinc-500">' + esc(t.Catatan) + '</div>' : ''}</td><td class="py-2.5 px-3">${esc(t.Pemimpin)}</td><td class="py-2.5 px-3 font-mono">${esc(t.Jumlah_Peserta)}</td></tr>`).join('') : emptyRow(6, 'Belum ada TBM tercatat.');
+    $('tbmBody').innerHTML = tbm.length ? tbm.map(t => `<tr class="align-top hover:bg-zinc-50/80"><td class="py-2.5 px-3 font-mono font-semibold">${esc(t.TBM_ID)}${hasRole('HSE_OFFICER') ? '<div><button data-act="tbm-del" data-id="' + esc(t.TBM_ID) + '" class="mt-1 text-[10px] text-red-700 underline font-normal">Hapus</button></div>' : ''}</td><td class="py-2.5 px-3 font-mono">${esc(t.Tanggal)}</td><td class="py-2.5 px-3">${areaTag(t.Area_Hall)}<div class="text-[11px] text-zinc-600 mt-1">${esc(t.Sub_Area)}</div></td><td class="py-2.5 px-3 min-w-[200px]">${esc(t.Topik)}${t.Catatan ? '<div class="text-[11px] text-zinc-500">' + esc(t.Catatan) + '</div>' : ''}</td><td class="py-2.5 px-3">${esc(t.Pemimpin)}</td><td class="py-2.5 px-3 font-mono">${esc(t.Jumlah_Peserta)}</td></tr>`).join('') : emptyRow(6, 'Belum ada TBM tercatat.');
     labelCells($('tbmBody'));
 
     const types = (dflt('v4Config', {}).trainingTypes) || Object.keys(TRAIN_LABEL);
@@ -2150,7 +2154,7 @@
     const mat = dflt('trainingMatrix', []);
     $('matBody').innerHTML = mat.length ? mat.map(m => `<tr class="align-top"><td class="py-2.5 px-3 font-medium">${esc(m.Nama || m.NIK)}<div class="text-[10px] font-mono text-zinc-400">${esc(m.NIK)} • ${esc(m.Departemen)}</div></td>${types.map(t => {
       const c = (m.Pelatihan || {})[t];
-      return `<td class="py-2.5 px-3" data-label="${esc(TRAIN_LABEL[t] || t)}">${c ? (c.Expiry ? levelBadge(c.Level, c.Days_Left) + '<div class="text-[10px] font-mono text-zinc-400 mt-0.5">' + esc(c.Expiry) + '</div>' : badge('TANPA MASA BERLAKU', LEVEL_CLS.OK) + '<div class="text-[10px] font-mono text-zinc-400 mt-0.5">' + esc(c.Tanggal) + '</div>') : '<span class="text-zinc-400">—</span>'}</td>`;
+      return `<td class="py-2.5 px-3" data-label="${esc(TRAIN_LABEL[t] || t)}">${c ? (c.Expiry ? levelBadge(c.Level, c.Days_Left) + '<div class="text-[10px] font-mono text-zinc-400 mt-0.5">' + esc(c.Expiry) + '</div>' : badge('TANPA MASA BERLAKU', LEVEL_CLS.OK) + '<div class="text-[10px] font-mono text-zinc-400 mt-0.5">' + esc(c.Tanggal) + '</div>') + '<div class="text-[10px] font-mono text-zinc-300">' + esc(c.Rec_ID) + '</div>' : '<span class="text-zinc-400">—</span>'}</td>`;
     }).join('')}</tr>`).join('') : emptyRow(types.length + 1, 'Belum ada catatan pelatihan.');
     labelCells($('matBody'));
 
@@ -2237,7 +2241,7 @@
     let b3list = '';
     if ((r.b3.nearOrOverLimit || []).length) b3list = '<table><tr><th>ID</th><th>Limbah</th><th>Kode</th><th>Volume</th><th>Sisa hari</th></tr>' + r.b3.nearOrOverLimit.map(x => `<tr><td>${esc(x.id)}</td><td>${esc(x.item)}</td><td>${esc(x.kode)}</td><td>${esc(x.volume)}</td><td>${esc(x.daysLeft)}</td></tr>`).join('') + '</table>';
     let envList = '';
-    if ((r.environment.exceededList || []).length) envList = '<table><tr><th>Kategori</th><th>Parameter</th><th>Lokasi</th><th>Hasil</th><th>Baku mutu</th></tr>' + r.environment.exceededList.map(x => `<tr><td>${esc(ENV_LABEL[x.kategori] || x.kategori)}</td><td>${esc(x.parameter)}</td><td>${esc(x.lokasi)}</td><td>${esc(x.hasil)} ${esc(x.satuan)}</td><td>${esc(x.op)} ${esc(x.baku)} ${esc(x.satuan)}</td></tr>`).join('') + '</table>';
+    if ((r.environment.exceededList || []).length) envList = '<table><tr><th>Kategori</th><th>Parameter</th><th>Lokasi</th><th>Hasil</th><th>Baku mutu</th></tr>' + r.environment.exceededList.map(x => `<tr><td>${esc(ENV_LABEL[x.kategori] || x.kategori)}</td><td>${esc(x.parameter)}</td><td>${esc(x.lokasi)}</td><td>${esc(x.hasil)} ${esc(x.satuan)}</td><td>${esc(x.op === 'RANGE' ? 'rentang ' + String(x.baku).replace('..', ' – ') : x.op + ' ' + x.baku)} ${esc(x.satuan)}</td></tr>`).join('') + '</table>';
     const esg = r.environment.esg;
     $('execSheet').innerHTML = `
       <div class="gp-head"><div><div class="gp-co">PT. ELSEWEDY ELECTRIC INDONESIA</div><div class="gp-dept">Departemen EHS • Cileungsi Plant</div></div><div style="text-align:right;font-size:10px">Dicetak: ${esc(r.generatedAt)}<br>Oleh: ${esc(r.generatedBy)}</div></div>
@@ -2278,7 +2282,7 @@
       ${h('6. Kompetensi Personel')}
       ${kvRows([
         ['Personel eligible (MCU FIT & SIO berlaku)', `${esc(r.competency.eligible)} dari ${esc(r.competency.employees)}`],
-        ['SIO kedaluwarsa/kritis', esc(r.competency.sioExpiredOrCritical)], ['MCU tidak layak/kedaluwarsa/kritis', esc(r.competency.mcuBlockedOrExpired)]
+        ['SIO kedaluwarsa/kritis', esc(r.competency.sioExpiredOrCritical)], ['MCU tidak layak/kedaluwarsa/kritis', esc(r.competency.mcuBlockedOrExpired === null || r.competency.mcuBlockedOrExpired === undefined ? '— (khusus HSE/Supervisor)' : r.competency.mcuBlockedOrExpired)]
       ])}
       ${h('7. Kinerja Vendor (CSMS)')}
       ${kvRows([
@@ -2340,11 +2344,34 @@
         { key: 'uraian', label: 'Uraian kejadian (apa, bagaimana, dampak)', type: 'textarea', min: 10 },
         { key: 'risk', label: 'Tingkat risiko / potensi keparahan', type: 'select', options: RISK_ORDER(), value: 'MEDIUM' },
         { key: 'korbanNik', label: 'NIK korban (wajib untuk First Aid, Medical Treatment, LTI)', required: false },
-        { key: 'hariHilang', label: 'Hari kerja hilang (khusus LTI)', type: 'number', required: false }
+        { key: 'hariHilang', label: 'Hari kerja hilang (LTI; Fatality otomatis 6000 bila kosong)', type: 'number', required: false }
       ], 'Laporkan segera. Kejadian akan menandai HIRADC di sub-area terkait untuk direview.', { okLabel: 'Kirim laporan' });
       if (!r) return;
       const as = splitAS(r.as);
       mutate({ action: 'INCIDENT_REPORT', type: r.type, tanggal: r.tanggal, waktu: r.waktu, area: as.area, subArea: as.sub, location: r.location, uraian: r.uraian, risk: r.risk, korbanNik: r.korbanNik, hariHilang: r.hariHilang }, el, '...');
+    },
+    'inc-edit': async el => {
+      const inc = dflt('incidents', []).find(x => x.Incident_ID === el.dataset.id);
+      if (!inc) return;
+      const r = await mkAsk('Koreksi ' + inc.Incident_ID, [
+        { key: 'type', label: 'Jenis kejadian', type: 'select', options: selOpts(Object.keys(INC_LABEL), INC_LABEL), value: inc.Jenis },
+        { key: 'risk', label: 'Tingkat risiko', type: 'select', options: RISK_ORDER(), value: inc.Tingkat_Risiko },
+        { key: 'hariHilang', label: 'Hari kerja hilang (LTI / Fatality)', type: 'number', required: false, value: inc.Hari_Hilang && inc.Hari_Hilang !== '0' ? inc.Hari_Hilang : '' },
+        { key: 'korbanNik', label: 'NIK korban (isi bila belum tercatat)', required: false, value: inc.Korban_NIK || '' },
+        { key: 'reason', label: 'Alasan koreksi', min: 5 }
+      ], 'Nilai lama dan baru tercatat di audit log.', { okLabel: 'Simpan koreksi' });
+      if (r) mutate({ action: 'INCIDENT_UPDATE', incidentId: inc.Incident_ID, type: r.type, risk: r.risk, hariHilang: r.hariHilang, korbanNik: r.korbanNik, reason: r.reason }, el, '...');
+    },
+    'tbm-del': async el => {
+      const r = await mkAsk('Hapus TBM ' + el.dataset.id, [{ key: 'reason', label: 'Alasan penghapusan (mis. salah input)', min: 5 }], 'Data dihapus dari register; jejaknya tetap ada di audit log.', { okLabel: 'Hapus' });
+      if (r) mutate({ action: 'TBM_DELETE', tbmId: el.dataset.id, reason: r.reason }, el, '...');
+    },
+    'train-del': async el => {
+      const r = await mkAsk('Hapus catatan pelatihan', [
+        { key: 'recId', label: 'ID catatan (tampil di matriks, mis. TR-0001)', min: 3 },
+        { key: 'reason', label: 'Alasan penghapusan (mis. salah input)', min: 5 }
+      ], 'Data dihapus dari register; jejaknya tetap ada di audit log.', { okLabel: 'Hapus' });
+      if (r) mutate({ action: 'TRAINING_DELETE', recId: r.recId, reason: r.reason }, el, '...');
     },
     'inc-investigate': el => runInvestigation(el.dataset.id),
     'inc-close': async el => {
@@ -2407,13 +2434,15 @@
         { key: 'tanggal', label: 'Tanggal uji', type: 'date', value: shiftDate(0) },
         { key: 'hasil', label: 'Hasil uji (angka)', type: 'number' },
         { key: 'satuan', label: 'Satuan (mis. µg/m³, dB(A), lux)', required: false },
-        { key: 'bakuMutu', label: 'Nilai baku mutu (angka)', type: 'number' },
-        { key: 'operator', label: 'Hasil harus', type: 'select', options: [{ value: '<=', label: 'tidak melebihi baku mutu (≤)' }, { value: '>=', label: 'tidak kurang dari baku mutu (≥, mis. pencahayaan)' }] },
+        { key: 'bakuMutu', label: 'Nilai baku mutu (angka; kosongkan bila memakai rentang)', type: 'number', required: false },
+        { key: 'bakuMin', label: 'Batas bawah (khusus rentang, mis. pH 6)', type: 'number', required: false },
+        { key: 'bakuMax', label: 'Batas atas (khusus rentang, mis. pH 9)', type: 'number', required: false },
+        { key: 'operator', label: 'Hasil harus', type: 'select', options: [{ value: '<=', label: 'tidak melebihi baku mutu (≤)' }, { value: '>=', label: 'tidak kurang dari baku mutu (≥, mis. pencahayaan)' }, { value: 'RANGE', label: 'berada dalam rentang batas bawah–atas (mis. pH 6–9)' }] },
         { key: 'lab', label: 'Laboratorium / pelaksana (opsional)', required: false },
         { key: 'laporanUrl', label: 'Tautan laporan uji (Drive/Docs, opsional)', type: 'url', required: false },
         { key: 'nextDue', label: 'Jadwal uji berikutnya (opsional)', type: 'date', required: false }
       ], 'Status kepatuhan dihitung otomatis oleh server.', { okLabel: 'Simpan' });
-      if (r) mutate({ action: 'ENV_SAVE', kategori: r.kategori, parameter: r.parameter, lokasi: r.lokasi, tanggal: r.tanggal, hasil: r.hasil, satuan: r.satuan, bakuMutu: r.bakuMutu, operator: r.operator, lab: r.lab, laporanUrl: r.laporanUrl, nextDue: r.nextDue }, el, '...');
+      if (r) mutate({ action: 'ENV_SAVE', kategori: r.kategori, parameter: r.parameter, lokasi: r.lokasi, tanggal: r.tanggal, hasil: r.hasil, satuan: r.satuan, bakuMutu: r.bakuMutu, bakuMin: r.bakuMin, bakuMax: r.bakuMax, operator: r.operator, lab: r.lab, laporanUrl: r.laporanUrl, nextDue: r.nextDue }, el, '...');
     },
     'esg-new': async el => {
       const r = await mkAsk('Data utilitas & ESG bulanan', [
@@ -2497,9 +2526,9 @@
     const since = shiftDate(-30);
     const ex = dflt('envMonitoring', []).filter(e => e.Status_Kepatuhan === 'EXCEEDED' && e.Tanggal >= since).length;
     if (ex) a.push({ lv: 'CRITICAL', t: `${ex} hasil uji lingkungan melebihi baku mutu (30 hari terakhir)`, mod: 'ENVIRO' });
-    const sch = dflt('envMonitoring', []).filter(e => e.Jadwal_Level === 'EXPIRED').length;
+    const sch = dflt('envMonitoring', []).filter(e => e.Is_Latest !== false && e.Jadwal_Level === 'EXPIRED').length;
     if (sch) a.push({ lv: 'WARNING', t: `${sch} jadwal uji lingkungan terlewat`, mod: 'ENVIRO' });
-    const tr = dflt('trainingRecords', []).filter(t => ['EXPIRED', 'CRITICAL'].includes(t.Level)).length;
+    const tr = dflt('trainingRecords', []).filter(t => t.Is_Latest !== false && ['EXPIRED', 'CRITICAL'].includes(t.Level)).length;
     if (tr) a.push({ lv: 'WARNING', t: `${tr} sertifikat pelatihan kedaluwarsa/kritis`, mod: 'TRAINING' });
   }
 
