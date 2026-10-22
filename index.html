@@ -54,10 +54,13 @@
     @media print {
       @page { size: A4; margin: 10mm; }
       html, body { background:#fff !important; height:auto !important; overflow:visible !important; }
-      body > *:not(#modalGatePass) { display:none !important; }
+      body > *:not(#modalGatePass):not(#modalExec) { display:none !important; }
       #modalGatePass.hidden { display:none !important; }
       #modalGatePass:not(.hidden) { display:block !important; position:static !important; background:none !important; padding:0 !important; overflow:visible !important; }
       #modalGatePass .gp-ui { display:none !important; }
+      #modalExec.hidden { display:none !important; }
+      #modalExec:not(.hidden) { display:block !important; position:static !important; background:none !important; padding:0 !important; overflow:visible !important; }
+      #modalExec .gp-ui { display:none !important; }
       .gp-sheet { max-width:none; width:auto; padding:0; box-shadow:none !important; }
       .gp-sheet tr, .gp-sign > div { page-break-inside:avoid; }
       * { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
@@ -72,8 +75,8 @@
       <div class="px-5 py-4 border-b border-zinc-200 flex items-center gap-2.5">
         <div class="w-2.5 h-7 bg-red-600 rounded-sm"></div>
         <div>
-          <div class="text-xs font-bold tracking-wider uppercase leading-none">Elsewedy Electric Indonesia</div>
-          <div class="text-[10px] font-mono text-zinc-500 mt-1">EHS SUITE v3.3 • CILEUNGSI PLANT</div>
+          <div class="text-xs font-bold tracking-wider uppercase leading-none">Elsewedy Electric</div>
+          <div class="text-[10px] font-mono text-zinc-500 mt-1">EHS SUITE v3.1 • CILEUNGSI PLANT</div>
         </div>
       </div>
       <form id="loginForm" class="p-5 space-y-3 text-xs" autocomplete="off">
@@ -124,7 +127,7 @@
           <div class="w-2.5 h-6 bg-red-600 rounded-sm"></div>
           <div>
             <div class="text-xs font-bold tracking-wider text-white uppercase leading-none">ELSEWEDY ELECTRIC</div>
-            <div class="text-[10px] font-mono text-zinc-500 mt-0.5">ID-CLG • EHS SUITE v3.3</div>
+            <div class="text-[10px] font-mono text-zinc-500 mt-0.5">ID-CLG • EHS SUITE v4.0</div>
           </div>
         </div>
       </div>
@@ -154,6 +157,17 @@
             <button data-act="nav" data-v="SIO_MCU" data-roles="HSE_OFFICER,SUPERVISOR,VIEWER,LIMITED_OFFICER" class="navbtn w-full flex items-center px-2.5 py-2 rounded"><span>Kompetensi (SIO & MCU)</span></button>
             <button data-act="nav" data-v="PAA_B3" data-roles="HSE_OFFICER,SUPERVISOR,VIEWER,LIMITED_OFFICER" class="navbtn w-full flex items-center px-2.5 py-2 rounded"><span>SIA Alat Angkat & TPS B3</span></button>
             <button data-act="nav" data-v="VENDOR" data-roles="HSE_OFFICER,SUPERVISOR,VIEWER,VENDOR_ADMIN" class="navbtn w-full flex items-center justify-between px-2.5 py-2 rounded"><span>Vendor & PTW Vendor</span><span id="badge-vptw" class="font-mono text-[10px] bg-zinc-900 text-zinc-300 px-1.5 py-0.5 rounded border border-zinc-700">0</span></button>
+          </nav>
+        </div>
+        <div data-roles="HSE_OFFICER,SUPERVISOR,VIEWER,LIMITED_OFFICER">
+          <div class="px-2.5 mb-1.5 text-[10px] font-mono uppercase tracking-wider text-zinc-500">Sistem Manajemen EHS</div>
+          <nav class="space-y-0.5 text-xs font-medium">
+            <button data-act="nav" data-v="HIRADC" data-roles="HSE_OFFICER,SUPERVISOR,VIEWER,LIMITED_OFFICER" class="navbtn w-full flex items-center justify-between px-2.5 py-2 rounded"><span>HIRADC & Aspek Lingkungan</span><span id="badge-hrd" class="font-mono text-[10px] bg-zinc-900 text-zinc-300 px-1.5 py-0.5 rounded border border-zinc-700">0</span></button>
+            <button data-act="nav" data-v="INCIDENT" data-roles="HSE_OFFICER,SUPERVISOR,VIEWER,LIMITED_OFFICER" class="navbtn w-full flex items-center justify-between px-2.5 py-2 rounded"><span>Insiden & Near-Miss</span><span id="badge-inc" class="font-mono text-[10px] bg-zinc-900 text-zinc-300 px-1.5 py-0.5 rounded border border-zinc-700">0</span></button>
+            <button data-act="nav" data-v="EMERGENCY" data-roles="HSE_OFFICER,SUPERVISOR,VIEWER,LIMITED_OFFICER" class="navbtn w-full flex items-center justify-between px-2.5 py-2 rounded"><span>Peralatan Tanggap Darurat</span><span id="badge-eq" class="font-mono text-[10px] bg-zinc-900 text-zinc-300 px-1.5 py-0.5 rounded border border-zinc-700">0</span></button>
+            <button data-act="nav" data-v="ENVIRO" data-roles="HSE_OFFICER,SUPERVISOR,VIEWER,LIMITED_OFFICER" class="navbtn w-full flex items-center px-2.5 py-2 rounded"><span>Lingkungan & ESG</span></button>
+            <button data-act="nav" data-v="TRAINING" data-roles="HSE_OFFICER,SUPERVISOR,VIEWER,LIMITED_OFFICER" class="navbtn w-full flex items-center px-2.5 py-2 rounded"><span>Pelatihan, TBM & Induksi</span></button>
+            <button data-act="nav" data-v="REPORT" data-roles="HSE_OFFICER,SUPERVISOR,VIEWER" class="navbtn w-full flex items-center px-2.5 py-2 rounded"><span>Laporan Eksekutif</span></button>
           </nav>
         </div>
         <div data-roles="HSE_OFFICER">
@@ -248,6 +262,7 @@
             </div>
             <form id="ptwForm" class="p-4 md:p-5 space-y-4 text-xs">
               <div id="ptwAlert" class="hidden p-3 rounded border text-xs font-mono"></div>
+              <div id="ptwHazard" class="hidden p-3 rounded border bg-amber-50 border-amber-300 text-xs"></div>
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label class="block font-medium text-zinc-700 mb-1">PIC / Operator <span class="font-normal text-zinc-400">(ketik NIK atau nama)</span></label>
@@ -411,6 +426,7 @@
             <button data-act="vtab" data-v="PTW" class="vtab-btn px-3 py-1.5 text-xs font-medium rounded border bg-zinc-900 text-white border-zinc-900">PTW Vendor</button>
             <button data-act="vtab" data-v="VENDORS" class="vtab-btn px-3 py-1.5 text-xs font-medium rounded border bg-white text-zinc-700 border-zinc-300">Master Vendor</button>
             <button data-act="vtab" data-v="WORKERS" class="vtab-btn px-3 py-1.5 text-xs font-medium rounded border bg-white text-zinc-700 border-zinc-300">Pekerja Vendor</button>
+            <button data-act="vtab" data-v="INDUKSI" class="vtab-btn px-3 py-1.5 text-xs font-medium rounded border bg-white text-zinc-700 border-zinc-300">Induksi (Kuis)</button>
           </div>
 
           <div id="vpanel-PTW" class="bg-white border border-zinc-200 rounded">
@@ -425,6 +441,16 @@
             <div class="overflow-x-auto"><table class="w-full text-left text-xs">
               <thead><tr class="bg-zinc-50 border-b border-zinc-200 text-[11px] font-mono uppercase text-zinc-500"><th class="py-2.5 px-3">PTW</th><th class="py-2.5 px-3">Vendor</th><th class="py-2.5 px-3">Jenis</th><th class="py-2.5 px-3">Lokasi & Pekerjaan</th><th class="py-2.5 px-3">Berlaku</th><th class="py-2.5 px-3">Status</th><th class="py-2.5 px-3">Aksi</th></tr></thead>
               <tbody id="vptwBody" class="divide-y divide-zinc-200"></tbody></table></div>
+          </div>
+
+          <div id="vpanel-INDUKSI" class="hidden bg-white border border-zinc-200 rounded">
+            <div class="px-4 py-3 border-b border-zinc-200">
+              <h3 class="text-xs font-semibold uppercase tracking-wider">Induksi Keselamatan Online</h3>
+              <p class="text-[11px] text-zinc-500">Pekerja mengerjakan kuis aktif. Skor dinilai server. Kelulusan menjadi syarat verifikasi HSE bila diwajibkan.</p>
+            </div>
+            <div class="overflow-x-auto"><table class="rt w-full text-left text-xs">
+              <thead><tr class="bg-zinc-50 border-b border-zinc-200 text-[11px] font-mono uppercase text-zinc-500"><th class="py-2.5 px-3">Pekerja</th><th class="py-2.5 px-3">Vendor</th><th class="py-2.5 px-3">Kuis</th><th class="py-2.5 px-3">Percobaan Terakhir</th><th class="py-2.5 px-3">Aksi</th></tr></thead>
+              <tbody id="indBody" class="divide-y divide-zinc-200"></tbody></table></div>
           </div>
 
           <div id="vpanel-VENDORS" class="hidden bg-white border border-zinc-200 rounded">
@@ -491,6 +517,48 @@
           </div>
         </section>
 
+        <section id="mod-HIRADC" class="hidden max-w-[1400px] mx-auto space-y-4">
+          <div id="hrdSummary" class="grid grid-cols-2 md:grid-cols-4 bg-white border border-zinc-200 rounded divide-x divide-y md:divide-y-0 divide-zinc-200"></div>
+          <div class="bg-white border border-zinc-200 rounded"><div class="px-4 py-3 border-b border-zinc-200 flex flex-wrap items-center justify-between gap-2"><div><h3 class="text-xs font-semibold uppercase tracking-wider">HIRADC & Register Aspek-Dampak Lingkungan</h3><p class="text-[11px] text-zinc-500">ISO 45001 & 14001 klausul 6.1. Risiko dihitung server (Likelihood x Severity). HIRADC otomatis ditandai review bila ada insiden atau CAPA CRITICAL di sub-area yang sama.</p></div><div class="flex flex-wrap items-center gap-2"><select id="hrdArea" class="text-xs border border-zinc-300 rounded px-2 py-1 bg-white font-mono"></select><button data-act="hrd-new" data-roles="HSE_OFFICER"  class="text-xs bg-zinc-900 hover:bg-zinc-800 text-white px-3 py-1.5 rounded font-medium">+ Entri HIRADC</button></div></div><div class="overflow-x-auto"><table class="rt w-full text-left text-xs"><thead><tr class="bg-zinc-50 border-b border-zinc-200 text-[11px] font-mono uppercase text-zinc-500"><th class="py-2.5 px-3">ID</th><th class="py-2.5 px-3">Area</th><th class="py-2.5 px-3">Aktivitas & Bahaya</th><th class="py-2.5 px-3">Dampak</th><th class="py-2.5 px-3">Risiko Awal → Sisa</th><th class="py-2.5 px-3">Pengendalian</th><th class="py-2.5 px-3">Review</th><th class="py-2.5 px-3">Aksi</th></tr></thead><tbody id="hrdBody" class="divide-y divide-zinc-200"></tbody></table></div></div>
+        </section>
+        <section id="mod-INCIDENT" class="hidden max-w-[1400px] mx-auto space-y-4">
+          <div id="incKpi" class="grid grid-cols-2 md:grid-cols-5 bg-white border border-zinc-200 rounded divide-x divide-y md:divide-y-0 divide-zinc-200"></div>
+          <div id="incWarn" class="hidden p-3 rounded border bg-amber-50 border-amber-300 text-amber-900 text-xs"></div>
+          <div class="bg-white border border-zinc-200 rounded"><div class="px-4 py-3 border-b border-zinc-200 flex flex-wrap items-center justify-between gap-2"><div><h3 class="text-xs font-semibold uppercase tracking-wider">Register Insiden, Near-Miss & Investigasi</h3><p class="text-[11px] text-zinc-500">ISO 45001 klausul 10.2. Investigasi 5-Why menerbitkan tiket CAPA otomatis; insiden hanya dapat ditutup setelah semua CAPA-nya tertutup.</p></div><div class="flex flex-wrap items-center gap-2"><button data-act="mh-edit" data-roles="HSE_OFFICER"  class="text-xs bg-zinc-600 hover:bg-zinc-700 text-white px-3 py-1.5 rounded font-medium">Jam Kerja Bulanan</button><button data-act="inc-new" data-roles="HSE_OFFICER,SUPERVISOR"  class="text-xs bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded font-medium">+ Lapor Kejadian</button></div></div><div class="overflow-x-auto"><table class="rt w-full text-left text-xs"><thead><tr class="bg-zinc-50 border-b border-zinc-200 text-[11px] font-mono uppercase text-zinc-500"><th class="py-2.5 px-3">ID</th><th class="py-2.5 px-3">Kejadian</th><th class="py-2.5 px-3">Lokasi</th><th class="py-2.5 px-3">Uraian</th><th class="py-2.5 px-3">Risiko</th><th class="py-2.5 px-3">Status</th><th class="py-2.5 px-3">Aksi</th></tr></thead><tbody id="incBody" class="divide-y divide-zinc-200"></tbody></table></div></div>
+        </section>
+        <section id="mod-EMERGENCY" class="hidden max-w-[1400px] mx-auto space-y-4">
+          <div id="eqSummary" class="grid grid-cols-2 md:grid-cols-4 bg-white border border-zinc-200 rounded divide-x divide-y md:divide-y-0 divide-zinc-200"></div>
+          <div class="bg-white border border-zinc-200 rounded"><div class="px-4 py-3 border-b border-zinc-200 flex flex-wrap items-center justify-between gap-2"><div><h3 class="text-xs font-semibold uppercase tracking-wider">Register Peralatan Tanggap Darurat</h3><p class="text-[11px] text-zinc-500">ISO 45001 klausul 8.2. Inspeksi bulanan; peringatan refill/hydrotest otomatis muncul di panel Perlu Tindakan.</p></div><div class="flex flex-wrap items-center gap-2"><select id="eqArea" class="text-xs border border-zinc-300 rounded px-2 py-1 bg-white font-mono"></select><button data-act="eq-new" data-roles="HSE_OFFICER"  class="text-xs bg-zinc-900 hover:bg-zinc-800 text-white px-3 py-1.5 rounded font-medium">+ Aset Darurat</button></div></div><div class="overflow-x-auto"><table class="rt w-full text-left text-xs"><thead><tr class="bg-zinc-50 border-b border-zinc-200 text-[11px] font-mono uppercase text-zinc-500"><th class="py-2.5 px-3">Aset</th><th class="py-2.5 px-3">Lokasi</th><th class="py-2.5 px-3">Kapasitas</th><th class="py-2.5 px-3">Refill</th><th class="py-2.5 px-3">Hydrotest</th><th class="py-2.5 px-3">Inspeksi Terakhir</th><th class="py-2.5 px-3">Kondisi</th><th class="py-2.5 px-3">Aksi</th></tr></thead><tbody id="eqBody" class="divide-y divide-zinc-200"></tbody></table></div></div>
+          <div class="bg-white border border-zinc-200 rounded"><div class="px-4 py-3 border-b border-zinc-200 flex flex-wrap items-center justify-between gap-2"><div><h3 class="text-xs font-semibold uppercase tracking-wider">Inspeksi Terbaru</h3><p class="text-[11px] text-zinc-500">10 inspeksi terakhir.</p></div><div class="flex flex-wrap items-center gap-2"></div></div><div class="overflow-x-auto"><table class="rt w-full text-left text-xs"><thead><tr class="bg-zinc-50 border-b border-zinc-200 text-[11px] font-mono uppercase text-zinc-500"><th class="py-2.5 px-3">ID</th><th class="py-2.5 px-3">Tanggal</th><th class="py-2.5 px-3">Aset</th><th class="py-2.5 px-3">Tekanan</th><th class="py-2.5 px-3">Segel</th><th class="py-2.5 px-3">Fisik</th><th class="py-2.5 px-3">Lengkap</th><th class="py-2.5 px-3">Hasil</th><th class="py-2.5 px-3">Inspector</th></tr></thead><tbody id="eqInspBody" class="divide-y divide-zinc-200"></tbody></table></div></div>
+        </section>
+        <section id="mod-ENVIRO" class="hidden max-w-[1400px] mx-auto space-y-4">
+          <div id="envSummary" class="grid grid-cols-2 md:grid-cols-4 bg-white border border-zinc-200 rounded divide-x divide-y md:divide-y-0 divide-zinc-200"></div>
+          <div class="bg-white border border-zinc-200 rounded"><div class="px-4 py-3 border-b border-zinc-200 flex flex-wrap items-center justify-between gap-2"><div><h3 class="text-xs font-semibold uppercase tracking-wider">Pemantauan Lingkungan & Kepatuhan Baku Mutu</h3><p class="text-[11px] text-zinc-500">ISO 14001 klausul 9.1. Status kepatuhan dihitung ulang server dari hasil uji dan baku mutu.</p></div><div class="flex flex-wrap items-center gap-2"><button data-act="env-new" data-roles="HSE_OFFICER"  class="text-xs bg-zinc-900 hover:bg-zinc-800 text-white px-3 py-1.5 rounded font-medium">+ Hasil Uji</button></div></div><div class="overflow-x-auto"><table class="rt w-full text-left text-xs"><thead><tr class="bg-zinc-50 border-b border-zinc-200 text-[11px] font-mono uppercase text-zinc-500"><th class="py-2.5 px-3">Tanggal</th><th class="py-2.5 px-3">Kategori</th><th class="py-2.5 px-3">Parameter & Lokasi</th><th class="py-2.5 px-3">Hasil</th><th class="py-2.5 px-3">Baku Mutu</th><th class="py-2.5 px-3">Status</th><th class="py-2.5 px-3">Lab / Laporan</th><th class="py-2.5 px-3">Uji Berikutnya</th></tr></thead><tbody id="envBody" class="divide-y divide-zinc-200"></tbody></table></div></div>
+          <div class="bg-white border border-zinc-200 rounded"><div class="px-4 py-3 border-b border-zinc-200 flex flex-wrap items-center justify-between gap-2"><div><h3 class="text-xs font-semibold uppercase tracking-wider">Utilitas & ESG Bulanan</h3><p class="text-[11px] text-zinc-500">Konsumsi listrik, air, bahan bakar, dan timbulan limbah.</p></div><div class="flex flex-wrap items-center gap-2"><button data-act="esg-new" data-roles="HSE_OFFICER"  class="text-xs bg-zinc-900 hover:bg-zinc-800 text-white px-3 py-1.5 rounded font-medium">+ Data Bulanan</button></div></div><div class="overflow-x-auto"><table class="rt w-full text-left text-xs"><thead><tr class="bg-zinc-50 border-b border-zinc-200 text-[11px] font-mono uppercase text-zinc-500"><th class="py-2.5 px-3">Periode</th><th class="py-2.5 px-3">Listrik (kWh)</th><th class="py-2.5 px-3">Air (m³)</th><th class="py-2.5 px-3">BBM (liter)</th><th class="py-2.5 px-3">Limbah B3 (kg)</th><th class="py-2.5 px-3">Limbah non-B3 (kg)</th><th class="py-2.5 px-3">Diisi oleh</th></tr></thead><tbody id="esgBody" class="divide-y divide-zinc-200"></tbody></table></div></div>
+        </section>
+        <section id="mod-TRAINING" class="hidden max-w-[1400px] mx-auto space-y-4">
+          <div class="flex flex-wrap gap-1.5">
+            <button data-act="ttab" data-v="TBM" class="ttab-btn px-3 py-1.5 text-xs font-medium rounded border bg-zinc-900 text-white border-zinc-900">Toolbox Meeting</button>
+            <button data-act="ttab" data-v="MATRIX" class="ttab-btn px-3 py-1.5 text-xs font-medium rounded border bg-white text-zinc-700 border-zinc-300">Matriks Pelatihan</button>
+            <button data-act="ttab" data-v="QUIZ" class="ttab-btn px-3 py-1.5 text-xs font-medium rounded border bg-white text-zinc-700 border-zinc-300">Kuis Induksi Vendor</button>
+          </div>
+          <div id="tpanel-TBM"><div class="bg-white border border-zinc-200 rounded"><div class="px-4 py-3 border-b border-zinc-200 flex flex-wrap items-center justify-between gap-2"><div><h3 class="text-xs font-semibold uppercase tracking-wider">Log Toolbox Meeting (TBM)</h3><p class="text-[11px] text-zinc-500">Pelaksanaan TBM harian per area.</p></div><div class="flex flex-wrap items-center gap-2"><button data-act="tbm-new" data-roles="HSE_OFFICER,SUPERVISOR"  class="text-xs bg-zinc-900 hover:bg-zinc-800 text-white px-3 py-1.5 rounded font-medium">+ Catat TBM</button></div></div><div class="overflow-x-auto"><table class="rt w-full text-left text-xs"><thead><tr class="bg-zinc-50 border-b border-zinc-200 text-[11px] font-mono uppercase text-zinc-500"><th class="py-2.5 px-3">ID</th><th class="py-2.5 px-3">Tanggal</th><th class="py-2.5 px-3">Area</th><th class="py-2.5 px-3">Topik</th><th class="py-2.5 px-3">Pemimpin</th><th class="py-2.5 px-3">Peserta</th></tr></thead><tbody id="tbmBody" class="divide-y divide-zinc-200"></tbody></table></div></div></div>
+          <div id="tpanel-MATRIX" class="hidden"><div class="bg-white border border-zinc-200 rounded"><div class="px-4 py-3 border-b border-zinc-200 flex flex-wrap items-center justify-between gap-2"><div><h3 class="text-xs font-semibold uppercase tracking-wider">Matriks Pelatihan Internal</h3><p class="text-[11px] text-zinc-500">ERP, P3K, Pemadam Kebakaran, K3 Umum. Hanya personel yang punya catatan pelatihan yang tampil.</p></div><div class="flex flex-wrap items-center gap-2"><button data-act="train-new" data-roles="HSE_OFFICER"  class="text-xs bg-zinc-900 hover:bg-zinc-800 text-white px-3 py-1.5 rounded font-medium">+ Catat Pelatihan</button></div></div><div class="overflow-x-auto"><table class="rt w-full text-left text-xs"><thead id="matHead"></thead><tbody id="matBody" class="divide-y divide-zinc-200"></tbody></table></div></div></div>
+          <div id="tpanel-QUIZ" class="hidden space-y-4"><div class="bg-white border border-zinc-200 rounded"><div class="px-4 py-3 border-b border-zinc-200 flex flex-wrap items-center justify-between gap-2"><div><h3 class="text-xs font-semibold uppercase tracking-wider">Kuis Induksi Keselamatan</h3><p class="text-[11px] text-zinc-500">Dinilai di server; kunci jawaban tidak pernah dikirim ke vendor. Pekerja vendor mengerjakan kuis dari menu Vendor › Induksi.</p></div><div class="flex flex-wrap items-center gap-2"><button data-act="quiz-new" data-roles="HSE_OFFICER"  class="text-xs bg-zinc-900 hover:bg-zinc-800 text-white px-3 py-1.5 rounded font-medium">+ Kuis Baru</button></div></div><div class="overflow-x-auto"><table class="rt w-full text-left text-xs"><thead><tr class="bg-zinc-50 border-b border-zinc-200 text-[11px] font-mono uppercase text-zinc-500"><th class="py-2.5 px-3">ID</th><th class="py-2.5 px-3">Judul</th><th class="py-2.5 px-3">Soal</th><th class="py-2.5 px-3">Nilai Lulus</th><th class="py-2.5 px-3">Status</th><th class="py-2.5 px-3">Hasil</th><th class="py-2.5 px-3">Aksi</th></tr></thead><tbody id="quizBody" class="divide-y divide-zinc-200"></tbody></table></div></div><div class="bg-white border border-zinc-200 rounded"><div class="px-4 py-3 border-b border-zinc-200 flex flex-wrap items-center justify-between gap-2"><div><h3 class="text-xs font-semibold uppercase tracking-wider">Hasil Kuis Terbaru</h3><p class="text-[11px] text-zinc-500">20 percobaan terakhir.</p></div><div class="flex flex-wrap items-center gap-2"></div></div><div class="overflow-x-auto"><table class="rt w-full text-left text-xs"><thead><tr class="bg-zinc-50 border-b border-zinc-200 text-[11px] font-mono uppercase text-zinc-500"><th class="py-2.5 px-3">Waktu</th><th class="py-2.5 px-3">Pekerja</th><th class="py-2.5 px-3">Vendor</th><th class="py-2.5 px-3">Kuis</th><th class="py-2.5 px-3">Skor</th><th class="py-2.5 px-3">Hasil</th></tr></thead><tbody id="quizResBody" class="divide-y divide-zinc-200"></tbody></table></div></div></div>
+        </section>
+        <section id="mod-REPORT" class="hidden max-w-3xl mx-auto">
+          <div class="bg-white border border-zinc-200 rounded">
+            <div class="px-4 md:px-5 py-4 border-b border-zinc-200">
+              <h2 class="text-sm font-semibold">One-Click Executive Report</h2>
+              <p class="text-xs text-zinc-500 mt-0.5">Ringkasan bulanan untuk P2K3 dan Management Review (ISO 45001 klausul 9.3). Semua angka dihitung server dari data terkini, lalu dapat dicetak atau disimpan sebagai PDF.</p>
+            </div>
+            <div class="p-4 md:p-5 flex flex-wrap items-end gap-3 text-xs">
+              <div><label class="block font-medium text-zinc-700 mb-1">Periode laporan</label><input id="execPeriod" type="month" class="border border-zinc-300 rounded px-3 py-2 bg-white" /></div>
+              <button id="btnExec" data-act="exec-run" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-4 py-2 rounded">Buat Laporan</button>
+            </div>
+          </div>
+        </section>
+
       </main>
     </div>
   </div>
@@ -538,6 +606,14 @@
   <div id="toast" class="hidden fixed top-3 right-3 left-3 sm:left-auto sm:max-w-sm z-[60] p-3 rounded border text-xs font-mono shadow-lg"></div>
 
   <!-- MODAL GATE PASS (v3.3): dokumen A4 + QR verifikasi -->
+  <div id="modalExec" class="hidden fixed inset-0 bg-zinc-950/70 z-[58] overflow-y-auto p-2 md:p-6">
+    <div class="gp-ui max-w-[210mm] mx-auto mb-2 flex flex-wrap gap-2 justify-end text-xs">
+      <button data-act="exec-print" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded font-medium">🖨 Cetak / Simpan PDF</button>
+      <button data-act="exec-close" class="bg-white border border-zinc-300 px-3 py-1.5 rounded">✕ Tutup</button>
+    </div>
+    <div id="execSheet" class="gp-sheet shadow-xl"></div>
+  </div>
+
   <div id="modalGatePass" class="hidden fixed inset-0 bg-zinc-950/70 z-[58] overflow-y-auto p-2 md:p-6">
     <div class="gp-ui max-w-[210mm] mx-auto mb-2 flex flex-wrap gap-2 justify-end text-xs">
       <button id="gpPrint" data-act="gatepass-print" disabled class="bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white px-3 py-1.5 rounded font-medium">🖨 Cetak / Simpan PDF</button>
@@ -557,7 +633,9 @@
   const MODULE_TITLES = {
     OVERVIEW: 'Plant Matrix & Register e-PTW', PTW: 'Ajukan e-PTW', INSPECTION_PORTAL: 'Planned HSE Inspection', LOGBOOK_APD: 'Logbook APD',
     CAPA: 'CAPA & Audit Register', SIO_MCU: 'Kompetensi SIO & MCU', PAA_B3: 'SIA Alat Angkat & TPS Limbah B3',
-    USERS: 'Manajemen User', AUDIT: 'Audit Trail', VENDOR: 'Vendor & PTW Vendor'
+    USERS: 'Manajemen User', AUDIT: 'Audit Trail', VENDOR: 'Vendor & PTW Vendor',
+    HIRADC: 'HIRADC & Aspek Lingkungan', INCIDENT: 'Insiden, Near-Miss & Investigasi', EMERGENCY: 'Peralatan Tanggap Darurat',
+    ENVIRO: 'Lingkungan & ESG', TRAINING: 'Pelatihan, TBM & Induksi Keselamatan', REPORT: 'Laporan Eksekutif Bulanan'
   };
   const MODULES = Object.keys(MODULE_TITLES);
   const AREA_LABEL = { HALL_A: 'HALL A', HALL_B: 'HALL B', HALL_C: 'HALL C', HALL_D: 'HALL D', PLANT_2: 'PLANT 2 (KONSTRUKSI)', OTHER: 'LAINNYA' };
@@ -823,7 +901,7 @@
 
   function switchVendorTab(tab) {
     S.vtab = tab;
-    ['PTW', 'VENDORS', 'WORKERS'].forEach(k => {
+    ['PTW', 'VENDORS', 'WORKERS', 'INDUKSI'].forEach(k => {
       $('vpanel-' + k).classList.toggle('hidden', k !== tab);
     });
     document.querySelectorAll('.vtab-btn').forEach(b => {
@@ -974,9 +1052,11 @@
   function renderAll() {
     if (!S.data) return;
     renderVendor();
+    try { renderInduksi(); } catch (err) { console.error('Render induksi gagal:', err); }
     if (S.user && S.user.role === 'VENDOR_ADMIN') return;
     renderKpis(); renderAlerts(); renderZones(); renderPtw(); renderPtwForm();
     renderCapa(); renderEmployees(); renderAssets(); renderUsers(); renderAudit();
+    renderV4();
   }
 
   function buildAlerts() {
@@ -993,6 +1073,7 @@
     (d.vendorPermits || []).filter(vp => vp.Effective_Status === 'EXPIRED_UNCLOSED' || vp.Gas_Alert || vp.Needs_Revalidation).forEach(vp => {
       a.push({ lv: 'WARNING', t: `PTW Vendor ${vp.VPTW_ID}: perlu tindakan (revalidasi shift / uji gas / penutupan)`, mod: 'VENDOR' });
     });
+    try { buildAlertsV4(a); } catch (err) { console.error('Peringatan v4.0 gagal:', err); }
     return a;
   }
 
@@ -1773,6 +1854,655 @@
       if (r) mutate({ action: 'VPTW_CANCEL', vptwId: el.dataset.id, notes: r.n }, el, '...');
     }
   };
+
+  // ==========================================================================
+  // v4.0 — HIRADC, INSIDEN, DARURAT, LINGKUNGAN, PELATIHAN, LAPORAN EKSEKUTIF
+  // Semua status/risiko/kepatuhan datang dari server (decorate*). Klien hanya menampilkan.
+  // ==========================================================================
+  const RISK_CLS = {
+    LOW: 'bg-zinc-50 text-zinc-600 border-zinc-200', MEDIUM: 'bg-zinc-100 text-zinc-800 border-zinc-300',
+    HIGH: 'bg-amber-50 text-amber-800 border-amber-200', CRITICAL: 'bg-red-50 text-red-800 border-red-200', UNKNOWN: 'bg-zinc-100 text-zinc-500 border-zinc-300'
+  };
+  const INC_LABEL = { NEAR_MISS: 'Near-Miss', FIRST_AID: 'First Aid', MEDICAL_TREATMENT: 'Medical Treatment', LTI: 'Lost Time Injury', PROPERTY_DAMAGE: 'Property Damage', ENV_SPILL: 'Environmental Spill' };
+  const INC_STATUS = {
+    REPORTED: ['DILAPORKAN', 'bg-amber-50 text-amber-800 border-amber-200'],
+    INVESTIGATING: ['INVESTIGASI', 'bg-blue-50 text-blue-800 border-blue-200'],
+    ACTION_ISSUED: ['CAPA TERBIT', 'bg-orange-50 text-orange-800 border-orange-300'],
+    CLOSED: ['DITUTUP', 'bg-zinc-100 text-zinc-700 border-zinc-300']
+  };
+  const EQ_LABEL = { APAR: 'APAR', HYDRANT: 'Hydrant', P3K: 'Kotak P3K', EYEWASH: 'Eye Wash', ALARM: 'Alarm', DETECTOR: 'Detector' };
+  const ENV_LABEL = { UDARA_AMBIEN: 'Udara Ambien', EMISI: 'Emisi', KEBISINGAN: 'Kebisingan', PENCAHAYAAN: 'Pencahayaan', AIR_LIMBAH: 'Air Limbah' };
+  const TRAIN_LABEL = { ERP: 'ERP / Tanggap Darurat', P3K: 'P3K', PEMADAM: 'Pemadam Kebakaran', K3_UMUM: 'K3 Umum', LAINNYA: 'Lainnya' };
+  const HRK_LABEL = { ELIMINASI: 'Eliminasi', SUBSTITUSI: 'Substitusi', REKAYASA: 'Rekayasa Teknik', ADMINISTRATIF: 'Administratif', APD: 'APD' };
+  const MONTHS_ID = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+
+  const fmtNum = n => (n === null || n === undefined || n === '') ? '—' : Number(n).toLocaleString('id-ID');
+  const emptyRow = (cols, msg) => `<tr><td colspan="${cols}" class="py-6 text-center text-zinc-400 font-mono">${esc(msg)}</td></tr>`;
+  const riskBadge = lv => badge(lv || 'UNKNOWN', RISK_CLS[lv] || RISK_CLS.UNKNOWN);
+  const dflt = (k, d) => (S.data && S.data[k]) || d;
+  const nowYM = () => shiftDate(0).slice(0, 7);
+
+  function kpiCard(label, value, sub, tone) {
+    const t = tone === 'bad' ? 'text-red-700' : tone === 'warn' ? 'text-amber-700' : 'text-zinc-900';
+    return `<div class="p-3 md:p-4"><div class="text-[10px] md:text-[11px] font-mono uppercase text-zinc-500">${esc(label)}</div><div class="mt-1 text-2xl font-semibold font-mono ${t}">${esc(value)}</div>${sub ? `<div class="text-[10px] text-zinc-500 mt-0.5">${esc(sub)}</div>` : ''}</div>`;
+  }
+  function areaSubOpts() {
+    const cfg = ((S.data || {}).config || {}).hallSubareas || {};
+    const o = [];
+    Object.keys(cfg).forEach(a => cfg[a].forEach(s => o.push({ value: a + '||' + s, label: (AREA_LABEL[a] || a) + ' — ' + s })));
+    return o;
+  }
+  const splitAS = v => { const p = String(v || '').split('||'); return { area: p[0] || '', sub: p[1] || '' }; };
+  function fillAreaFilter(id) {
+    const sel = $(id);
+    if (!sel || sel.options.length) return;
+    const cfg = ((S.data || {}).config || {}).hallSubareas || {};
+    sel.innerHTML = '<option value="ALL">Semua area</option>' + Object.keys(cfg).map(a => `<option value="${esc(a)}">${esc(AREA_LABEL[a] || a)}</option>`).join('');
+  }
+  const selOpts = (arr, labels) => arr.map(k => ({ value: k, label: (labels && labels[k]) || k }));
+  const keepLines = () => { $('askMsg').style.whiteSpace = 'pre-wrap'; };
+  const mkAsk = (title, fields, msg, opts) => { const p = askForm(title, fields, msg, opts); keepLines(); return p; };
+
+  // ---------------- Render utama ----------------
+  function renderV4() {
+    try {
+      renderHiradc(); renderIncident(); renderEquipment(); renderEnviro(); renderTraining(); renderPtwHazard();
+      if (!$('execPeriod').value) $('execPeriod').value = nowYM();
+    } catch (err) { console.error('Render modul v4.0 gagal:', err); }
+  }
+
+  // ---------------- [1] HIRADC ----------------
+  function renderHiradc() {
+    fillAreaFilter('hrdArea');
+    const all = dflt('hiradc', []).filter(h => h.Status === 'ACTIVE');
+    const f = $('hrdArea').value || 'ALL';
+    const rows = all.filter(h => f === 'ALL' || h.Area_Hall === f);
+    const need = all.filter(h => h.Needs_Review).length;
+    const hi = all.filter(h => ['HIGH', 'CRITICAL'].includes(h.Risiko_Sisa)).length;
+    $('badge-hrd').textContent = need;
+    $('hrdSummary').innerHTML = kpiCard('HIRADC Aktif', all.length) + kpiCard('Perlu Review', need, need ? 'ditandai insiden/CAPA atau lewat jadwal' : '', need ? 'warn' : '') +
+      kpiCard('Risiko Sisa HIGH/CRITICAL', hi, hi ? 'butuh pengendalian lanjutan' : '', hi ? 'bad' : '') + kpiCard('Aspek Lingkungan', all.filter(h => h.Jenis === 'ASPEK_LINGKUNGAN').length);
+    const canEdit = hasRole('HSE_OFFICER');
+    $('hrdBody').innerHTML = rows.length ? rows.map(h => {
+      const rv = h.Needs_Review
+        ? badge(h.Review_Flag === 'YES' ? 'REVIEW: ' + (h.Review_Reason || 'ditandai') : 'REVIEW TERLAMBAT', LEVEL_CLS.CRITICAL)
+        : `<span class="font-mono text-[11px] text-zinc-500">s/d ${esc(h.Review_Due || '-')}</span>`;
+      const act = canEdit ? `<div class="flex flex-wrap gap-1"><button data-act="hrd-edit" data-id="${esc(h.HIRADC_ID)}" class="bg-zinc-900 text-white px-2.5 py-1 rounded font-mono text-[10px]">${h.Needs_Review ? 'Review' : 'Edit'}</button><button data-act="hrd-retire" data-id="${esc(h.HIRADC_ID)}" class="border border-zinc-300 px-2.5 py-1 rounded font-mono text-[10px]">Nonaktifkan</button></div>` : '';
+      return `<tr class="hover:bg-zinc-50/80 align-top ${h.Needs_Review ? 'bg-amber-50/40' : ''}">
+        <td class="py-2.5 px-3 font-mono font-semibold whitespace-nowrap">${esc(h.HIRADC_ID)}<div class="text-[10px] text-zinc-400 font-normal">${h.Jenis === 'ASPEK_LINGKUNGAN' ? 'LINGKUNGAN' : 'K3'}</div></td>
+        <td class="py-2.5 px-3">${areaTag(h.Area_Hall)}<div class="text-[11px] text-zinc-600 mt-1">${esc(h.Sub_Area)}</div></td>
+        <td class="py-2.5 px-3 min-w-[200px]"><div class="font-medium">${esc(h.Aktivitas)}</div><div class="text-[11px] text-zinc-600 mt-0.5">${esc(h.Bahaya)}</div></td>
+        <td class="py-2.5 px-3 min-w-[140px] text-zinc-600">${esc(h.Dampak)}</td>
+        <td class="py-2.5 px-3 whitespace-nowrap">${riskBadge(h.Risiko_Awal)} <span class="text-zinc-400">→</span> ${riskBadge(h.Risiko_Sisa)}<div class="text-[10px] font-mono text-zinc-400 mt-0.5">skor ${esc(h.Skor_Awal)} → ${esc(h.Skor_Sisa)}</div></td>
+        <td class="py-2.5 px-3 min-w-[200px]">${esc(h.Pengendalian)}<div class="mt-1 flex flex-wrap gap-1">${(h.Hirarki_List || []).map(x => badge(HRK_LABEL[x] || x, 'bg-zinc-100 text-zinc-700 border-zinc-300')).join('')}</div></td>
+        <td class="py-2.5 px-3">${rv}</td>
+        <td class="py-2.5 px-3">${act}</td></tr>`;
+    }).join('') : emptyRow(8, 'Belum ada entri HIRADC.');
+    labelCells($('hrdBody'));
+  }
+
+  function hrdFields(h) {
+    h = h || {};
+    const sc = [1, 2, 3, 4, 5].map(n => ({ value: String(n), label: String(n) }));
+    const f = [
+      { key: 'jenis', label: 'Jenis register', type: 'select', options: [{ value: 'BAHAYA_K3', label: 'Bahaya K3 (ISO 45001)' }, { value: 'ASPEK_LINGKUNGAN', label: 'Aspek-Dampak Lingkungan (ISO 14001)' }], value: h.Jenis || 'BAHAYA_K3' },
+      { key: 'as', label: 'Area / Sub-area', type: 'select', options: areaSubOpts(), value: h.Area_Hall ? h.Area_Hall + '||' + h.Sub_Area : '' },
+      { key: 'aktivitas', label: 'Aktivitas / proses', value: h.Aktivitas || '', min: 3 },
+      { key: 'bahaya', label: 'Bahaya / aspek lingkungan', type: 'textarea', value: h.Bahaya || '', min: 5 },
+      { key: 'dampak', label: 'Dampak / risiko', type: 'textarea', value: h.Dampak || '', min: 3 },
+      { key: 'lAwal', label: 'Likelihood AWAL (1-5)', type: 'select', options: sc, value: h.L_Awal || '3' },
+      { key: 'sAwal', label: 'Severity AWAL (1-5)', type: 'select', options: sc, value: h.S_Awal || '3' },
+      { key: 'pengendalian', label: 'Pengendalian yang diterapkan', type: 'textarea', value: h.Pengendalian || '', min: 5 },
+      { key: 'lSisa', label: 'Likelihood SISA setelah pengendalian (1-5)', type: 'select', options: sc, value: h.L_Sisa || '2' },
+      { key: 'sSisa', label: 'Severity SISA setelah pengendalian (1-5)', type: 'select', options: sc, value: h.S_Sisa || '3' }
+    ];
+    Object.keys(HRK_LABEL).forEach(k => f.push({ key: 'h_' + k, label: 'Hirarki: ' + HRK_LABEL[k], type: 'checkbox', value: (h.Hirarki_List || []).includes(k) }));
+    f.push({ key: 'pic', label: 'PIC pengendalian (opsional)', value: h.PIC || '', required: false });
+    f.push({ key: 'reviewDue', label: 'Jadwal review berikutnya (kosong = 12 bulan dari sekarang)', type: 'date', value: h.Review_Due || '', required: false });
+    return f;
+  }
+  function hrdPayload(r, extra) {
+    const as = splitAS(r.as);
+    return Object.assign({
+      action: 'HIRADC_SAVE', jenis: r.jenis, area: as.area, subArea: as.sub, aktivitas: r.aktivitas, bahaya: r.bahaya, dampak: r.dampak,
+      lAwal: r.lAwal, sAwal: r.sAwal, lSisa: r.lSisa, sSisa: r.sSisa, pengendalian: r.pengendalian,
+      hirarki: Object.keys(HRK_LABEL).filter(k => r['h_' + k]), pic: r.pic, reviewDue: r.reviewDue
+    }, extra || {});
+  }
+
+  // Panel bahaya HIRADC pada form e-PTW internal (otomatis mengikuti sub-area terpilih)
+  function renderPtwHazard() {
+    const box = $('ptwHazard');
+    if (!box) return;
+    const area = $('ptwArea').value, sub = $('ptwSubArea').value;
+    const list = dflt('hiradc', []).filter(h => h.Status === 'ACTIVE' && h.Area_Hall === area && h.Sub_Area === sub);
+    if (!list.length) { box.classList.add('hidden'); box.innerHTML = ''; return; }
+    box.classList.remove('hidden');
+    box.innerHTML = `<div class="font-semibold text-amber-900 mb-1">Bahaya terdaftar di ${esc(sub)} (HIRADC) — pastikan tercakup dalam izin kerja</div><ul class="space-y-1.5">` +
+      list.map(h => `<li>${riskBadge(h.Risiko_Sisa)} <span class="font-medium">${esc(h.Bahaya)}</span><div class="text-[11px] text-zinc-700 pl-1">Pengendalian: ${esc(h.Pengendalian)}${h.Needs_Review ? ' ' + badge('PERLU REVIEW', LEVEL_CLS.CRITICAL) : ''}</div></li>`).join('') + '</ul>';
+  }
+
+  // ---------------- [2] INSIDEN ----------------
+  function renderIncident() {
+    const m = dflt('safetyMetrics', null) || {};
+    const list = dflt('incidents', []);
+    const open = list.filter(i => i.Status !== 'CLOSED').length;
+    $('badge-inc').textContent = open;
+    $('incKpi').innerHTML =
+      kpiCard('Zero Accident Days', m.zeroAccidentDays === null || m.zeroAccidentDays === undefined ? '—' : fmtNum(m.zeroAccidentDays), m.lastLtiDate ? 'sejak LTI ' + m.lastLtiDate : 'belum ada LTI tercatat') +
+      kpiCard('Safe Man-Hours', fmtNum(m.safeManHours), 'sejak LTI terakhir') +
+      kpiCard('Frequency Rate', m.frequencyRate === null || m.frequencyRate === undefined ? '—' : String(m.frequencyRate), 'LTI x ' + fmtNum(m.rateBase) + ' / jam kerja (YTD)') +
+      kpiCard('Severity Rate', m.severityRate === null || m.severityRate === undefined ? '—' : String(m.severityRate), 'hari hilang x ' + fmtNum(m.rateBase) + ' / jam kerja') +
+      kpiCard('LTI Tahun Ini', fmtNum(m.ltiYtd), fmtNum(m.incidentsYtd) + ' kejadian • ' + fmtNum(m.lostDaysYtd) + ' hari hilang', m.ltiYtd ? 'bad' : '');
+    const warn = $('incWarn');
+    warn.classList.toggle('hidden', !m.hoursMissing);
+    warn.textContent = 'Jam kerja tahun ini belum diisi, sehingga Frequency Rate dan Severity Rate belum dapat dihitung. Isi lewat tombol "Jam Kerja Bulanan".';
+    const canInv = hasRole('HSE_OFFICER');
+    $('incBody').innerHTML = list.length ? list.map(i => {
+      const st = INC_STATUS[i.Status] || [i.Status, LEVEL_CLS.UNKNOWN];
+      let act = '';
+      if (canInv && (i.Status === 'REPORTED' || i.Status === 'INVESTIGATING')) {
+        act = `<button data-act="inc-investigate" data-id="${esc(i.Incident_ID)}" class="bg-zinc-900 text-white px-2.5 py-1 rounded font-mono text-[10px]">Investigasi</button>`;
+        if (i.Jenis === 'NEAR_MISS' && i.Status === 'REPORTED') act += ` <button data-act="inc-close" data-id="${esc(i.Incident_ID)}" class="border border-zinc-300 px-2.5 py-1 rounded font-mono text-[10px]">Tutup</button>`;
+      } else if (canInv && i.Status === 'ACTION_ISSUED') {
+        act = `<button data-act="inc-close" data-id="${esc(i.Incident_ID)}" class="bg-emerald-600 text-white px-2.5 py-1 rounded font-mono text-[10px]">Tutup Insiden</button>`;
+      }
+      const whys = (i.Why_List || []).length ? `<details class="mt-1"><summary class="cursor-pointer text-[11px] text-zinc-500">Analisis 5-Why</summary><ol class="list-decimal pl-4 text-[11px] text-zinc-600 mt-1 space-y-0.5">${i.Why_List.map(w => `<li>${esc(w)}</li>`).join('')}</ol>${i.Akar_Masalah ? `<div class="text-[11px] mt-1"><b>Akar masalah:</b> ${esc(i.Akar_Masalah)}</div>` : ''}</details>` : '';
+      const capas = (i.CAPA_List || []).length ? `<div class="text-[10px] font-mono text-zinc-500 mt-1">CAPA: ${esc(i.CAPA_List.join(', '))}</div>` : '';
+      return `<tr class="hover:bg-zinc-50/80 align-top">
+        <td class="py-2.5 px-3 font-mono font-semibold whitespace-nowrap">${esc(i.Incident_ID)}<div class="text-[10px] text-zinc-400 font-normal">${esc(i.Tanggal)} ${esc(i.Waktu)}</div></td>
+        <td class="py-2.5 px-3">${badge(INC_LABEL[i.Jenis] || i.Jenis, 'bg-zinc-100 text-zinc-800 border-zinc-300')}${i.Jenis === 'LTI' ? `<div class="text-[10px] font-mono text-red-700 mt-1">${esc(i.Hari_Hilang)} hari hilang</div>` : ''}</td>
+        <td class="py-2.5 px-3">${areaTag(i.Area_Hall)}<div class="text-[11px] text-zinc-600 mt-1">${esc(i.Sub_Area)}</div>${i.Lokasi_Spesifik ? `<div class="text-[10px] text-zinc-400">${esc(i.Lokasi_Spesifik)}</div>` : ''}</td>
+        <td class="py-2.5 px-3 min-w-[220px]">${esc(i.Uraian)}${i.Korban_Nama ? `<div class="text-[11px] text-zinc-500 mt-1">Korban: ${esc(i.Korban_Nama)}${i.Korban_NIK ? ' (' + esc(i.Korban_NIK) + ')' : ''}</div>` : ''}${whys}${capas}</td>
+        <td class="py-2.5 px-3">${riskBadge(i.Tingkat_Risiko)}</td>
+        <td class="py-2.5 px-3">${badge(st[0], st[1])}<div class="text-[10px] text-zinc-400 mt-1">${esc(i.Investigator ? 'oleh ' + i.Investigator : 'pelapor ' + i.Pelapor)}</div></td>
+        <td class="py-2.5 px-3">${act}</td></tr>`;
+    }).join('') : emptyRow(7, 'Belum ada kejadian tercatat.');
+    labelCells($('incBody'));
+  }
+
+  async function runInvestigation(id) {
+    const inc = dflt('incidents', []).find(x => x.Incident_ID === id);
+    if (!inc) return;
+    const w = inc.Why_List || [];
+    const r1 = await mkAsk('Investigasi ' + id + ' — 5-Why', [
+      { key: 'w1', label: 'Why 1 — mengapa kejadian ini terjadi?', type: 'textarea', value: w[0] || '', min: 5 },
+      { key: 'w2', label: 'Why 2 — mengapa (penyebab Why 1)?', type: 'textarea', value: w[1] || '', min: 5 },
+      { key: 'w3', label: 'Why 3 — mengapa (penyebab Why 2)?', type: 'textarea', value: w[2] || '', min: 5 },
+      { key: 'w4', label: 'Why 4 (opsional)', type: 'textarea', value: w[3] || '', required: false },
+      { key: 'w5', label: 'Why 5 (opsional)', type: 'textarea', value: w[4] || '', required: false },
+      { key: 'rc', label: 'Akar masalah (kesimpulan)', type: 'textarea', value: inc.Akar_Masalah || '', min: 10 }
+    ], inc.Jenis + ' • ' + inc.Area_Hall + ' / ' + inc.Sub_Area + '\n' + inc.Uraian, { okLabel: 'Lanjut: tindakan korektif' });
+    if (!r1) return;
+    const whys = [r1.w1, r1.w2, r1.w3, r1.w4, r1.w5].filter(Boolean);
+    const actions = [];
+    for (;;) {
+      const a = await mkAsk('Tindakan korektif #' + (actions.length + 1), [
+        { key: 'f', label: 'Uraian tindakan korektif / pencegahan', type: 'textarea', min: 10 },
+        { key: 'r', label: 'Tingkat risiko', type: 'select', options: RISK_ORDER(), value: inc.Tingkat_Risiko || 'MEDIUM' },
+        { key: 'd', label: 'Batas waktu', type: 'date', value: shiftDate(14) }
+      ], 'Setiap tindakan menjadi tiket CAPA otomatis di CAPA & Audit Register.', { okLabel: 'Tambahkan' });
+      if (!a) break;
+      actions.push({ finding: a.f, risk: a.r, dueDate: a.d });
+      if (actions.length >= 5 || !(await confirmBox('Tambah tindakan korektif?', actions.length + ' tindakan sudah disiapkan. Tambahkan satu lagi?'))) break;
+    }
+    if (!actions.length) {
+      if (await confirmBox('Simpan sebagai draf?', 'Tanpa tindakan korektif, investigasi hanya tersimpan sebagai draf (status INVESTIGASI) dan belum menerbitkan CAPA.')) {
+        mutate({ action: 'INCIDENT_INVESTIGATE', incidentId: id, whys: whys, rootCause: r1.rc, draft: true }, null, '...');
+      }
+      return;
+    }
+    mutate({ action: 'INCIDENT_INVESTIGATE', incidentId: id, whys: whys, rootCause: r1.rc, actions: actions }, null, '...');
+  }
+  const RISK_ORDER = () => ['LOW', 'MEDIUM', 'HIGH', 'CRITICAL'].map(k => ({ value: k, label: k }));
+
+  // ---------------- [3] PERALATAN DARURAT ----------------
+  function renderEquipment() {
+    fillAreaFilter('eqArea');
+    const all = dflt('equipment', []).filter(a => a.Record_Status === 'ACTIVE');
+    const f = $('eqArea').value || 'ALL';
+    const rows = all.filter(a => f === 'ALL' || a.Area_Hall === f);
+    const need = all.filter(a => a.Needs_Action).length;
+    $('badge-eq').textContent = need;
+    const exp = all.filter(a => ['EXPIRED', 'CRITICAL'].includes(a.Refill_Level) || ['EXPIRED', 'CRITICAL'].includes(a.Hydrotest_Level)).length;
+    $('eqSummary').innerHTML = kpiCard('Aset Terdaftar', all.length) + kpiCard('Perlu Tindakan', need, '', need ? 'bad' : '') +
+      kpiCard('Inspeksi Terlambat', all.filter(a => a.Inspection_Overdue).length, 'lewat ' + fmtNum(31) + ' hari', all.some(a => a.Inspection_Overdue) ? 'warn' : '') + kpiCard('Refill/Hydrotest Kritis', exp, '', exp ? 'bad' : '');
+    const canInsp = hasRole('HSE_OFFICER', 'SUPERVISOR'), canEdit = hasRole('HSE_OFFICER');
+    $('eqBody').innerHTML = rows.length ? rows.map(a => {
+      const cond = a.Kondisi === 'RUSAK' ? badge('RUSAK', LEVEL_CLS.EXPIRED) : a.Kondisi === 'BAIK' ? badge('BAIK', LEVEL_CLS.OK) : badge('BELUM DIINSPEKSI', LEVEL_CLS.UNKNOWN);
+      const act = (canInsp ? `<button data-act="eq-inspect" data-id="${esc(a.Asset_ID)}" class="bg-zinc-900 text-white px-2.5 py-1 rounded font-mono text-[10px]">Inspeksi</button> ` : '') +
+        (canEdit ? `<button data-act="eq-edit" data-id="${esc(a.Asset_ID)}" class="border border-zinc-300 px-2 py-1 rounded font-mono text-[10px]">Edit</button> <button data-act="eq-retire" data-id="${esc(a.Asset_ID)}" class="border border-zinc-300 px-2 py-1 rounded font-mono text-[10px]">Hapus</button>` : '');
+      return `<tr class="hover:bg-zinc-50/80 align-top ${a.Needs_Action ? 'bg-red-50/40' : ''}">
+        <td class="py-2.5 px-3 font-mono font-semibold whitespace-nowrap">${esc(a.Kode_Tag)}<div class="text-[10px] text-zinc-400 font-normal">${esc(a.Asset_ID)} • ${esc(EQ_LABEL[a.Tipe] || a.Tipe)}</div></td>
+        <td class="py-2.5 px-3">${areaTag(a.Area_Hall)}<div class="text-[11px] text-zinc-600 mt-1">${esc(a.Sub_Area)}</div><div class="text-[10px] text-zinc-400">${esc(a.Titik)}</div></td>
+        <td class="py-2.5 px-3">${esc(a.Kapasitas || '-')}</td>
+        <td class="py-2.5 px-3 font-mono whitespace-nowrap">${a.Refill_Due ? esc(a.Refill_Due) + '<div class="mt-0.5">' + levelBadge(a.Refill_Level, a.Refill_Days) + '</div>' : '<span class="text-zinc-400">-</span>'}</td>
+        <td class="py-2.5 px-3 font-mono whitespace-nowrap">${a.Hydrotest_Due ? esc(a.Hydrotest_Due) + '<div class="mt-0.5">' + levelBadge(a.Hydrotest_Level, a.Hydrotest_Days) + '</div>' : '<span class="text-zinc-400">-</span>'}</td>
+        <td class="py-2.5 px-3 font-mono whitespace-nowrap">${esc(a.Last_Inspected || 'belum pernah')}${a.Inspection_Overdue ? '<div class="mt-0.5">' + badge('TERLAMBAT', LEVEL_CLS.CRITICAL) + '</div>' : ''}</td>
+        <td class="py-2.5 px-3">${cond}</td>
+        <td class="py-2.5 px-3">${act}</td></tr>`;
+    }).join('') : emptyRow(8, 'Belum ada aset darurat terdaftar.');
+    labelCells($('eqBody'));
+    const byId = {}; all.forEach(a => { byId[a.Asset_ID] = a; });
+    const ins = dflt('equipmentInspections', []).slice(0, 10);
+    const ck = v => v === 'OK' ? '<span class="text-emerald-700">OK</span>' : v === 'NOK' ? '<span class="text-red-700 font-semibold">NOK</span>' : '<span class="text-zinc-400">-</span>';
+    $('eqInspBody').innerHTML = ins.length ? ins.map(i => `<tr class="align-top"><td class="py-2 px-3 font-mono">${esc(i.Insp_ID)}</td><td class="py-2 px-3 font-mono">${esc(i.Tanggal)}</td><td class="py-2 px-3 font-mono">${esc((byId[i.Asset_ID] || {}).Kode_Tag || i.Asset_ID)}</td><td class="py-2 px-3">${ck(i.Tekanan)}</td><td class="py-2 px-3">${ck(i.Segel)}</td><td class="py-2 px-3">${ck(i.Fisik)}</td><td class="py-2 px-3">${ck(i.Kelengkapan)}</td><td class="py-2 px-3">${i.Hasil === 'FAIL' ? badge('GAGAL', LEVEL_CLS.EXPIRED) + (i.CAPA_ID ? '<div class="text-[10px] font-mono text-zinc-500 mt-0.5">' + esc(i.CAPA_ID) + '</div>' : '') : badge('LOLOS', LEVEL_CLS.OK)}</td><td class="py-2 px-3">${esc(i.Inspector)}</td></tr>`).join('') : emptyRow(9, 'Belum ada inspeksi.');
+    labelCells($('eqInspBody'));
+  }
+
+  function eqFields(a) {
+    a = a || {};
+    return [
+      { key: 'type', label: 'Jenis peralatan', type: 'select', options: selOpts(Object.keys(EQ_LABEL), EQ_LABEL), value: a.Tipe || 'APAR' },
+      { key: 'as', label: 'Area / Sub-area', type: 'select', options: areaSubOpts(), value: a.Area_Hall ? a.Area_Hall + '||' + a.Sub_Area : '' },
+      { key: 'titik', label: 'Titik pemasangan (mis. Pilar C-14, dekat pintu Test Bay)', value: a.Titik || '', min: 3 },
+      { key: 'kodeTag', label: 'Kode tag unik (mis. APAR-C-014)', value: a.Kode_Tag || '', min: 2 },
+      { key: 'kapasitas', label: 'Kapasitas / ukuran (mis. 6 kg, 9 L)', value: a.Kapasitas || '', required: false },
+      { key: 'refillDue', label: 'Kedaluwarsa isi ulang / refill (wajib untuk APAR)', type: 'date', value: a.Refill_Due || '', required: false },
+      { key: 'hydrotestDue', label: 'Jadwal hydrotest berikutnya (opsional)', type: 'date', value: a.Hydrotest_Due || '', required: false }
+    ];
+  }
+
+  // ---------------- [4] LINGKUNGAN & ESG ----------------
+  function renderEnviro() {
+    const env = dflt('envMonitoring', []);
+    const esg = dflt('esgMonthly', []);
+    const since = shiftDate(-30);
+    const exceeded = env.filter(e => e.Status_Kepatuhan === 'EXCEEDED');
+    const recentEx = exceeded.filter(e => e.Tanggal >= since).length;
+    const overdueSch = env.filter(e => ['EXPIRED'].includes(e.Jadwal_Level)).length;
+    $('envSummary').innerHTML = kpiCard('Hasil Uji Tercatat', env.length) + kpiCard('Melebihi Baku Mutu', exceeded.length, recentEx + ' dalam 30 hari terakhir', recentEx ? 'bad' : '') +
+      kpiCard('Jadwal Uji Terlewat', overdueSch, '', overdueSch ? 'warn' : '') + kpiCard('Periode ESG Terisi', esg.length);
+    $('envBody').innerHTML = env.length ? env.map(e => {
+      const st = e.Status_Kepatuhan === 'COMPLIANT' ? badge('MEMENUHI', LEVEL_CLS.OK) : e.Status_Kepatuhan === 'EXCEEDED' ? badge('MELEBIHI', LEVEL_CLS.EXPIRED) : badge('TIDAK VALID', LEVEL_CLS.UNKNOWN);
+      return `<tr class="hover:bg-zinc-50/80 align-top ${e.Status_Kepatuhan === 'EXCEEDED' ? 'bg-red-50/40' : ''}">
+        <td class="py-2.5 px-3 font-mono whitespace-nowrap">${esc(e.Tanggal)}<div class="text-[10px] text-zinc-400">${esc(e.Env_ID)}</div></td>
+        <td class="py-2.5 px-3">${badge(ENV_LABEL[e.Kategori] || e.Kategori, 'bg-zinc-100 text-zinc-800 border-zinc-300')}</td>
+        <td class="py-2.5 px-3"><div class="font-medium">${esc(e.Parameter)}</div><div class="text-[11px] text-zinc-500">${esc(e.Lokasi)}</div></td>
+        <td class="py-2.5 px-3 font-mono font-semibold whitespace-nowrap">${esc(e.Hasil)} ${esc(e.Satuan)}</td>
+        <td class="py-2.5 px-3 font-mono whitespace-nowrap text-zinc-600">${esc(e.Operator_BM)} ${esc(e.Baku_Mutu)} ${esc(e.Satuan)}</td>
+        <td class="py-2.5 px-3">${st}</td>
+        <td class="py-2.5 px-3">${esc(e.Lab || '-')}${e.Laporan_URL ? '<div>' + evidenceLink(e.Laporan_URL) + '</div>' : ''}</td>
+        <td class="py-2.5 px-3 font-mono whitespace-nowrap">${e.Jadwal_Berikutnya ? esc(e.Jadwal_Berikutnya) + '<div class="mt-0.5">' + levelBadge(e.Jadwal_Level, e.Jadwal_Days) + '</div>' : '<span class="text-zinc-400">-</span>'}</td></tr>`;
+    }).join('') : emptyRow(8, 'Belum ada hasil uji lingkungan.');
+    labelCells($('envBody'));
+    const rev = esg.slice().reverse();
+    $('esgBody').innerHTML = rev.length ? rev.map(r => `<tr><td class="py-2 px-3 font-mono font-semibold">${esc(r.Periode)}</td><td class="py-2 px-3 font-mono">${fmtNum(r.Listrik_kWh)}</td><td class="py-2 px-3 font-mono">${fmtNum(r.Air_m3)}</td><td class="py-2 px-3 font-mono">${fmtNum(r.BBM_Liter)}</td><td class="py-2 px-3 font-mono">${fmtNum(r.Limbah_B3_Kg)}</td><td class="py-2 px-3 font-mono">${fmtNum(r.Limbah_NonB3_Kg)}</td><td class="py-2 px-3 text-zinc-500">${esc(r.Updated_By)}</td></tr>`).join('') : emptyRow(7, 'Belum ada data utilitas.');
+    labelCells($('esgBody'));
+  }
+
+  // ---------------- [5] PELATIHAN, TBM, INDUKSI ----------------
+  function switchTrainingTab(tab) {
+    S.ttab = tab;
+    ['TBM', 'MATRIX', 'QUIZ'].forEach(k => $('tpanel-' + k).classList.toggle('hidden', k !== tab));
+    document.querySelectorAll('.ttab-btn').forEach(b => {
+      b.className = 'ttab-btn px-3 py-1.5 text-xs font-medium rounded border ' + (b.dataset.v === tab ? 'bg-zinc-900 text-white border-zinc-900' : 'bg-white text-zinc-700 border-zinc-300 hover:bg-zinc-50');
+    });
+  }
+
+  function renderTraining() {
+    const tbm = dflt('tbmLogs', []);
+    $('tbmBody').innerHTML = tbm.length ? tbm.map(t => `<tr class="align-top hover:bg-zinc-50/80"><td class="py-2.5 px-3 font-mono font-semibold">${esc(t.TBM_ID)}</td><td class="py-2.5 px-3 font-mono">${esc(t.Tanggal)}</td><td class="py-2.5 px-3">${areaTag(t.Area_Hall)}<div class="text-[11px] text-zinc-600 mt-1">${esc(t.Sub_Area)}</div></td><td class="py-2.5 px-3 min-w-[200px]">${esc(t.Topik)}${t.Catatan ? '<div class="text-[11px] text-zinc-500">' + esc(t.Catatan) + '</div>' : ''}</td><td class="py-2.5 px-3">${esc(t.Pemimpin)}</td><td class="py-2.5 px-3 font-mono">${esc(t.Jumlah_Peserta)}</td></tr>`).join('') : emptyRow(6, 'Belum ada TBM tercatat.');
+    labelCells($('tbmBody'));
+
+    const types = (dflt('v4Config', {}).trainingTypes) || Object.keys(TRAIN_LABEL);
+    $('matHead').innerHTML = `<tr class="bg-zinc-50 border-b border-zinc-200 text-[11px] font-mono uppercase text-zinc-500"><th class="py-2.5 px-3">Personel</th>${types.map(t => `<th class="py-2.5 px-3">${esc(TRAIN_LABEL[t] || t)}</th>`).join('')}</tr>`;
+    const mat = dflt('trainingMatrix', []);
+    $('matBody').innerHTML = mat.length ? mat.map(m => `<tr class="align-top"><td class="py-2.5 px-3 font-medium">${esc(m.Nama || m.NIK)}<div class="text-[10px] font-mono text-zinc-400">${esc(m.NIK)} • ${esc(m.Departemen)}</div></td>${types.map(t => {
+      const c = (m.Pelatihan || {})[t];
+      return `<td class="py-2.5 px-3" data-label="${esc(TRAIN_LABEL[t] || t)}">${c ? (c.Expiry ? levelBadge(c.Level, c.Days_Left) + '<div class="text-[10px] font-mono text-zinc-400 mt-0.5">' + esc(c.Expiry) + '</div>' : badge('TANPA MASA BERLAKU', LEVEL_CLS.OK) + '<div class="text-[10px] font-mono text-zinc-400 mt-0.5">' + esc(c.Tanggal) + '</div>') : '<span class="text-zinc-400">—</span>'}</td>`;
+    }).join('')}</tr>`).join('') : emptyRow(types.length + 1, 'Belum ada catatan pelatihan.');
+    labelCells($('matBody'));
+
+    const quizzes = dflt('inductionQuizzes', []);
+    const results = dflt('inductionResults', []);
+    $('quizBody').innerHTML = quizzes.length ? quizzes.map(q => {
+      const rs = results.filter(r => r.Quiz_ID === q.Quiz_ID);
+      const pass = rs.filter(r => r.Passed === 'YES').length;
+      const nSoal = q.Jumlah_Soal !== undefined ? q.Jumlah_Soal : (q.Soal || []).length;
+      return `<tr class="align-top"><td class="py-2.5 px-3 font-mono font-semibold">${esc(q.Quiz_ID)}</td><td class="py-2.5 px-3 min-w-[200px]">${esc(q.Judul)}</td><td class="py-2.5 px-3 font-mono">${esc(nSoal)}</td><td class="py-2.5 px-3 font-mono">${esc(q.Pass_Score)}</td><td class="py-2.5 px-3">${q.Status === 'ACTIVE' ? badge('AKTIF', LEVEL_CLS.OK) : badge('NONAKTIF', LEVEL_CLS.UNKNOWN)}</td><td class="py-2.5 px-3 font-mono text-[11px]">${rs.length} percobaan • ${pass} lulus</td><td class="py-2.5 px-3">${hasRole('HSE_OFFICER') ? `<button data-act="quiz-edit" data-id="${esc(q.Quiz_ID)}" class="bg-zinc-900 text-white px-2.5 py-1 rounded font-mono text-[10px]">Edit</button>` : ''}</td></tr>`;
+    }).join('') : emptyRow(7, 'Belum ada kuis induksi.');
+    labelCells($('quizBody'));
+    const qmap = {}; quizzes.forEach(q => { qmap[q.Quiz_ID] = q.Judul; });
+    const wmap = {}; dflt('vendorWorkers', []).forEach(w => { wmap[w.Worker_ID] = w.Nama; });
+    const last = results.slice(0, 20);
+    $('quizResBody').innerHTML = last.length ? last.map(r => `<tr><td class="py-2 px-3 font-mono">${esc(r.Taken_At)}</td><td class="py-2 px-3">${esc(wmap[r.Worker_ID] || r.Worker_ID)}</td><td class="py-2 px-3 font-mono">${esc(r.Vendor_ID)}</td><td class="py-2 px-3">${esc(qmap[r.Quiz_ID] || r.Quiz_ID)}</td><td class="py-2 px-3 font-mono font-semibold">${esc(r.Score)}</td><td class="py-2 px-3">${r.Passed === 'YES' ? badge('LULUS', LEVEL_CLS.OK) : badge('TIDAK LULUS', LEVEL_CLS.EXPIRED)}</td></tr>`).join('') : emptyRow(6, 'Belum ada hasil kuis.');
+    labelCells($('quizResBody'));
+    if (!S.ttab) switchTrainingTab('TBM');
+  }
+
+  async function quizBuilder(q) {
+    const existing = q && q.Soal ? q.Soal : [];
+    const h = await mkAsk(q ? 'Edit kuis ' + q.Quiz_ID : 'Kuis induksi baru', [
+      { key: 'judul', label: 'Judul kuis', value: q ? q.Judul : '', min: 5 },
+      { key: 'materi', label: 'Materi induksi (dibaca pekerja sebelum kuis)', type: 'textarea', value: q ? q.Materi : '', min: 20 },
+      { key: 'pass', label: 'Nilai kelulusan (50-100)', type: 'number', value: q ? q.Pass_Score : '80' },
+      { key: 'status', label: 'Status', type: 'select', options: [{ value: 'ACTIVE', label: 'AKTIF (tampil untuk vendor)' }, { value: 'INACTIVE', label: 'NONAKTIF' }], value: q ? q.Status : 'ACTIVE' }
+    ], 'Setelah ini Anda mengisi soal satu per satu (minimal 3, maksimal 20).', { okLabel: 'Lanjut: isi soal' });
+    if (!h) return;
+    const questions = [];
+    const need = Math.max(3, existing.length);
+    for (let i = 0; i < 20;) {
+      const ex = existing[i] || {};
+      const o = ex.options || [];
+      const f = await mkAsk('Soal #' + (i + 1), [
+        { key: 'q', label: 'Pertanyaan', type: 'textarea', value: ex.q || '', min: 5 },
+        { key: 'o1', label: 'Pilihan 1', value: o[0] || '' }, { key: 'o2', label: 'Pilihan 2', value: o[1] || '' },
+        { key: 'o3', label: 'Pilihan 3 (opsional)', value: o[2] || '', required: false }, { key: 'o4', label: 'Pilihan 4 (opsional)', value: o[3] || '', required: false },
+        { key: 'a', label: 'Kunci jawaban', type: 'select', options: [1, 2, 3, 4].map(n => ({ value: String(n), label: 'Pilihan ' + n })), value: String((ex.answer !== undefined ? ex.answer : 0) + 1) }
+      ], null, { okLabel: 'Simpan soal' });
+      if (!f) return;
+      const opts = [f.o1, f.o2, f.o3, f.o4].filter(Boolean);
+      const ans = parseInt(f.a, 10) - 1;
+      const target = [f.o1, f.o2, f.o3, f.o4][ans];
+      if (!target) { toast('Kunci jawaban menunjuk pilihan yang kosong. Ulangi soal ini.', false); continue; }
+      questions.push({ q: f.q, options: opts, answer: opts.indexOf(target) });
+      i++;
+      if (i >= need && !(await confirmBox('Tambah soal lagi?', i + ' soal siap disimpan. Tambah soal berikutnya?'))) break;
+    }
+    mutate({ action: 'QUIZ_SAVE', quizId: q ? q.Quiz_ID : '', judul: h.judul, materi: h.materi, passScore: h.pass, status: h.status, questions: questions }, null, '...');
+  }
+
+  // Induksi (kuis) pada menu Vendor — dipakai VENDOR_ADMIN dan HSE
+  function renderInduksi() {
+    const body = $('indBody');
+    if (!body) return;
+    const quizzes = (S.data.inductionQuizzes || []).filter(q => q.Status === 'ACTIVE');
+    const results = S.data.inductionResults || [];
+    const workers = (S.data.vendorWorkers || []).filter(w => w.Status === 'ACTIVE');
+    const canTake = hasRole('HSE_OFFICER', 'VENDOR_ADMIN');
+    if (!quizzes.length) { body.innerHTML = emptyRow(5, 'Belum ada kuis induksi aktif.'); return; }
+    const rows = [];
+    workers.forEach(w => quizzes.forEach(q => {
+      const rs = results.filter(r => r.Worker_ID === w.Worker_ID && r.Quiz_ID === q.Quiz_ID);
+      const l = rs[0];
+      rows.push(`<tr class="align-top"><td class="py-2.5 px-3 font-medium">${esc(w.Nama)}<div class="text-[10px] font-mono text-zinc-400">${esc(w.Worker_ID)}</div></td><td class="py-2.5 px-3 font-mono">${esc(w.Vendor_ID)}</td><td class="py-2.5 px-3">${esc(q.Judul)}<div class="text-[10px] font-mono text-zinc-400">lulus ≥ ${esc(q.Pass_Score)}</div></td><td class="py-2.5 px-3">${l ? (l.Passed === 'YES' ? badge('LULUS ' + l.Score, LEVEL_CLS.OK) : badge('TIDAK LULUS ' + l.Score, LEVEL_CLS.EXPIRED)) + '<div class="text-[10px] font-mono text-zinc-400 mt-0.5">' + esc(l.Taken_At) + '</div>' : badge('BELUM', LEVEL_CLS.UNKNOWN)}</td><td class="py-2.5 px-3">${canTake ? `<button data-act="quiz-take" data-w="${esc(w.Worker_ID)}" data-q="${esc(q.Quiz_ID)}" class="bg-zinc-900 text-white px-2.5 py-1 rounded font-mono text-[10px]">Kerjakan Kuis</button>` : ''}</td></tr>`);
+    }));
+    body.innerHTML = rows.length ? rows.join('') : emptyRow(5, 'Belum ada pekerja aktif.');
+    labelCells(body);
+  }
+
+  // ---------------- [6] LAPORAN EKSEKUTIF ----------------
+  const kvRows = rows => '<table class="gp-kv">' + rows.map(r => `<tr><th>${esc(r[0])}</th><td>${r[1]}</td></tr>`).join('') + '</table>';
+  const cnt = (o, labels) => { const k = Object.keys(o || {}); return k.length ? k.map(x => `${esc((labels && labels[x]) || x)}: <b>${esc(o[x])}</b>`).join(' • ') : '—'; };
+  const pct = v => v === null || v === undefined ? '—' : v + '%';
+
+  function renderExecReport(r) {
+    const [y, m] = r.period.split('-');
+    const bulan = MONTHS_ID[parseInt(m, 10) - 1] + ' ' + y;
+    const mt = r.incidents.metrics || {};
+    const ptwSt = Object.assign({}, ...Object.keys(PTW_STATUS).map(k => ({ [k]: PTW_STATUS[k][0] })));
+    const vSt = Object.assign({}, ...Object.keys(VPTW_STATUS).map(k => ({ [k]: VPTW_STATUS[k][0] })));
+    const h = t => `<div class="gp-h">${esc(t)}</div>`;
+    let b3list = '';
+    if ((r.b3.nearOrOverLimit || []).length) b3list = '<table><tr><th>ID</th><th>Limbah</th><th>Kode</th><th>Volume</th><th>Sisa hari</th></tr>' + r.b3.nearOrOverLimit.map(x => `<tr><td>${esc(x.id)}</td><td>${esc(x.item)}</td><td>${esc(x.kode)}</td><td>${esc(x.volume)}</td><td>${esc(x.daysLeft)}</td></tr>`).join('') + '</table>';
+    let envList = '';
+    if ((r.environment.exceededList || []).length) envList = '<table><tr><th>Kategori</th><th>Parameter</th><th>Lokasi</th><th>Hasil</th><th>Baku mutu</th></tr>' + r.environment.exceededList.map(x => `<tr><td>${esc(ENV_LABEL[x.kategori] || x.kategori)}</td><td>${esc(x.parameter)}</td><td>${esc(x.lokasi)}</td><td>${esc(x.hasil)} ${esc(x.satuan)}</td><td>${esc(x.op)} ${esc(x.baku)} ${esc(x.satuan)}</td></tr>`).join('') + '</table>';
+    const esg = r.environment.esg;
+    $('execSheet').innerHTML = `
+      <div class="gp-head"><div><div class="gp-co">PT. ELSEWEDY ELECTRIC INDONESIA</div><div class="gp-dept">Departemen EHS • Cileungsi Plant</div></div><div style="text-align:right;font-size:10px">Dicetak: ${esc(r.generatedAt)}<br>Oleh: ${esc(r.generatedBy)}</div></div>
+      <div class="gp-title">LAPORAN BULANAN EHS — P2K3 &amp; MANAGEMENT REVIEW</div>
+      <div style="text-align:center;margin-bottom:6px">Periode: <b>${esc(bulan)}</b> • data s.d. ${esc(r.asOf)}</div>
+      ${h('1. Kinerja Keselamatan (ISO 45001 klausul 10.2)')}
+      ${kvRows([
+        ['Kejadian pada periode', `<b>${esc(r.incidents.total)}</b> — ${cnt(r.incidents.byType, INC_LABEL)}`],
+        ['Hari kerja hilang (periode)', esc(r.incidents.lostDaysInPeriod)],
+        ['Jam kerja (periode)', r.incidents.manHoursInPeriod === null ? '<span class="gp-r">belum diisi</span>' : fmtNum(r.incidents.manHoursInPeriod)],
+        ['Zero Accident Days', mt.zeroAccidentDays === null || mt.zeroAccidentDays === undefined ? 'belum ada LTI tercatat' : fmtNum(mt.zeroAccidentDays) + ' hari (LTI terakhir ' + esc(mt.lastLtiDate) + ')'],
+        ['Safe Man-Hours', fmtNum(mt.safeManHours)],
+        ['Frequency Rate (YTD)', mt.frequencyRate === null || mt.frequencyRate === undefined ? '—' : esc(mt.frequencyRate) + ' per ' + fmtNum(mt.rateBase) + ' jam'],
+        ['Severity Rate (YTD)', mt.severityRate === null || mt.severityRate === undefined ? '—' : esc(mt.severityRate) + ' per ' + fmtNum(mt.rateBase) + ' jam'],
+        ['Insiden belum ditutup', esc(r.incidents.notClosed)]
+      ])}
+      ${h('2. Izin Kerja (e-PTW)')}
+      ${kvRows([
+        ['e-PTW internal', `<b>${esc(r.ptw.internalTotal)}</b> — ${cnt(r.ptw.internalByStatus, ptwSt)}`],
+        ['e-PTW vendor', `<b>${esc(r.ptw.vendorTotal)}</b> — ${cnt(r.ptw.vendorByStatus, vSt)}`]
+      ])}
+      ${h('3. CAPA & Audit (klausul 10.2)')}
+      ${kvRows([
+        ['Diterbitkan pada periode', `${esc(r.capa.opened)} — ${cnt(r.capa.openedByRisk)}`],
+        ['Rasio penyelesaian (terbit &amp; tutup)', `${pct(r.capa.closureRatePct)} (${esc(r.capa.openedAndClosed)} dari ${esc(r.capa.opened)})`],
+        ['Ditutup pada periode', esc(r.capa.closedInPeriod)],
+        ['Terbuka saat ini / overdue', `${esc(r.capa.openNow)} / <b class="${r.capa.overdueNow ? 'gp-r' : 'gp-g'}">${esc(r.capa.overdueNow)}</b>`]
+      ])}
+      ${h('4. HIRADC & Aspek Lingkungan (klausul 6.1)')}
+      ${kvRows([
+        ['Entri aktif', esc(r.hiradc.active)], ['Perlu review ulang', `<b class="${r.hiradc.needsReview ? 'gp-r' : 'gp-g'}">${esc(r.hiradc.needsReview)}</b>`], ['Risiko sisa HIGH/CRITICAL', esc(r.hiradc.residualHighOrCritical)]
+      ])}
+      ${h('5. Limbah B3 & SIA Alat Angkat')}
+      ${kvRows([
+        ['Record limbah B3 aktif / sudah diangkut', `${esc(r.b3.activeRecords)} / ${esc(r.b3.disposedInPeriodOrTotal)}`],
+        ['SIA alat angkat kedaluwarsa/kritis', `${esc(r.competency.siaExpiredOrCritical)} dari ${esc(r.competency.siaTotal)}`]
+      ])}${b3list ? '<div class="gp-scrollx">' + b3list + '</div>' : ''}
+      ${h('6. Kompetensi Personel')}
+      ${kvRows([
+        ['Personel eligible (MCU FIT & SIO berlaku)', `${esc(r.competency.eligible)} dari ${esc(r.competency.employees)}`],
+        ['SIO kedaluwarsa/kritis', esc(r.competency.sioExpiredOrCritical)], ['MCU tidak layak/kedaluwarsa/kritis', esc(r.competency.mcuBlockedOrExpired)]
+      ])}
+      ${h('7. Kinerja Vendor (CSMS)')}
+      ${kvRows([
+        ['Vendor terdaftar', `${esc(r.vendors.total)} — ${cnt(r.vendors.byStatus)}`],
+        ['Vendor dengan dokumen kedaluwarsa/kritis', esc(r.vendors.docsExpiredOrCritical)],
+        ['Uji gas pada periode', `${esc(r.vendors.gasTests)} (tidak lolos: <b class="${r.vendors.gasFailed ? 'gp-r' : 'gp-g'}">${esc(r.vendors.gasFailed)}</b>)`]
+      ])}
+      ${h('8. Peralatan Tanggap Darurat (klausul 8.2)')}
+      ${kvRows([
+        ['Aset aktif / perlu tindakan', `${esc(r.emergency.assets)} / <b class="${r.emergency.needsAction ? 'gp-r' : 'gp-g'}">${esc(r.emergency.needsAction)}</b>`],
+        ['Inspeksi terlambat', esc(r.emergency.inspectionOverdue)], ['Refill/hydrotest kedaluwarsa/kritis', esc(r.emergency.refillOrHydroExpiredOrCritical)],
+        ['Inspeksi pada periode (gagal)', `${esc(r.emergency.inspectionsInPeriod)} (${esc(r.emergency.inspectionsFailed)})`]
+      ])}
+      ${h('9. Lingkungan & ESG (ISO 14001 klausul 9.1)')}
+      ${kvRows([
+        ['Hasil uji pada periode', esc(r.environment.tests)], ['Melebihi baku mutu', `<b class="${r.environment.exceeded ? 'gp-r' : 'gp-g'}">${esc(r.environment.exceeded)}</b>`],
+        ['Listrik / Air / BBM', esg ? `${fmtNum(esg.Listrik_kWh)} kWh / ${fmtNum(esg.Air_m3)} m³ / ${fmtNum(esg.BBM_Liter)} liter` : '<span class="gp-r">belum diisi</span>'],
+        ['Limbah B3 / non-B3', esg ? `${fmtNum(esg.Limbah_B3_Kg)} kg / ${fmtNum(esg.Limbah_NonB3_Kg)} kg` : '<span class="gp-r">belum diisi</span>']
+      ])}${envList ? '<div class="gp-scrollx">' + envList + '</div>' : ''}
+      ${h('10. Pelatihan & TBM (klausul 7.2 &amp; 7.3)')}
+      ${kvRows([
+        ['TBM terlaksana / total peserta', `${esc(r.training.tbmCount)} / ${esc(r.training.tbmParticipants)}`],
+        ['Sertifikat pelatihan kedaluwarsa/kritis', esc(r.training.recordsExpiredOrCritical)]
+      ])}
+      <div class="gp-sign"><div><small>Disusun oleh</small><b>HSE Officer</b></div><div><small>Diperiksa</small><b>Ketua P2K3</b></div><div><small>Disetujui</small><b>Manajemen</b></div></div>
+      <div class="gp-foot">Dokumen dihasilkan otomatis oleh EHS Suite pada ${esc(r.generatedAt)}. Pembuatan laporan tercatat pada audit trail (EXEC_REPORT).</div>`;
+  }
+
+  // ---------------- Penambahan ACTIONS ----------------
+  Object.assign(ACTIONS, {
+    'ttab': el => switchTrainingTab(el.dataset.v),
+
+    // HIRADC
+    'hrd-new': async el => {
+      const r = await mkAsk('Entri HIRADC baru', hrdFields(null), 'Skala 1-5. Likelihood: 1 hampir tidak mungkin … 5 hampir pasti. Severity: 1 ringan … 5 fatal/bencana. Risiko sisa tidak boleh lebih tinggi dari risiko awal.', { okLabel: 'Simpan' });
+      if (r) mutate(hrdPayload(r), el, '...');
+    },
+    'hrd-edit': async el => {
+      const h = dflt('hiradc', []).find(x => x.HIRADC_ID === el.dataset.id);
+      if (!h) return;
+      const f = hrdFields(h);
+      f.push({ key: 'markReviewed', label: 'Tandai sudah direview (hapus penanda review)', type: 'checkbox', value: !!h.Needs_Review });
+      const r = await mkAsk((h.Needs_Review ? 'Review ' : 'Edit ') + h.HIRADC_ID, f, h.Review_Reason ? 'Alasan penandaan: ' + h.Review_Reason : null, { okLabel: 'Simpan' });
+      if (r) mutate(hrdPayload(r, { hiradcId: h.HIRADC_ID, markReviewed: !!r.markReviewed }), el, '...');
+    },
+    'hrd-retire': async el => {
+      const r = await mkAsk('Nonaktifkan ' + el.dataset.id, [{ key: 'reason', label: 'Alasan (mis. proses dihentikan, digantikan entri baru)', min: 5 }]);
+      if (r) mutate({ action: 'HIRADC_RETIRE', hiradcId: el.dataset.id, reason: r.reason }, el, '...');
+    },
+
+    // Insiden
+    'inc-new': async el => {
+      const r = await mkAsk('Lapor kejadian', [
+        { key: 'type', label: 'Jenis kejadian', type: 'select', options: selOpts(Object.keys(INC_LABEL), INC_LABEL), value: 'NEAR_MISS' },
+        { key: 'tanggal', label: 'Tanggal kejadian', type: 'date', value: shiftDate(0) },
+        { key: 'waktu', label: 'Jam kejadian (opsional)', type: 'time', required: false },
+        { key: 'as', label: 'Area / Sub-area', type: 'select', options: areaSubOpts() },
+        { key: 'location', label: 'Lokasi spesifik (opsional)', required: false },
+        { key: 'uraian', label: 'Uraian kejadian (apa, bagaimana, dampak)', type: 'textarea', min: 10 },
+        { key: 'risk', label: 'Tingkat risiko / potensi keparahan', type: 'select', options: RISK_ORDER(), value: 'MEDIUM' },
+        { key: 'korbanNik', label: 'NIK korban (wajib untuk First Aid, Medical Treatment, LTI)', required: false },
+        { key: 'hariHilang', label: 'Hari kerja hilang (khusus LTI)', type: 'number', required: false }
+      ], 'Laporkan segera. Kejadian akan menandai HIRADC di sub-area terkait untuk direview.', { okLabel: 'Kirim laporan' });
+      if (!r) return;
+      const as = splitAS(r.as);
+      mutate({ action: 'INCIDENT_REPORT', type: r.type, tanggal: r.tanggal, waktu: r.waktu, area: as.area, subArea: as.sub, location: r.location, uraian: r.uraian, risk: r.risk, korbanNik: r.korbanNik, hariHilang: r.hariHilang }, el, '...');
+    },
+    'inc-investigate': el => runInvestigation(el.dataset.id),
+    'inc-close': async el => {
+      const inc = dflt('incidents', []).find(x => x.Incident_ID === el.dataset.id);
+      const needNote = inc && inc.Status === 'REPORTED';
+      const r = needNote ? await mkAsk('Tutup near-miss ' + el.dataset.id, [{ key: 'n', label: 'Catatan penutupan (tindakan yang sudah dilakukan)', type: 'textarea', min: 10 }]) : (await confirmBox('Tutup insiden', 'Tutup ' + el.dataset.id + '? Server memeriksa semua CAPA terkait sudah tertutup.') ? {} : null);
+      if (r) mutate({ action: 'INCIDENT_CLOSE', incidentId: el.dataset.id, closeNote: r.n || '' }, el, '...');
+    },
+    'mh-edit': async el => {
+      const r = await mkAsk('Jam kerja bulanan', [
+        { key: 'p', label: 'Periode', type: 'month', value: nowYM() },
+        { key: 'h', label: 'Total jam kerja seluruh karyawan + kontraktor pada periode', type: 'number' },
+        { key: 'c', label: 'Catatan (opsional)', required: false }
+      ], 'Dipakai menghitung Frequency Rate, Severity Rate, dan Safe Man-Hours. Mengisi ulang periode yang sama akan menimpa nilai lama.', { okLabel: 'Simpan' });
+      if (r) mutate({ action: 'MANHOURS_SAVE', periode: r.p, manHours: r.h, catatan: r.c }, el, '...');
+    },
+
+    // Peralatan darurat
+    'eq-new': async el => {
+      const r = await mkAsk('Daftarkan aset darurat', eqFields(null), null, { okLabel: 'Simpan' });
+      if (!r) return;
+      const as = splitAS(r.as);
+      mutate({ action: 'EQUIP_SAVE', type: r.type, area: as.area, subArea: as.sub, titik: r.titik, kodeTag: r.kodeTag, kapasitas: r.kapasitas, refillDue: r.refillDue, hydrotestDue: r.hydrotestDue }, el, '...');
+    },
+    'eq-edit': async el => {
+      const a = dflt('equipment', []).find(x => x.Asset_ID === el.dataset.id);
+      if (!a) return;
+      const r = await mkAsk('Edit ' + a.Kode_Tag, eqFields(a), null, { okLabel: 'Simpan' });
+      if (!r) return;
+      const as = splitAS(r.as);
+      mutate({ action: 'EQUIP_SAVE', assetId: a.Asset_ID, type: r.type, area: as.area, subArea: as.sub, titik: r.titik, kodeTag: r.kodeTag, kapasitas: r.kapasitas, refillDue: r.refillDue, hydrotestDue: r.hydrotestDue }, el, '...');
+    },
+    'eq-inspect': async el => {
+      const a = dflt('equipment', []).find(x => x.Asset_ID === el.dataset.id);
+      if (!a) return;
+      const chk = [{ value: 'OK', label: 'OK' }, { value: 'NOK', label: 'NOK (tidak sesuai)' }, { value: 'NA', label: 'N/A (tidak berlaku)' }];
+      const r = await mkAsk('Inspeksi ' + a.Kode_Tag, [
+        { key: 'tekanan', label: 'Tekanan / gauge', type: 'select', options: chk },
+        { key: 'segel', label: 'Segel / pin pengaman', type: 'select', options: chk },
+        { key: 'fisik', label: 'Kondisi fisik (korosi, selang, nozzle, body)', type: 'select', options: chk },
+        { key: 'kelengkapan', label: 'Kelengkapan isi / aksesori', type: 'select', options: chk },
+        { key: 'catatan', label: 'Catatan temuan (wajib bila ada NOK)', type: 'textarea', required: false },
+        { key: 'createCapa', label: 'Bila gagal, terbitkan tiket CAPA otomatis (jatuh tempo 7 hari)', type: 'checkbox', value: true },
+        { key: 'newRefillDue', label: 'Jika baru di-refill: kedaluwarsa isi ulang baru (opsional)', type: 'date', required: false },
+        { key: 'newHydrotestDue', label: 'Jika baru hydrotest: jadwal hydrotest berikutnya (opsional)', type: 'date', required: false }
+      ], a.Titik + ' • ' + (EQ_LABEL[a.Tipe] || a.Tipe), { okLabel: 'Simpan inspeksi' });
+      if (r) mutate({ action: 'EQUIP_INSPECT', assetId: a.Asset_ID, tekanan: r.tekanan, segel: r.segel, fisik: r.fisik, kelengkapan: r.kelengkapan, catatan: r.catatan, createCapa: !!r.createCapa, newRefillDue: r.newRefillDue, newHydrotestDue: r.newHydrotestDue }, el, '...');
+    },
+    'eq-retire': async el => {
+      const r = await mkAsk('Keluarkan dari register ' + el.dataset.id, [{ key: 'reason', label: 'Alasan (mis. dibongkar, diganti unit baru)', min: 5 }]);
+      if (r) mutate({ action: 'EQUIP_RETIRE', assetId: el.dataset.id, reason: r.reason }, el, '...');
+    },
+
+    // Lingkungan
+    'env-new': async el => {
+      const r = await mkAsk('Catat hasil uji lingkungan', [
+        { key: 'kategori', label: 'Kategori uji', type: 'select', options: selOpts(Object.keys(ENV_LABEL), ENV_LABEL) },
+        { key: 'parameter', label: 'Parameter (mis. PM10, Kebisingan, pH, Lux)', min: 2 },
+        { key: 'lokasi', label: 'Titik / lokasi sampling', min: 3 },
+        { key: 'tanggal', label: 'Tanggal uji', type: 'date', value: shiftDate(0) },
+        { key: 'hasil', label: 'Hasil uji (angka)', type: 'number' },
+        { key: 'satuan', label: 'Satuan (mis. µg/m³, dB(A), lux)', required: false },
+        { key: 'bakuMutu', label: 'Nilai baku mutu (angka)', type: 'number' },
+        { key: 'operator', label: 'Hasil harus', type: 'select', options: [{ value: '<=', label: 'tidak melebihi baku mutu (≤)' }, { value: '>=', label: 'tidak kurang dari baku mutu (≥, mis. pencahayaan)' }] },
+        { key: 'lab', label: 'Laboratorium / pelaksana (opsional)', required: false },
+        { key: 'laporanUrl', label: 'Tautan laporan uji (Drive/Docs, opsional)', type: 'url', required: false },
+        { key: 'nextDue', label: 'Jadwal uji berikutnya (opsional)', type: 'date', required: false }
+      ], 'Status kepatuhan dihitung otomatis oleh server.', { okLabel: 'Simpan' });
+      if (r) mutate({ action: 'ENV_SAVE', kategori: r.kategori, parameter: r.parameter, lokasi: r.lokasi, tanggal: r.tanggal, hasil: r.hasil, satuan: r.satuan, bakuMutu: r.bakuMutu, operator: r.operator, lab: r.lab, laporanUrl: r.laporanUrl, nextDue: r.nextDue }, el, '...');
+    },
+    'esg-new': async el => {
+      const r = await mkAsk('Data utilitas & ESG bulanan', [
+        { key: 'p', label: 'Periode', type: 'month', value: nowYM() },
+        { key: 'kwh', label: 'Konsumsi listrik (kWh)', type: 'number' }, { key: 'air', label: 'Konsumsi air (m³)', type: 'number' },
+        { key: 'bbm', label: 'Bahan bakar (liter)', type: 'number' }, { key: 'b3', label: 'Timbulan limbah B3 (kg)', type: 'number' },
+        { key: 'nb3', label: 'Timbulan limbah non-B3 (kg)', type: 'number' }
+      ], 'Isi 0 bila tidak ada. Mengisi ulang periode yang sama akan menimpa.', { okLabel: 'Simpan' });
+      if (r) mutate({ action: 'ESG_SAVE', periode: r.p, listrikKwh: r.kwh, airM3: r.air, bbmLiter: r.bbm, limbahB3Kg: r.b3, limbahNonB3Kg: r.nb3 }, el, '...');
+    },
+
+    // Pelatihan
+    'tbm-new': async el => {
+      const r = await mkAsk('Catat Toolbox Meeting', [
+        { key: 'tanggal', label: 'Tanggal', type: 'date', value: shiftDate(0) },
+        { key: 'as', label: 'Area / Sub-area', type: 'select', options: areaSubOpts() },
+        { key: 'topik', label: 'Topik TBM', min: 5 },
+        { key: 'pemimpin', label: 'Pemimpin TBM (kosong = nama Anda)', required: false },
+        { key: 'peserta', label: 'NIK peserta internal, pisahkan dengan koma (opsional)', type: 'textarea', required: false },
+        { key: 'jumlahLain', label: 'Jumlah peserta lain (kontraktor/tamu, tanpa NIK)', type: 'number', required: false },
+        { key: 'catatan', label: 'Catatan (opsional)', required: false }
+      ], 'Minimal satu peserta (NIK atau jumlah lain).', { okLabel: 'Simpan' });
+      if (!r) return;
+      const as = splitAS(r.as);
+      mutate({ action: 'TBM_SAVE', tanggal: r.tanggal, area: as.area, subArea: as.sub, topik: r.topik, pemimpin: r.pemimpin, peserta: String(r.peserta || '').split(/[,\s]+/).filter(Boolean), jumlahLain: r.jumlahLain, catatan: r.catatan }, el, '...');
+    },
+    'train-new': async el => {
+      const r = await mkAsk('Catat pelatihan personel', [
+        { key: 'nik', label: 'NIK personel', min: 3 },
+        { key: 'jenis', label: 'Jenis pelatihan', type: 'select', options: selOpts(Object.keys(TRAIN_LABEL), TRAIN_LABEL) },
+        { key: 'judul', label: 'Judul / nama pelatihan', min: 3 },
+        { key: 'tanggal', label: 'Tanggal pelatihan', type: 'date', value: shiftDate(0) },
+        { key: 'expiry', label: 'Masa berlaku sertifikat s/d (opsional)', type: 'date', required: false },
+        { key: 'penyelenggara', label: 'Penyelenggara (opsional)', required: false },
+        { key: 'sertifikatUrl', label: 'Tautan sertifikat (Drive/Docs, opsional)', type: 'url', required: false }
+      ], null, { okLabel: 'Simpan' });
+      if (r) mutate(Object.assign({ action: 'TRAINING_SAVE' }, r), el, '...');
+    },
+    'quiz-new': () => quizBuilder(null),
+    'quiz-edit': el => quizBuilder(dflt('inductionQuizzes', []).find(q => q.Quiz_ID === el.dataset.id) || null),
+    'quiz-take': async el => {
+      const q = (S.data.inductionQuizzes || []).find(x => x.Quiz_ID === el.dataset.q);
+      const w = (S.data.vendorWorkers || []).find(x => x.Worker_ID === el.dataset.w);
+      if (!q || !w) return;
+      const fields = (q.Soal || []).map((s, i) => ({ key: 'a' + i, label: (i + 1) + '. ' + s.q, type: 'select', options: [{ value: '', label: '— pilih jawaban —' }].concat(s.options.map((o, j) => ({ value: String(j), label: o }))) }));
+      const r = await mkAsk('Kuis: ' + q.Judul + ' — ' + w.Nama, fields, 'MATERI\n' + q.Materi + '\n\nNilai lulus: ' + q.Pass_Score + '. Semua soal wajib dijawab.', { okLabel: 'Kirim jawaban' });
+      if (!r) return;
+      const answers = (q.Soal || []).map((s, i) => r['a' + i]);
+      if (answers.some(a => a === '' || a === undefined)) { toast('Semua soal wajib dijawab.', false); return; }
+      mutate({ action: 'QUIZ_SUBMIT', quizId: q.Quiz_ID, workerId: w.Worker_ID, answers: answers.map(Number) }, el, '...');
+    },
+
+    // Laporan eksekutif
+    'exec-run': async el => {
+      const p = $('execPeriod').value;
+      if (!/^\d{4}-\d{2}$/.test(p)) { toast('Pilih periode laporan.', false); return; }
+      const res = await withBusy(el, 'Menyusun...', () => call({ action: 'EXEC_REPORT', periode: p }));
+      if (!res.success) { toast(res.message || 'Gagal membuat laporan.', false); return; }
+      renderExecReport(res.report);
+      $('modalExec').classList.remove('hidden');
+    },
+    'exec-close': () => $('modalExec').classList.add('hidden'),
+    'exec-print': () => window.print()
+  });
+
+  // Penanda review HIRADC & rekomputasi panel bahaya saat area/sub-area e-PTW berubah
+  ['ptwArea', 'ptwSubArea'].forEach(id => $(id).addEventListener('change', renderPtwHazard));
+  ['hrdArea', 'eqArea'].forEach(id => $(id).addEventListener('change', () => { renderHiradc(); renderEquipment(); }));
+
+  // Peringatan "Perlu Tindakan" dari modul v4.0 (dipanggil buildAlerts)
+  function buildAlertsV4(a) {
+    const hz = dflt('hiradc', []).filter(h => h.Needs_Review).length;
+    if (hz) a.push({ lv: 'WARNING', t: `${hz} entri HIRADC perlu review ulang`, mod: 'HIRADC' });
+    dflt('incidents', []).filter(i => i.Status === 'REPORTED' && i.Jenis !== 'NEAR_MISS').forEach(i =>
+      a.push({ lv: i.Jenis === 'LTI' ? 'CRITICAL' : 'WARNING', t: `${i.Incident_ID} (${INC_LABEL[i.Jenis] || i.Jenis}) belum diinvestigasi`, mod: 'INCIDENT' }));
+    const eq = dflt('equipment', []).filter(x => x.Record_Status === 'ACTIVE' && x.Needs_Action);
+    if (eq.length) {
+      const sev = eq.some(x => x.Kondisi === 'RUSAK' || ['EXPIRED'].includes(x.Refill_Level) || ['EXPIRED'].includes(x.Hydrotest_Level));
+      a.push({ lv: sev ? 'EXPIRED' : 'CRITICAL', t: `${eq.length} peralatan darurat perlu tindakan (rusak / refill / hydrotest / inspeksi terlambat)`, mod: 'EMERGENCY' });
+    }
+    const since = shiftDate(-30);
+    const ex = dflt('envMonitoring', []).filter(e => e.Status_Kepatuhan === 'EXCEEDED' && e.Tanggal >= since).length;
+    if (ex) a.push({ lv: 'CRITICAL', t: `${ex} hasil uji lingkungan melebihi baku mutu (30 hari terakhir)`, mod: 'ENVIRO' });
+    const sch = dflt('envMonitoring', []).filter(e => e.Jadwal_Level === 'EXPIRED').length;
+    if (sch) a.push({ lv: 'WARNING', t: `${sch} jadwal uji lingkungan terlewat`, mod: 'ENVIRO' });
+    const tr = dflt('trainingRecords', []).filter(t => ['EXPIRED', 'CRITICAL'].includes(t.Level)).length;
+    if (tr) a.push({ lv: 'WARNING', t: `${tr} sertifikat pelatihan kedaluwarsa/kritis`, mod: 'TRAINING' });
+  }
+
 
   document.addEventListener('click', e => {
     const el = e.target.closest('[data-act]');
