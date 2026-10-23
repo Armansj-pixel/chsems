@@ -127,7 +127,7 @@
           <div class="w-2.5 h-6 bg-red-600 rounded-sm"></div>
           <div>
             <div class="text-xs font-bold tracking-wider text-white uppercase leading-none">ELSEWEDY ELECTRIC</div>
-            <div class="text-[10px] font-mono text-zinc-500 mt-0.5">ID-CLG • EHS SUITE v4.1</div>
+            <div class="text-[10px] font-mono text-zinc-500 mt-0.5">ID-CLG • EHS SUITE v4.2</div>
           </div>
         </div>
       </div>
@@ -166,6 +166,7 @@
             <button data-act="nav" data-v="INCIDENT" data-roles="HSE_OFFICER,SUPERVISOR,VIEWER,LIMITED_OFFICER" class="navbtn w-full flex items-center justify-between px-2.5 py-2 rounded"><span>Insiden & Near-Miss</span><span id="badge-inc" class="font-mono text-[10px] bg-zinc-900 text-zinc-300 px-1.5 py-0.5 rounded border border-zinc-700">0</span></button>
             <button data-act="nav" data-v="EMERGENCY" data-roles="HSE_OFFICER,SUPERVISOR,VIEWER,LIMITED_OFFICER" class="navbtn w-full flex items-center justify-between px-2.5 py-2 rounded"><span>Peralatan Tanggap Darurat</span><span id="badge-eq" class="font-mono text-[10px] bg-zinc-900 text-zinc-300 px-1.5 py-0.5 rounded border border-zinc-700">0</span></button>
             <button data-act="nav" data-v="ENVIRO" data-roles="HSE_OFFICER,SUPERVISOR,VIEWER,LIMITED_OFFICER" class="navbtn w-full flex items-center px-2.5 py-2 rounded"><span>Lingkungan & ESG</span></button>
+            <button data-act="nav" data-v="V41" data-roles="HSE_OFFICER,SUPERVISOR,VIEWER,LIMITED_OFFICER" class="navbtn w-full flex items-center px-2.5 py-2 rounded"><span>Modul Lapangan v4.1</span></button>
             <button data-act="nav" data-v="TRAINING" data-roles="HSE_OFFICER,SUPERVISOR,VIEWER,LIMITED_OFFICER" class="navbtn w-full flex items-center px-2.5 py-2 rounded"><span>Pelatihan, TBM & Induksi</span></button>
             <button data-act="nav" data-v="REPORT" data-roles="HSE_OFFICER,SUPERVISOR,VIEWER" class="navbtn w-full flex items-center px-2.5 py-2 rounded"><span>Laporan Eksekutif</span></button>
           </nav>
@@ -348,6 +349,7 @@
                   <div><label class="block font-medium text-zinc-700 mb-1">MCU Exp</label><input id="empMcuExp" type="date" required class="w-full border border-zinc-300 rounded px-2 py-1.5 font-mono" /></div>
                   <div><label class="block font-medium text-zinc-700 mb-1">SIO Exp</label><input id="empSioExp" type="date" required class="w-full border border-zinc-300 rounded px-2 py-1.5 font-mono" /></div>
                 </div>
+                <div><label class="block font-medium text-zinc-700 mb-1">Golongan Darah (opsional, hanya HSE/Supervisor)</label><select id="empGol" class="w-full border border-zinc-300 rounded px-2.5 py-1.5 bg-white"><option value="">-</option><option>A</option><option>B</option><option>AB</option><option>O</option><option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>AB+</option><option>AB-</option><option>O+</option><option>O-</option></select></div>
                 <div><label class="block font-medium text-zinc-700 mb-1">Detail Lisensi SIO / K3</label><input id="empCert" required placeholder="SIO Overhead Crane Kls 1" class="w-full border border-zinc-300 rounded px-2.5 py-1.5" /></div>
                 <div><label class="block font-medium text-zinc-700 mb-1">Kompetensi (syarat interlock)</label><div id="empTags" class="flex flex-wrap gap-x-3 gap-y-1.5"></div></div>
                 <button id="btnEmp" class="w-full bg-zinc-900 hover:bg-zinc-800 text-white font-medium py-2 rounded">Simpan Data Personel</button>
@@ -531,6 +533,7 @@
           <div class="bg-white border border-zinc-200 rounded"><div class="px-4 py-3 border-b border-zinc-200 flex flex-wrap items-center justify-between gap-2"><div><h3 class="text-xs font-semibold uppercase tracking-wider">Register Peralatan Tanggap Darurat</h3><p class="text-[11px] text-zinc-500">ISO 45001 klausul 8.2. Inspeksi bulanan; peringatan refill/hydrotest otomatis muncul di panel Perlu Tindakan.</p></div><div class="flex flex-wrap items-center gap-2"><select id="eqArea" class="text-xs border border-zinc-300 rounded px-2 py-1 bg-white font-mono"></select><button data-act="eq-new" data-roles="HSE_OFFICER"  class="text-xs bg-zinc-900 hover:bg-zinc-800 text-white px-3 py-1.5 rounded font-medium">+ Aset Darurat</button></div></div><div class="overflow-x-auto"><table class="rt w-full text-left text-xs"><thead><tr class="bg-zinc-50 border-b border-zinc-200 text-[11px] font-mono uppercase text-zinc-500"><th class="py-2.5 px-3">Aset</th><th class="py-2.5 px-3">Lokasi</th><th class="py-2.5 px-3">Kapasitas</th><th class="py-2.5 px-3">Refill</th><th class="py-2.5 px-3">Hydrotest</th><th class="py-2.5 px-3">Inspeksi Terakhir</th><th class="py-2.5 px-3">Kondisi</th><th class="py-2.5 px-3">Aksi</th></tr></thead><tbody id="eqBody" class="divide-y divide-zinc-200"></tbody></table></div></div>
           <div class="bg-white border border-zinc-200 rounded"><div class="px-4 py-3 border-b border-zinc-200 flex flex-wrap items-center justify-between gap-2"><div><h3 class="text-xs font-semibold uppercase tracking-wider">Inspeksi Terbaru</h3><p class="text-[11px] text-zinc-500">10 inspeksi terakhir.</p></div><div class="flex flex-wrap items-center gap-2"></div></div><div class="overflow-x-auto"><table class="rt w-full text-left text-xs"><thead><tr class="bg-zinc-50 border-b border-zinc-200 text-[11px] font-mono uppercase text-zinc-500"><th class="py-2.5 px-3">ID</th><th class="py-2.5 px-3">Tanggal</th><th class="py-2.5 px-3">Aset</th><th class="py-2.5 px-3">Tekanan</th><th class="py-2.5 px-3">Segel</th><th class="py-2.5 px-3">Fisik</th><th class="py-2.5 px-3">Lengkap</th><th class="py-2.5 px-3">Hasil</th><th class="py-2.5 px-3">Inspector</th></tr></thead><tbody id="eqInspBody" class="divide-y divide-zinc-200"></tbody></table></div></div>
         </section>
+        <section id="mod-V41" class="hidden max-w-[1400px] mx-auto space-y-4"><div id="v41Tabs" class="flex flex-wrap gap-2"></div><div id="v41Body" class="bg-white border border-zinc-200 rounded"></div></section>
         <section id="mod-ENVIRO" class="hidden max-w-[1400px] mx-auto space-y-4">
           <div id="envSummary" class="grid grid-cols-2 md:grid-cols-4 bg-white border border-zinc-200 rounded divide-x divide-y md:divide-y-0 divide-zinc-200"></div>
           <div class="bg-white border border-zinc-200 rounded"><div class="px-4 py-3 border-b border-zinc-200 flex flex-wrap items-center justify-between gap-2"><div><h3 class="text-xs font-semibold uppercase tracking-wider">Pemantauan Lingkungan & Kepatuhan Baku Mutu</h3><p class="text-[11px] text-zinc-500">ISO 14001 klausul 9.1. Status kepatuhan dihitung ulang server dari hasil uji dan baku mutu.</p></div><div class="flex flex-wrap items-center gap-2"><button data-act="env-new" data-roles="HSE_OFFICER"  class="text-xs bg-zinc-900 hover:bg-zinc-800 text-white px-3 py-1.5 rounded font-medium">+ Hasil Uji</button></div></div><div class="overflow-x-auto"><table class="rt w-full text-left text-xs"><thead><tr class="bg-zinc-50 border-b border-zinc-200 text-[11px] font-mono uppercase text-zinc-500"><th class="py-2.5 px-3">Tanggal</th><th class="py-2.5 px-3">Kategori</th><th class="py-2.5 px-3">Parameter & Lokasi</th><th class="py-2.5 px-3">Hasil</th><th class="py-2.5 px-3">Baku Mutu</th><th class="py-2.5 px-3">Status</th><th class="py-2.5 px-3">Lab / Laporan</th><th class="py-2.5 px-3">Uji Berikutnya</th></tr></thead><tbody id="envBody" class="divide-y divide-zinc-200"></tbody></table></div></div>
@@ -635,7 +638,7 @@
     CAPA: 'CAPA & Audit Register', SIO_MCU: 'Kompetensi SIO & MCU', PAA_B3: 'SIA Alat Angkat & TPS Limbah B3',
     USERS: 'Manajemen User', AUDIT: 'Audit Trail', VENDOR: 'Vendor & PTW Vendor',
     HIRADC: 'HIRADC & Aspek Lingkungan', INCIDENT: 'Insiden, Near-Miss & Investigasi', EMERGENCY: 'Peralatan Tanggap Darurat',
-    ENVIRO: 'Lingkungan & ESG', TRAINING: 'Pelatihan, TBM & Induksi Keselamatan', REPORT: 'Laporan Eksekutif Bulanan'
+    ENVIRO: 'Lingkungan & ESG', V41: 'Modul Lapangan v4.1', TRAINING: 'Pelatihan, TBM & Induksi Keselamatan', REPORT: 'Laporan Eksekutif Bulanan'
   };
   const MODULES = Object.keys(MODULE_TITLES);
   const AREA_LABEL = { HALL_A: 'HALL A', HALL_B: 'HALL B', HALL_C: 'HALL C', HALL_D: 'HALL D', PLANT_2: 'PLANT 2 (KONSTRUKSI)', OTHER: 'LAINNYA' };
@@ -1644,6 +1647,7 @@
       $('empNik').value = e.NIK; $('empNama').value = e.Nama; $('empDept').value = e.Departemen; $('empRole').value = e.Jabatan;
       $('empMcu').value = e.Status_MCU || 'FIT'; $('empMcuExp').value = e.MCU_Expiry || ''; $('empSioExp').value = e.SIO_Expiry || '';
       $('empCert').value = e.Detail_Sertifikasi;
+      $('empGol').value = e.Golongan_Darah || '';
       document.querySelectorAll('.empTag').forEach(c => { c.checked = (e.Kompetensi_List || []).includes(c.value); });
       $('empForm').scrollIntoView({ behavior: 'smooth', block: 'start' });
     },
@@ -1903,10 +1907,235 @@
   const keepLines = () => { $('askMsg').style.whiteSpace = 'pre-wrap'; };
   const mkAsk = (title, fields, msg, opts) => { const p = askForm(title, fields, msg, opts); keepLines(); return p; };
 
+  // ===== v4.1: STARR, bahan kimia/SDS, ergonomi, dokumen CSMS, lifting plan, tombol darurat =====
+  const V41T = { STARR: 'STARR', CHEM: 'Bahan Kimia', ERGO: 'Ergonomi', VDOC: 'Dokumen CSMS', LIFT: 'Lifting Plan', ALERT: 'Darurat' };
+  const STARR_L = { UNSAFE_ACTION: 'Tindakan Tidak Aman', UNSAFE_CONDITION: 'Kondisi Tidak Aman', SAFE_BEHAVIOR: 'Perilaku Aman' };
+  const ALERT_L = { INJURY: 'Korban / Cedera', FIRE: 'Kebakaran', CHEM_LEAK: 'Kebocoran Kimia', OTHER: 'Lainnya' };
+  let v41Tab = 'STARR';
+  const v41c = () => dflt('v41Config', {});
+  const t41 = (head, rows, empty) => `<div class="overflow-x-auto"><table class="w-full text-xs rt"><thead><tr class="bg-zinc-50 border-b border-zinc-200 text-[11px] font-mono uppercase text-zinc-500">${head.map(h => `<th class="py-2.5 px-3 text-left">${h}</th>`).join('')}</tr></thead><tbody class="divide-y divide-zinc-100">${rows.length ? rows.join('') : emptyRow(head.length, empty)}</tbody></table></div>`;
+  const c41 = h => `<td class="py-2.5 px-3 align-top">${h}</td>`;
+  const b41 = (act, id, label, cls) => `<button data-act="${act}" data-id="${esc(id)}" class="${cls || 'border border-zinc-300'} px-2.5 py-1 rounded font-mono text-[10px]">${label}</button>`;
+  const n41 = (act, label) => `<button data-act="${act}" class="text-xs bg-zinc-900 hover:bg-zinc-800 text-white px-3 py-1.5 rounded font-medium">${label}</button>`;
+  const h41 = (title, sub, btns) => `<div class="px-4 py-3 border-b border-zinc-200 flex flex-wrap items-center justify-between gap-2"><div><h3 class="text-xs font-semibold uppercase tracking-wider">${title}</h3><p class="text-[11px] text-zinc-500">${sub}</p></div><div class="flex gap-2">${btns || ''}</div></div>`;
+  const g41 = arr => arr && arr.length ? t41(Object.keys(arr[0]).map(esc), arr.map(o => '<tr>' + Object.keys(o).map(k => c41(esc(o[k]))).join('') + '</tr>'), '') : '';
+  const fmtDT = v => esc(String(v || '').replace('T', ' ').slice(0, 16));
+
+  function renderV41() {
+    const tabs = $('v41Tabs'); if (!tabs) return;
+    tabs.innerHTML = Object.keys(V41T).map(k => `<button data-act="v41-tab" data-id="${k}" class="px-3 py-1.5 rounded text-xs font-medium ${k === v41Tab ? 'bg-zinc-900 text-white' : 'border border-zinc-300 bg-white text-zinc-700'}">${V41T[k]}</button>`).join('');
+    const body = $('v41Body');
+    body.innerHTML = { STARR: v41Starr, CHEM: v41Chem, ERGO: v41Ergo, VDOC: v41Vdoc, LIFT: v41Lift, ALERT: v41Alert }[v41Tab](hasRole('HSE_OFFICER'));
+    labelCells(body);
+  }
+  function v41Starr(hse) {
+    const bd = dflt('starrBoard', {}), rows = dflt('starrReports', []);
+    const kpi = a => a ? `<div class="px-4 py-2 text-[11px] text-zinc-600">${esc(JSON.stringify(a))}</div>` : '';
+    return h41('Kartu STARR (Stop, Think, Act, Report, Review)', 'Laporan perilaku & kondisi dari semua karyawan. HSE meninjau, memberi poin, dan dapat menerbitkan CAPA.', n41('starr-new', '+ Kirim Kartu STARR')) +
+      (hse && bd.byPerson ? '<div class="px-4 pt-3 text-[11px] font-mono uppercase text-zinc-500">Papan peringkat (perorangan)</div>' + g41(bd.byPerson) + '<div class="px-4 pt-3 text-[11px] font-mono uppercase text-zinc-500">Per departemen</div>' + g41(bd.byDept) : '') +
+      t41(['ID', 'Kategori', 'Area', 'Uraian', 'Risiko', 'Status', 'Aksi'], rows.map(r => '<tr>' + c41(esc(r.STARR_ID) + `<div class="text-[10px] text-zinc-400">${esc(r.Tanggal)}</div>`) + c41(badge(STARR_L[r.Kategori] || r.Kategori, 'bg-zinc-100 text-zinc-800 border-zinc-300')) + c41(areaTag(r.Area_Hall) + `<div class="text-[11px] text-zinc-600">${esc(r.Sub_Area)}</div>`) +
+        c41(esc(r.Uraian) + (r.Tindakan_Segera ? `<div class="text-[11px] text-zinc-500">Tindakan: ${esc(r.Tindakan_Segera)}</div>` : '') + (r.Review_Note ? `<div class="text-[11px] text-zinc-500">Review: ${esc(r.Review_Note)}</div>` : '') + `<div class="text-[10px] text-zinc-400">${esc(r.Pelapor_Nama)} • ${esc(r.Departemen)}${r.Poin ? ' • ' + esc(r.Poin) + ' poin' : ''}${r.CAPA_ID ? ' • ' + esc(r.CAPA_ID) : ''}</div>`) +
+        c41(riskBadge(r.Tingkat_Risiko)) + c41(badge(esc(r.Status), 'bg-zinc-100 text-zinc-800 border-zinc-300')) +
+        c41(hse && r.Status === 'SUBMITTED' ? b41('starr-review', r.STARR_ID, 'Review', 'bg-zinc-900 text-white') : hse && (r.Status === 'REVIEWED' || r.Status === 'ACTION_ISSUED') ? b41('starr-close', r.STARR_ID, 'Tutup') : '') + '</tr>'), 'Belum ada kartu STARR.');
+  }
+  function v41Chem(hse) {
+    const rows = dflt('chemicals', []), log = dflt('chemicalLog', []);
+    return h41('Inventaris Bahan Kimia & SDS', 'Stok vs batas penyimpanan dan masa tinjau SDS dihitung server. Link QR memuat SDS tanpa login.', hse ? n41('chem-new', '+ Bahan Kimia') : '') +
+      t41(['Bahan', 'Lokasi', 'Stok', 'SDS', 'Aksi'], rows.map(c => '<tr>' + c41(`<div class="font-medium">${esc(c.Nama)}</div><div class="text-[10px] text-zinc-400">${esc(c.Chem_ID)} • CAS ${esc(c.CAS || '-')} • ${esc(c.Kategori)}</div>` + (c.APD_Wajib ? `<div class="text-[10px] text-zinc-500">APD: ${esc(c.APD_Wajib)}</div>` : '')) +
+        c41(areaTag(c.Area_Hall) + `<div class="text-[11px] text-zinc-600">${esc(c.Sub_Area)} • ${esc(c.Lokasi_Simpan)}</div>`) +
+        c41(`<span class="font-mono">${esc(c.Qty_Current)} / ${esc(c.Qty_Max)} ${esc(c.Satuan)}</span><div class="mt-0.5">${levelBadge(c.Limit_Level, c.Pct_Limit + '%')}</div>`) +
+        c41(levelBadge(c.SDS_Level, c.SDS_Days) + `<div class="text-[10px] text-zinc-400">tinjau ${esc(c.SDS_Next_Review)}</div>` + (/^https:/.test(c.SDS_URL || '') ? `<a class="text-[11px] underline" target="_blank" rel="noopener" href="${esc(c.SDS_URL)}">Buka SDS</a>` : '')) +
+        c41((hasRole('HSE_OFFICER', 'SUPERVISOR') ? b41('chem-move', c.Chem_ID, 'Mutasi stok') : '') + (c.Sds_Sig ? ' ' + b41('chem-qr', c.Chem_ID + '|' + c.Sds_Sig, 'Salin link QR') : '') + (hse ? ' ' + b41('chem-retire', c.Chem_ID, 'Nonaktifkan') : '')) + '</tr>'), 'Belum ada bahan kimia aktif.') +
+      '<div class="px-4 pt-3 text-[11px] font-mono uppercase text-zinc-500">Mutasi stok terakhir</div>' +
+      t41(['Waktu', 'Bahan', 'Tipe', 'Qty', 'Setelah', 'Oleh'], log.slice(0, 30).map(l => '<tr>' + c41(esc(l.Tanggal)) + c41(esc(l.Chem_ID)) + c41(esc(l.Tipe)) + c41(esc(l.Qty)) + c41(esc(l.Qty_Setelah)) + c41(esc(l.By)) + '</tr>'), 'Belum ada mutasi.');
+  }
+  function v41Ergo(hse) {
+    const rows = dflt('ergoAssessments', []), sm = dflt('ergoSummary', {}), cp = dflt('ergoComplaints', []);
+    return h41('Ergonomi (REBA / RULA / NIOSH)', 'Level risiko dihitung server dari skor atau input NIOSH.', hse ? n41('ergo-new', '+ Penilaian') + n41('ergo-complaint', '+ Keluhan MSD') : '') +
+      t41(['ID', 'Metode', 'Stasiun kerja', 'Skor', 'Level', 'Tindakan'], rows.map(a => '<tr>' + c41(esc(a.Ergo_ID) + `<div class="text-[10px] text-zinc-400">${esc(a.Tanggal)}</div>`) + c41(esc(a.Metode)) + c41(esc(a.Stasiun_Kerja) + `<div class="text-[11px] text-zinc-500">${esc(a.Sub_Area)}</div>`) + c41(esc(a.Skor)) + c41(riskBadge(a.Level)) + c41(esc(a.Tindakan) + (a.Rekomendasi ? `<div class="text-[11px] text-zinc-500">${esc(a.Rekomendasi)}</div>` : '') + (a.CAPA_ID ? `<div class="text-[10px] text-zinc-400">${esc(a.CAPA_ID)}</div>` : '')) + '</tr>'), 'Belum ada penilaian ergonomi.') +
+      '<div class="px-4 pt-3 text-[11px] font-mono uppercase text-zinc-500">Ringkasan keluhan muskuloskeletal (' + esc(sm.total || 0) + ')</div>' + g41(sm.byPart) + g41(sm.byArea) + (cp.length ? '<div class="px-4 pt-3 text-[11px] font-mono uppercase text-zinc-500">Keluhan terbaru</div>' + t41(['Tanggal', 'Personel', 'Bagian tubuh', 'Tingkat', 'Aktivitas'], cp.slice(0, 20).map(x => '<tr>' + c41(esc(x.Tanggal)) + c41(esc(x.Nama)) + c41(esc(x.Bagian_Tubuh)) + c41(esc(x.Tingkat)) + c41(esc(x.Aktivitas)) + '</tr>'), '') : '');
+  }
+  function v41Vdoc(hse) {
+    const rows = dflt('vendorDocuments', []), vs = dflt('vendors', []);
+    return h41('Dokumen Vendor (CSMS)', 'Pra-kualifikasi, asuransi, SMK3, SIO/SIA. Masa berlaku dipantau server; HSE memverifikasi.', hasRole('HSE_OFFICER') ? n41('vdoc-new', '+ Dokumen Vendor') : '') +
+      t41(['Vendor', 'Jenis', 'Berlaku s/d', 'Status', 'Aksi'], rows.map(d => '<tr>' + c41(esc((vs.find(v => v.Vendor_ID === d.Vendor_ID) || {}).Nama || d.Vendor_ID)) + c41(esc(d.Jenis) + `<div class="text-[10px] text-zinc-400">${esc(d.Nomor)}</div>` + (/^https:/.test(d.File_URL || '') ? `<a class="text-[11px] underline" target="_blank" rel="noopener" href="${esc(d.File_URL)}">Buka file</a>` : '')) +
+        c41(levelBadge(d.Level, d.Days_Left) + `<div class="text-[10px] text-zinc-400">${esc(d.Berlaku_Sampai)}</div>`) + c41(badge(esc(d.Status), 'bg-zinc-100 text-zinc-800 border-zinc-300') + (d.Catatan_Review ? `<div class="text-[10px] text-zinc-500">${esc(d.Catatan_Review)}</div>` : '')) +
+        c41(hse && d.Status === 'SUBMITTED' ? b41('vdoc-review', d.Doc_ID, 'Review', 'bg-zinc-900 text-white') : '') + '</tr>'), 'Belum ada dokumen vendor.');
+  }
+  function v41Lift(hse) {
+    const rows = dflt('liftingPlans', []);
+    return h41('Rencana Pengangkatan (Lifting Plan)', 'Utilisasi crane & sling dihitung server. Critical lift wajib persetujuan HSE.', hasRole('HSE_OFFICER', 'SUPERVISOR') ? n41('lift-new', '+ Lifting Plan') : '') +
+      t41(['ID', 'Beban / Crane', 'Utilisasi', 'Hasil', 'Status', 'Aksi'], rows.map(p => '<tr>' + c41(esc(p.Plan_ID) + `<div class="text-[10px] text-zinc-400">${esc(p.Tanggal)}</div>`) + c41(esc(p.Deskripsi_Beban) + `<div class="text-[11px] text-zinc-500">${esc(p.Total_kg)} kg • ${esc(p.Crane_Nama)} @ ${esc(p.Radius_m)} m</div><div class="text-[10px] text-zinc-400">${esc(p.No_PTW ? 'PTW ' + p.No_PTW : '')}</div>`) +
+        c41(`<span class="font-mono">Crane ${esc(p.Crane_Util_Pct)}%<br>Sling ${esc(p.Sling_Util_Pct)}%</span>`) + c41(badge(esc(p.Hasil), p.Hasil === 'LOLOS' ? LEVEL_CLS.OK : LEVEL_CLS.EXPIRED) + (p.Critical_Lift === 'YES' || p.Critical_Lift === 'TRUE' ? '<div class="text-[10px] text-red-700 font-mono">CRITICAL LIFT</div>' : '')) +
+        c41(badge(esc(p.Effective_Status), 'bg-zinc-100 text-zinc-800 border-zinc-300')) + c41(hse && p.Status === 'DRAFT' ? b41('lift-decide', p.Plan_ID, 'Putuskan', 'bg-zinc-900 text-white') : '') + '</tr>'), 'Belum ada lifting plan.');
+  }
+  function v41Alert(hse) {
+    const rows = dflt('emergencyAlerts', []);
+    return h41('Riwayat Alarm Darurat', 'Tombol merah di pojok kanan bawah mengirim alarm ke semua sesi aktif.', '') +
+      t41(['Waktu', 'Jenis', 'Lokasi', 'Pesan', 'Status'], rows.map(a => '<tr>' + c41(fmtDT(a.Created_At) + `<div class="text-[10px] text-zinc-400">${esc(a.Alert_ID)}</div>`) + c41(badge(ALERT_L[a.Tipe] || a.Tipe, 'bg-red-50 text-red-800 border-red-200')) + c41(areaTag(a.Area_Hall) + `<div class="text-[11px]">${esc(a.Sub_Area)}</div>`) +
+        c41(esc(a.Pesan) + (a.Korban_Nama ? `<div class="text-[11px] text-zinc-500">Korban: ${esc(a.Korban_Nama)}${a.Korban_Gol_Darah ? ' • Gol. darah ' + esc(a.Korban_Gol_Darah) : ''}</div>` : '') + `<div class="text-[10px] text-zinc-400">pelapor ${esc(a.Pelapor)}</div>`) + c41(badge(esc(a.Status), 'bg-zinc-100 text-zinc-800 border-zinc-300') + (a.Hasil ? `<div class="text-[10px] text-zinc-500">${esc(a.Hasil)}</div>` : '')) + '</tr>'), 'Belum ada alarm.');
+  }
+
+  const yn = v => v === 'YA';
+  Object.assign(ACTIONS, {
+    'v41-tab': el => { v41Tab = el.dataset.id; renderV41(); },
+    'starr-new': async el => {
+      const r = await mkAsk('Kartu STARR', [
+        { key: 'tanggal', label: 'Tanggal', type: 'date', value: shiftDate(0) },
+        { key: 'kategori', label: 'Kategori', type: 'select', options: selOpts(Object.keys(STARR_L), STARR_L) },
+        { key: 'as', label: 'Area / Sub-area', type: 'select', options: areaSubOpts() },
+        { key: 'uraian', label: 'Apa yang Anda lihat / alami', type: 'textarea', min: 10 },
+        { key: 'tindakanSegera', label: 'Tindakan segera yang dilakukan (opsional)', required: false },
+        { key: 'risk', label: 'Perkiraan risiko', type: 'select', options: RISK_ORDER(), value: 'LOW' },
+        { key: 'departemen', label: 'Departemen (opsional)', required: false }
+      ], 'Maksimal beberapa kartu per hari. Terima kasih sudah melapor.', { okLabel: 'Kirim' });
+      if (!r) return; const as = splitAS(r.as);
+      mutate({ action: 'STARR_SUBMIT', tanggal: r.tanggal, kategori: r.kategori, area: as.area, subArea: as.sub, uraian: r.uraian, tindakanSegera: r.tindakanSegera, risk: r.risk, departemen: r.departemen }, el, '...');
+    },
+    'starr-review': async el => {
+      const r = await mkAsk('Review ' + el.dataset.id, [
+        { key: 'decision', label: 'Keputusan', type: 'select', options: [{ value: 'ACCEPT', label: 'Terima' }, { value: 'REJECT', label: 'Tolak' }] },
+        { key: 'poin', label: 'Poin (1-' + (v41c().starrMaxPoints || 5) + ', bila diterima)', type: 'number', required: false },
+        { key: 'note', label: 'Catatan', required: false },
+        { key: 'createCapa', label: 'Terbitkan CAPA?', type: 'select', options: ['TIDAK', 'YA'], value: 'TIDAK' },
+        { key: 'finding', label: 'Temuan untuk CAPA (bila YA)', required: false },
+        { key: 'dueDate', label: 'Target selesai CAPA (bila YA)', type: 'date', required: false }
+      ], null, { okLabel: 'Simpan' });
+      if (r) mutate({ action: 'STARR_REVIEW', starrId: el.dataset.id, decision: r.decision, poin: r.poin, note: r.note, createCapa: yn(r.createCapa), finding: r.finding, dueDate: r.dueDate }, el, '...');
+    },
+    'starr-close': el => mutate({ action: 'STARR_CLOSE', starrId: el.dataset.id }, el, '...'),
+    'chem-new': async el => {
+      const c = v41c();
+      const r = await mkAsk('Bahan kimia baru', [
+        { key: 'nama', label: 'Nama bahan', min: 2 }, { key: 'cas', label: 'No. CAS (opsional)', required: false },
+        { key: 'kategori', label: 'Kategori', type: 'select', options: selOpts(c.chemCategories || []) }, { key: 'satuan', label: 'Satuan', type: 'select', options: selOpts(c.chemUnits || ['L', 'KG']) },
+        { key: 'as', label: 'Area / Sub-area', type: 'select', options: areaSubOpts() }, { key: 'lokasiSimpan', label: 'Lokasi simpan', min: 3 },
+        { key: 'qtyMax', label: 'Batas penyimpanan', type: 'number' }, { key: 'qtyAwal', label: 'Stok awal (opsional)', type: 'number', required: false },
+        { key: 'sdsUrl', label: 'Tautan SDS (https)', type: 'url' }, { key: 'sdsRevisi', label: 'Tanggal revisi SDS', type: 'date' },
+        { key: 'spillResponse', label: 'Prosedur tumpahan', type: 'textarea', min: 5 }, { key: 'apd', label: 'APD wajib (mis. sarung tangan nitril, kacamata)', min: 3 }
+      ], null, { okLabel: 'Simpan' });
+      if (!r) return; const as = splitAS(r.as);
+      mutate({ action: 'CHEM_SAVE', nama: r.nama, cas: r.cas, kategori: r.kategori, satuan: r.satuan, area: as.area, subArea: as.sub, lokasiSimpan: r.lokasiSimpan, qtyMax: r.qtyMax, qtyAwal: r.qtyAwal, sdsUrl: r.sdsUrl, sdsRevisi: r.sdsRevisi, spillResponse: r.spillResponse, apd: r.apd }, el, '...');
+    },
+    'chem-move': async el => {
+      const r = await mkAsk('Mutasi stok ' + el.dataset.id, [
+        { key: 'tipe', label: 'Tipe', type: 'select', options: selOpts(['MASUK', 'KELUAR', 'KOREKSI']) }, { key: 'qty', label: 'Jumlah (untuk KOREKSI: stok hasil hitung fisik)', type: 'number' },
+        { key: 'tanggal', label: 'Tanggal', type: 'date', value: shiftDate(0) }, { key: 'catatan', label: 'Catatan (wajib untuk koreksi)', required: false }
+      ], null, { okLabel: 'Simpan' });
+      if (r) mutate({ action: 'CHEM_MOVE', chemId: el.dataset.id, tipe: r.tipe, qty: r.qty, tanggal: r.tanggal, catatan: r.catatan }, el, '...');
+    },
+    'chem-retire': async el => {
+      const r = await mkAsk('Nonaktifkan ' + el.dataset.id, [{ key: 'reason', label: 'Alasan', min: 5 }], null, { okLabel: 'Nonaktifkan' });
+      if (r) mutate({ action: 'CHEM_RETIRE', chemId: el.dataset.id, reason: r.reason }, el, '...');
+    },
+    'chem-qr': async el => {
+      const p = el.dataset.id.split('|'), url = location.origin + location.pathname + '?sds=' + encodeURIComponent(p[0]) + '&sig=' + encodeURIComponent(p[1]);
+      try { await navigator.clipboard.writeText(url); toast('Link QR disalin. Tempel ke pembuat QR code lalu tempel pada wadah/rak.', true); } catch (e) { await mkAsk('Link QR', [{ key: 'u', label: 'Salin link ini', value: url }], null, { okLabel: 'Tutup' }); }
+    },
+    'ergo-new': async el => {
+      const m = await mkAsk('Penilaian ergonomi: metode', [{ key: 'metode', label: 'Metode', type: 'select', options: selOpts(['REBA', 'RULA', 'NIOSH']) }], null, { okLabel: 'Lanjut' });
+      if (!m) return;
+      const base = [{ key: 'tanggal', label: 'Tanggal', type: 'date', value: shiftDate(0) }, { key: 'as', label: 'Area / Sub-area', type: 'select', options: areaSubOpts() }, { key: 'stasiun', label: 'Stasiun kerja', min: 3 }, { key: 'aktivitas', label: 'Aktivitas', type: 'textarea', min: 5 }];
+      const inp = m.metode === 'NIOSH' ? [
+        { key: 'bebanKg', label: 'Berat beban (kg)', type: 'number' }, { key: 'hCm', label: 'Jarak horizontal H (cm, 0-63)', type: 'number' }, { key: 'vCm', label: 'Tinggi tangan V (cm)', type: 'number' },
+        { key: 'dCm', label: 'Perpindahan vertikal D (cm)', type: 'number' }, { key: 'aDeg', label: 'Sudut asimetri A (derajat)', type: 'number' }, { key: 'fm', label: 'Frequency Multiplier FM (0.01-1)', type: 'number' },
+        { key: 'coupling', label: 'Pegangan (coupling)', type: 'select', options: ['GOOD', 'FAIR', 'POOR'] }] : [{ key: 'skor', label: 'Skor ' + m.metode + (m.metode === 'REBA' ? ' (1-15)' : ' (1-7)'), type: 'number' }];
+      const r = await mkAsk('Penilaian ' + m.metode, base.concat(inp, [{ key: 'rekomendasi', label: 'Rekomendasi (wajib bila risiko HIGH/CRITICAL)', type: 'textarea', required: false }, { key: 'createCapa', label: 'Terbitkan CAPA bila HIGH/CRITICAL?', type: 'select', options: ['YA', 'TIDAK'], value: 'YA' }]), null, { okLabel: 'Simpan' });
+      if (!r) return; const as = splitAS(r.as);
+      mutate(Object.assign({ action: 'ERGO_SAVE', metode: m.metode, area: as.area, subArea: as.sub, createCapa: yn(r.createCapa) }, r), el, '...');
+    },
+    'ergo-complaint': async el => {
+      const r = await mkAsk('Keluhan muskuloskeletal', [
+        { key: 'tanggal', label: 'Tanggal', type: 'date', value: shiftDate(0) }, { key: 'nik', label: 'NIK karyawan', min: 3 }, { key: 'as', label: 'Area / Sub-area', type: 'select', options: areaSubOpts() },
+        { key: 'bagian', label: 'Bagian tubuh', type: 'select', options: selOpts(v41c().bodyParts || []) }, { key: 'tingkat', label: 'Tingkat keluhan (1 ringan - 4 berat)', type: 'number' },
+        { key: 'aktivitas', label: 'Aktivitas terkait', required: false }, { key: 'catatan', label: 'Catatan', required: false }
+      ], null, { okLabel: 'Simpan' });
+      if (!r) return; const as = splitAS(r.as);
+      mutate({ action: 'ERGO_COMPLAINT', tanggal: r.tanggal, nik: r.nik, area: as.area, subArea: as.sub, bagian: r.bagian, tingkat: r.tingkat, aktivitas: r.aktivitas, catatan: r.catatan }, el, '...');
+    },
+    'vdoc-new': async el => {
+      const vs = dflt('vendors', []);
+      const r = await mkAsk('Dokumen vendor', [
+        { key: 'vendorId', label: 'Vendor', type: 'select', options: vs.map(v => ({ value: v.Vendor_ID, label: v.Nama })) }, { key: 'jenis', label: 'Jenis dokumen', type: 'select', options: selOpts(v41c().vdocTypes || []) },
+        { key: 'nomor', label: 'Nomor dokumen', min: 2 }, { key: 'berlakuSampai', label: 'Berlaku sampai', type: 'date' }, { key: 'fileUrl', label: 'Tautan file (https, Drive)', type: 'url' }
+      ], null, { okLabel: 'Simpan' });
+      if (r) mutate({ action: 'VDOC_SAVE', vendorId: r.vendorId, jenis: r.jenis, nomor: r.nomor, berlakuSampai: r.berlakuSampai, fileUrl: r.fileUrl }, el, '...');
+    },
+    'vdoc-review': async el => {
+      const r = await mkAsk('Review dokumen ' + el.dataset.id, [{ key: 'decision', label: 'Keputusan', type: 'select', options: [{ value: 'VERIFIED', label: 'Verifikasi' }, { value: 'REJECTED', label: 'Tolak' }] }, { key: 'note', label: 'Catatan (wajib bila ditolak)', required: false }], null, { okLabel: 'Simpan' });
+      if (r) mutate({ action: 'VDOC_REVIEW', docId: el.dataset.id, decision: r.decision, note: r.note }, el, '...');
+    },
+    'lift-new': async el => {
+      const cranes = (S.data.assets || []).filter(a => a.Tipe_Data === 'PAA_SIA' && a.Record_Status !== 'DISPOSED');
+      const r = await mkAsk('Lifting plan', [
+        { key: 'tanggal', label: 'Tanggal pengangkatan', type: 'date', value: shiftDate(0) }, { key: 'as', label: 'Area / Sub-area', type: 'select', options: areaSubOpts() }, { key: 'deskripsi', label: 'Deskripsi beban', min: 5 },
+        { key: 'bebanKg', label: 'Berat beban (kg)', type: 'number' }, { key: 'riggingKg', label: 'Berat rigging/hook block (kg)', type: 'number' },
+        { key: 'craneId', label: 'Alat angkat (Register SIA)', type: 'select', options: cranes.map(a => ({ value: a.ID_Record, label: a.ID_Record + ' - ' + a.Nama_Item })) },
+        { key: 'radiusM', label: 'Radius kerja (m)', type: 'number' }, { key: 'kapasitasKg', label: 'Kapasitas crane pada radius (kg, dari load chart)', type: 'number' },
+        { key: 'slingJenis', label: 'Jenis sling', min: 2 }, { key: 'slingWllKg', label: 'WLL sling per kaki (kg, vertikal)', type: 'number' }, { key: 'jumlahKaki', label: 'Jumlah kaki sling (1-4)', type: 'number' },
+        { key: 'sudutDerajat', label: 'Sudut sling thd horizontal (30-90, abaikan bila 1 kaki)', type: 'number', required: false },
+        { key: 'rute', label: 'Rute angkat, pisahkan dengan titik koma', required: false }, { key: 'zonaEksklusi', label: 'Zona eksklusi', required: false },
+        { key: 'rigger', label: 'Rigger', min: 2 }, { key: 'signalman', label: 'Signalman', min: 2 }, { key: 'noPtw', label: 'No. PTW (opsional)', required: false }
+      ], 'Hasil dihitung ulang oleh server. Checklist pra-angkat di bawah.', { okLabel: 'Hitung & simpan' });
+      if (!r) return;
+      const cl = {}; (v41c().liftChecklist || []).forEach(k => { cl[k] = true; });
+      const ck = await mkAsk('Checklist pra-angkat', (v41c().liftChecklist || []).map(k => ({ key: k, label: k, type: 'select', options: ['YA', 'TIDAK'], value: 'YA' })), 'Jawab jujur; item TIDAK dapat menghambat persetujuan.', { okLabel: 'Simpan plan' });
+      if (!ck) return; Object.keys(cl).forEach(k => { cl[k] = yn(ck[k]); });
+      const as = splitAS(r.as);
+      mutate(Object.assign({}, r, { action: 'LIFT_SAVE', area: as.area, subArea: as.sub, rute: String(r.rute || '').split(';').map(x => x.trim()).filter(Boolean), checklist: cl }), el, '...');
+    },
+    'lift-decide': async el => {
+      const r = await mkAsk('Keputusan ' + el.dataset.id, [{ key: 'decision', label: 'Keputusan', type: 'select', options: [{ value: 'APPROVE', label: 'Setujui' }, { value: 'REJECT', label: 'Tolak' }, { value: 'CANCEL', label: 'Batalkan' }] }, { key: 'note', label: 'Catatan', required: false }], null, { okLabel: 'Simpan' });
+      if (r) mutate({ action: 'LIFT_DECIDE', planId: el.dataset.id, decision: r.decision, note: r.note }, el, '...');
+    },
+    'sos': async el => {
+      if (!confirm('Kirim ALARM DARURAT ke semua pengguna aktif?')) return;
+      const r = await mkAsk('Alarm darurat', [
+        { key: 'tipe', label: 'Jenis darurat', type: 'select', options: selOpts(Object.keys(ALERT_L), ALERT_L) }, { key: 'as', label: 'Area / Sub-area', type: 'select', options: areaSubOpts() },
+        { key: 'pesan', label: 'Pesan singkat (apa & di mana tepatnya)', min: 5 }, { key: 'korbanNik', label: 'NIK korban (opsional)', required: false }
+      ], 'Tetap hubungi tim ERP lewat telepon/radio.', { okLabel: 'KIRIM ALARM' });
+      if (!r) return; const as = splitAS(r.as);
+      const res = await mutate({ action: 'ALERT_SEND', tipe: r.tipe, area: as.area, subArea: as.sub, pesan: r.pesan, korbanNik: r.korbanNik }, el, '...');
+      if (res && res.success) pollAlerts();
+    },
+    'alert-ack': async el => { await mutate({ action: 'ALERT_ACK', alertId: el.dataset.id }, el, '...'); pollAlerts(); },
+    'alert-resolve': async el => {
+      const r = await mkAsk('Selesaikan ' + el.dataset.id, [{ key: 'hasil', label: 'Hasil', type: 'select', options: [{ value: 'HANDLED', label: 'Tertangani' }, { value: 'FALSE_ALARM', label: 'Alarm palsu' }] }, { key: 'catatan', label: 'Catatan', min: 3 }], null, { okLabel: 'Selesai' });
+      if (r) { await mutate({ action: 'ALERT_RESOLVE', alertId: el.dataset.id, hasil: r.hasil, catatan: r.catatan }, el, '...'); pollAlerts(); }
+    }
+  });
+
+  // ---- Alarm darurat: polling ringan tiap 20 detik, banner + bunyi untuk alarm baru ----
+  const alertSeen = {};
+  function beep() { try { const c = new (window.AudioContext || window.webkitAudioContext)(), o = c.createOscillator(), g = c.createGain(); o.connect(g); g.connect(c.destination); o.frequency.value = 880; g.gain.value = 0.15; o.start(); setTimeout(() => { o.stop(); c.close(); }, 800); } catch (e) {} }
+  async function pollAlerts() {
+    const sos = $('sosBtn'), bn = $('alertBanner');
+    if (sos) sos.classList.toggle('hidden', !(S.token && S.user));
+    if (!S.token || !S.user) { if (bn) bn.classList.add('hidden'); return; }
+    const res = await call({ action: 'ALERT_POLL' });
+    if (!res || !res.success) return;
+    const list = res.alerts || [], canAck = hasRole('HSE_OFFICER', 'SUPERVISOR');
+    let fresh = false; list.forEach(a => { if (!alertSeen[a.Alert_ID]) { alertSeen[a.Alert_ID] = 1; fresh = true; } });
+    if (fresh) beep();
+    bn.classList.toggle('hidden', !list.length);
+    bn.innerHTML = list.map(a => `<div class="bg-red-700 text-white px-4 py-2.5 flex flex-wrap items-center justify-between gap-2 border-b border-red-900"><div class="text-sm"><b>${esc(ALERT_L[a.Tipe] || a.Tipe)}</b> • ${esc(a.Area_Hall)} / ${esc(a.Sub_Area)} — ${esc(a.Pesan)}${a.Korban_Nama ? ' • Korban: ' + esc(a.Korban_Nama) + (a.Korban_Gol_Darah ? ' (gol. darah ' + esc(a.Korban_Gol_Darah) + ')' : '') : ''}<span class="text-red-200 text-[11px]"> • ${esc(a.Alert_ID)} • ${esc(a.Status)}</span></div><div class="flex gap-2">${canAck && a.Status === 'ACTIVE' ? b41('alert-ack', a.Alert_ID, 'Terima', 'bg-white text-red-800') : ''}${canAck ? b41('alert-resolve', a.Alert_ID, 'Selesai', 'bg-white text-red-800') : ''}</div></div>`).join('');
+  }
+  setInterval(pollAlerts, 20000); setTimeout(pollAlerts, 4000);
+
+  // ---- Halaman SDS publik (QR): ?sds=ID&sig=... tanpa login ----
+  (async function checkSdsLink() {
+    const q = new URLSearchParams(location.search), id = q.get('sds'), sig = q.get('sig');
+    if (!id || !sig) return;
+    const r = await call({ action: 'VIEW_SDS', id: id, sig: sig }), c = r.chem || {};
+    const el = document.createElement('div'); el.className = 'fixed inset-0 z-[200] bg-white overflow-auto p-5 text-sm';
+    el.innerHTML = r.success ? '<h2 class="text-lg font-semibold mb-3">Lembar Data Keselamatan (SDS)</h2>' + Object.keys(c).map(k => k === 'sdsUrl' ? (/^https:/.test(c[k] || '') ? `<p class="mb-2"><a class="underline text-blue-700" target="_blank" rel="noopener" href="${esc(c[k])}">Buka dokumen SDS</a></p>` : '') : `<div class="mb-1"><span class="font-mono text-[11px] uppercase text-zinc-500">${esc(k)}</span><div>${esc(c[k])}</div></div>`).join('') : `<p>${esc(r.message || 'QR tidak valid.')}</p>`;
+    document.body.appendChild(el);
+  })();
+
   // ---------------- Render utama ----------------
   function renderV4() {
     try {
-      renderHiradc(); renderIncident(); renderEquipment(); renderEnviro(); renderTraining(); renderPtwHazard();
+      renderHiradc(); renderIncident(); renderEquipment(); renderEnviro(); renderTraining(); renderPtwHazard(); renderV41();
       if (!$('execPeriod').value) $('execPeriod').value = nowYM();
     } catch (err) { console.error('Render modul v4.0 gagal:', err); }
   }
@@ -2579,7 +2808,7 @@
     e.preventDefault();
     const res = await mutate({
       action: 'SAVE_EMPLOYEE_SIO', nik: $('empNik').value, nama:$('empNama').value, dept: $('empDept').value, jabatan:$('empRole').value,
-      mcuStatus: $('empMcu').value, mcuExpiry:$('empMcuExp').value, sioExpiry: $('empSioExp').value, certDetail:$('empCert').value,
+      mcuStatus: $('empMcu').value, mcuExpiry:$('empMcuExp').value, sioExpiry: $('empSioExp').value, certDetail:$('empCert').value, golonganDarah: $('empGol').value,
       kompetensi: Array.from(document.querySelectorAll('.empTag:checked')).map(c => c.value)
     }, $('btnEmp'), 'Menyimpan...');
     if (res.success) { $('empForm').reset(); }
@@ -2778,5 +3007,7 @@
     bootstrap();
   }
 </script>
+<div id="alertBanner" class="hidden fixed top-0 inset-x-0 z-[150]"></div>
+<button id="sosBtn" data-act="sos" class="hidden fixed bottom-5 right-5 z-[150] bg-red-700 hover:bg-red-800 text-white font-bold rounded-full w-16 h-16 shadow-lg text-xs tracking-wide">SOS</button>
 </body>
 </html>
